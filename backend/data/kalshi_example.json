@@ -1,5 +1,5 @@
 [
-{
+  {
     "can_close_early": true,
     "category": "World",
     "close_time": "2070-01-01T15:00:00Z",
@@ -8157,4 +8157,4 @@
     "strike_period": "",
     "sub_title": "Before 2035"
   }
-  ]
+]

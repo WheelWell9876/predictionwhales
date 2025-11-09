@@ -1,0 +1,169 @@
+/* Global Terminal Styles - Bloomberg Terminal Theme */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Courier New', Courier, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #000000;
+  color: #ffffff;
+  overflow-x: hidden;
+}
+
+code {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+  border: 1px solid #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border: 1px solid #444;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #444;
+}
+
+/* Remove all border radius globally */
+* {
+  border-radius: 0 !important;
+}
+
+/* Terminal green glow effect for important elements */
+.terminal-glow {
+  text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+}
+
+/* Blinking cursor animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor {
+  animation: blink 1s infinite;
+}
+
+/* Grid lines effect */
+.grid-background {
+  background-image: 
+    linear-gradient(rgba(0, 255, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.03) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* Terminal table styling */
+.terminal-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.terminal-table th,
+.terminal-table td {
+  border: 1px solid #333;
+  padding: 4px 8px;
+  text-align: left;
+}
+
+.terminal-table th {
+  background-color: #0a0a0a;
+  color: #00ff00;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+}
+
+.terminal-table tr:hover {
+  background-color: rgba(0, 255, 0, 0.05);
+}
+
+/* Monospace everything */
+input,
+select,
+textarea,
+button {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+/* Remove focus outlines and add terminal style */
+*:focus {
+  outline: 1px solid #00ff00 !important;
+  outline-offset: -1px;
+}
+
+/* Loading animation */
+@keyframes terminal-load {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+  100% { content: ''; }
+}
+
+.loading::after {
+  content: '';
+  animation: terminal-load 1.5s infinite;
+}
+
+/* Number formatting */
+.number-positive {
+  color: #00ff00;
+}
+
+.number-negative {
+  color: #ff0000;
+}
+
+.number-neutral {
+  color: #ffffff;
+}
+
+/* Status indicators */
+.status-active {
+  color: #00ff00;
+}
+
+.status-inactive {
+  color: #666666;
+}
+
+.status-error {
+  color: #ff0000;
+}
+
+.status-warning {
+  color: #ffa500;
+}
+
+/* Terminal print effect */
+@keyframes print {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.terminal-print {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: print 2s steps(40, end);
+}
