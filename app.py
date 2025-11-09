@@ -9,7 +9,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime, timedelta
 import os
 import sqlite3
-import json
 
 app = Flask(__name__, static_folder='../frontend/build', static_url_path='')
 CORS(app)
@@ -538,7 +537,8 @@ def internal_error(error):
 
 if __name__ == '__main__':
     # Initialize database if needed
-    import database_schema
+    from backend import database_schema
+
     database_schema.create_complete_schema(DATABASE_PATH)
     
     # Run the application

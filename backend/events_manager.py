@@ -1,0 +1,431 @@
+"""
+Events Manager for Polymarket Terminal
+Handles fetching, processing, and storing event data
+"""
+
+import requests
+import json
+import time
+from datetime import datetime
+from typing import Dict, List, Optional
+from .database_manager import DatabaseManager
+from .config import Config
+
+class EventsManager(DatabaseManager):
+    """Manager for event-related operations"""
+    
+    def __init__(self):
+        super().__init__()
+        from .config import Config
+        self.config = Config
+        self.base_url = Config.GAMMA_API_URL
+        self.data_api_url = Config.DATA_API_URL
+        
+    def fetch_all_events(self, closed: bool = False, limit: int = 100) -> List[Dict]:
+        """
+        Fetch all events from the API
+        Used for initial data load and daily scans
+        """
+        all_events = []
+        offset = 0
+        
+        self.logger.info(f"Starting to fetch all {'closed' if closed else 'active'} events...")
+        
+        while True:
+            try:
+                # Prepare request parameters
+                params = {
+                    "closed": str(closed).lower(),
+                    "limit": limit,
+                    "offset": offset,
+                    "order": "volume",
+                    "ascending": "false"
+                }
+                
+                # Make API request
+                response = requests.get(
+                    f"{self.base_url}/events",
+                    params=params,
+                    headers=self.config.get_api_headers(),
+                    timeout=self.config.REQUEST_TIMEOUT
+                )
+                response.raise_for_status()
+                
+                events = response.json()
+                
+                if not events:
+                    break
+                
+                all_events.extend(events)
+                self.logger.info(f"Fetched {len(events)} events (offset: {offset})")
+                
+                # Store events in database
+                self._store_events(events)
+                
+                # Check if we've reached the limit
+                if len(all_events) >= self.config.MAX_EVENTS_PER_RUN:
+                    self.logger.warning(f"Reached maximum events limit: {self.config.MAX_EVENTS_PER_RUN}")
+                    break
+                
+                offset += limit
+                
+                # Rate limiting
+                time.sleep(self.config.RATE_LIMIT_DELAY)
+                
+                if len(events) < limit:
+                    break
+                    
+            except requests.exceptions.RequestException as e:
+                self.logger.error(f"Error fetching events at offset {offset}: {e}")
+                break
+            except Exception as e:
+                self.logger.error(f"Unexpected error: {e}")
+                break
+        
+        self.logger.info(f"Total events fetched: {len(all_events)}")
+        return all_events
+    
+    def fetch_event_by_id(self, event_id: str) -> Optional[Dict]:
+        """
+        Fetch detailed information for a specific event
+        """
+        try:
+            url = f"{self.base_url}/events/{event_id}"
+            params = {
+                "include_chat": "true",
+                "include_template": "true"
+            }
+            
+            response = requests.get(
+                url,
+                params=params,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+            
+            event = response.json()
+            
+            # Store the detailed event
+            self._store_event_detailed(event)
+            
+            # Fetch and store tags
+            self._fetch_and_store_event_tags(event_id, event.get('tags', []))
+            
+            # Fetch live volume if enabled
+            if self.config.FETCH_LIVE_VOLUME:
+                self.fetch_event_live_volume(event_id)
+            
+            return event
+            
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Error fetching event {event_id}: {e}")
+            return None
+    
+    def fetch_event_tags(self, event_id: str) -> List[Dict]:
+        """
+        Fetch tags for a specific event
+        """
+        try:
+            url = f"{self.base_url}/events/{event_id}/tags"
+            
+            response = requests.get(
+                url,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+            
+            tags = response.json()
+            
+            # Store tags and relationships
+            self._fetch_and_store_event_tags(event_id, tags)
+            
+            return tags
+            
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Error fetching tags for event {event_id}: {e}")
+            return []
+    
+    def fetch_event_live_volume(self, event_id: str) -> Optional[Dict]:
+        """
+        Fetch live volume data for an event
+        """
+        if not self.config.FETCH_LIVE_VOLUME:
+            return None
+            
+        try:
+            url = f"{self.data_api_url}/live-volume"
+            params = {"id": event_id}
+            
+            response = requests.get(
+                url,
+                params=params,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+            
+            data = response.json()
+            
+            if data and len(data) > 0:
+                volume_data = data[0]
+                self._store_live_volume(event_id, volume_data)
+                return volume_data
+            
+            return None
+            
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Error fetching live volume for event {event_id}: {e}")
+            return None
+    
+    def _store_events(self, events: List[Dict]):
+        """
+        Store multiple events in the database
+        """
+        event_records = []
+        
+        for event in events:
+            record = {
+                'id': event.get('id'),
+                'ticker': event.get('ticker'),
+                'slug': event.get('slug'),
+                'title': event.get('title'),
+                'description': event.get('description'),
+                'start_date': event.get('startDate'),
+                'creation_date': event.get('creationDate'),
+                'end_date': event.get('endDate'),
+                'image': event.get('image'),
+                'icon': event.get('icon'),
+                'liquidity': event.get('liquidity'),
+                'liquidity_clob': event.get('liquidityClob'),
+                'volume': event.get('volume'),
+                'volume_clob': event.get('volumeClob'),
+                'volume_24hr': event.get('volume24hr'),
+                'volume_24hr_clob': event.get('volume24hrClob'),
+                'volume_1wk': event.get('volume1wk'),
+                'volume_1wk_clob': event.get('volume1wkClob'),
+                'volume_1mo': event.get('volume1mo'),
+                'volume_1mo_clob': event.get('volume1moClob'),
+                'volume_1yr': event.get('volume1yr'),
+                'volume_1yr_clob': event.get('volume1yrClob'),
+                'open_interest': event.get('openInterest'),
+                'competitive': event.get('competitive'),
+                'comment_count': event.get('commentCount'),
+                'active': event.get('active'),
+                'closed': event.get('closed'),
+                'archived': event.get('archived'),
+                'new': event.get('new'),
+                'featured': event.get('featured'),
+                'restricted': event.get('restricted'),
+                'enable_order_book': event.get('enableOrderBook'),
+                'cyom': event.get('cyom'),
+                'show_all_outcomes': event.get('showAllOutcomes'),
+                'show_market_images': event.get('showMarketImages'),
+                'enable_neg_risk': event.get('enableNegRisk'),
+                'automatically_active': event.get('automaticallyActive'),
+                'neg_risk_augmented': event.get('negRiskAugmented'),
+                'pending_deployment': event.get('pendingDeployment'),
+                'deploying': event.get('deploying'),
+                'created_at': event.get('createdAt'),
+                'updated_at': event.get('updatedAt'),
+                'fetched_at': datetime.now().isoformat()
+            }
+            event_records.append(record)
+            
+            # Store basic tags if present
+            if 'tags' in event:
+                self._store_event_tags_basic(event['id'], event['tags'])
+        
+        # Bulk insert events
+        if event_records:
+            self.bulk_insert_or_replace('events', event_records)
+    
+    def _store_event_detailed(self, event: Dict):
+        """
+        Store detailed event information
+        """
+        record = {
+            'id': event.get('id'),
+            'ticker': event.get('ticker'),
+            'slug': event.get('slug'),
+            'title': event.get('title'),
+            'description': event.get('description'),
+            'start_date': event.get('startDate'),
+            'creation_date': event.get('creationDate'),
+            'end_date': event.get('endDate'),
+            'image': event.get('image'),
+            'icon': event.get('icon'),
+            'liquidity': event.get('liquidity'),
+            'liquidity_clob': event.get('liquidityClob'),
+            'volume': event.get('volume'),
+            'volume_clob': event.get('volumeClob'),
+            'volume_24hr': event.get('volume24hr'),
+            'volume_24hr_clob': event.get('volume24hrClob'),
+            'volume_1wk': event.get('volume1wk'),
+            'volume_1wk_clob': event.get('volume1wkClob'),
+            'volume_1mo': event.get('volume1mo'),
+            'volume_1mo_clob': event.get('volume1moClob'),
+            'volume_1yr': event.get('volume1yr'),
+            'volume_1yr_clob': event.get('volume1yrClob'),
+            'open_interest': event.get('openInterest'),
+            'competitive': event.get('competitive'),
+            'comment_count': event.get('commentCount'),
+            'active': event.get('active'),
+            'closed': event.get('closed'),
+            'archived': event.get('archived'),
+            'new': event.get('new'),
+            'featured': event.get('featured'),
+            'restricted': event.get('restricted'),
+            'enable_order_book': event.get('enableOrderBook'),
+            'cyom': event.get('cyom'),
+            'show_all_outcomes': event.get('showAllOutcomes'),
+            'show_market_images': event.get('showMarketImages'),
+            'enable_neg_risk': event.get('enableNegRisk'),
+            'automatically_active': event.get('automaticallyActive'),
+            'neg_risk_augmented': event.get('negRiskAugmented'),
+            'pending_deployment': event.get('pendingDeployment'),
+            'deploying': event.get('deploying'),
+            'created_at': event.get('createdAt'),
+            'updated_at': event.get('updatedAt'),
+            'fetched_at': datetime.now().isoformat()
+        }
+        
+        self.insert_or_replace('events', record)
+        self.logger.debug(f"Stored detailed event: {event.get('id')}")
+    
+    def _store_event_tags_basic(self, event_id: str, tags: List[Dict]):
+        """
+        Store basic tag information from event response
+        """
+        for tag in tags:
+            # Store tag
+            tag_record = {
+                'id': tag.get('id'),
+                'label': tag.get('label'),
+                'slug': tag.get('slug'),
+                'force_show': tag.get('forceShow', False),
+                'is_carousel': tag.get('isCarousel', False),
+                'published_at': tag.get('publishedAt'),
+                'created_at': tag.get('createdAt'),
+                'updated_at': tag.get('updatedAt')
+            }
+            self.insert_or_ignore('tags', tag_record)
+            
+            # Store event-tag relationship
+            relationship = {
+                'event_id': event_id,
+                'tag_id': tag.get('id')
+            }
+            self.insert_or_ignore('event_tags', relationship)
+    
+    def _fetch_and_store_event_tags(self, event_id: str, tags: List[Dict]):
+        """
+        Store detailed tag information and relationships
+        """
+        tag_records = []
+        relationships = []
+        
+        for tag in tags:
+            tag_record = {
+                'id': tag.get('id'),
+                'label': tag.get('label'),
+                'slug': tag.get('slug'),
+                'force_show': tag.get('forceShow', False),
+                'force_hide': tag.get('forceHide', False),
+                'is_carousel': tag.get('isCarousel', False),
+                'published_at': tag.get('publishedAt'),
+                'created_by': tag.get('createdBy'),
+                'updated_by': tag.get('updatedBy'),
+                'created_at': tag.get('createdAt'),
+                'updated_at': tag.get('updatedAt'),
+                'fetched_at': datetime.now().isoformat()
+            }
+            tag_records.append(tag_record)
+            
+            relationship = {
+                'event_id': event_id,
+                'tag_id': tag.get('id')
+            }
+            relationships.append(relationship)
+        
+        # Bulk insert
+        if tag_records:
+            self.bulk_insert_or_replace('tags', tag_records)
+        if relationships:
+            self.bulk_insert_or_replace('event_tags', relationships)
+        
+        self.logger.debug(f"Stored {len(tags)} tags for event {event_id}")
+    
+    def _store_live_volume(self, event_id: str, volume_data: Dict):
+        """
+        Store live volume data for an event
+        """
+        record = {
+            'event_id': event_id,
+            'total_volume': volume_data.get('total', 0),
+            'market_volumes': json.dumps(volume_data.get('markets', [])),
+            'timestamp': datetime.now().isoformat()
+        }
+        
+        self.insert_or_replace('event_live_volume', record)
+        
+        # Update event volume
+        self.update_record(
+            'events',
+            {'volume': volume_data.get('total', 0), 'updated_at': datetime.now().isoformat()},
+            'id = ?',
+            (event_id,)
+        )
+        
+        self.logger.debug(f"Stored live volume for event {event_id}: ${volume_data.get('total', 0):,.2f}")
+    
+    def process_all_events_detailed(self):
+        """
+        Process all events to fetch detailed information
+        """
+        # Get all event IDs from database
+        events = self.fetch_all("SELECT id, slug FROM events ORDER BY volume DESC")
+        
+        self.logger.info(f"Processing {len(events)} events for detailed information...")
+        
+        processed = 0
+        errors = 0
+        
+        for event in events:
+            try:
+                self.fetch_event_by_id(event['id'])
+                processed += 1
+                
+                if processed % 10 == 0:
+                    self.logger.info(f"Processed {processed}/{len(events)} events")
+                
+                # Rate limiting
+                time.sleep(self.config.RATE_LIMIT_DELAY)
+                
+            except Exception as e:
+                self.logger.error(f"Error processing event {event['id']}: {e}")
+                errors += 1
+        
+        self.logger.info(f"Event processing complete. Processed: {processed}, Errors: {errors}")
+    
+    def daily_scan(self):
+        """
+        Perform daily scan for new events
+        """
+        self.logger.info("Starting daily event scan...")
+        
+        # Fetch active events
+        active_events = self.fetch_all_events(closed=False)
+        
+        # Optionally fetch closed events
+        if self.config.FETCH_CLOSED_EVENTS:
+            closed_events = self.fetch_all_events(closed=True)
+            self.logger.info(f"Fetched {len(closed_events)} closed events")
+        
+        # Process detailed information for new events
+        self.process_all_events_detailed()
+        
+        self.logger.info("Daily event scan complete")
+        
+        return len(active_events)
