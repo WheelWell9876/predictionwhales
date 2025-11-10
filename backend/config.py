@@ -9,7 +9,6 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-
 class Config:
     """Configuration class for Polymarket data fetcher"""
 
@@ -56,6 +55,25 @@ class Config:
     FETCH_OPEN_INTEREST = os.getenv('FETCH_OPEN_INTEREST', 'true').lower() == 'true'
     FETCH_SERIES = os.getenv('FETCH_SERIES', 'true').lower() == 'true'
     FETCH_TAGS = os.getenv('FETCH_TAGS', 'true').lower() == 'true'
+    FETCH_USERS = os.getenv('FETCH_USERS', 'true').lower() == 'true'
+    FETCH_TRANSACTIONS = os.getenv('FETCH_TRANSACTIONS', 'true').lower() == 'true'
+
+    # User and Transaction Limits for Initial Load
+    INITIAL_USERS_PER_EVENT = int(os.getenv('INITIAL_USERS_PER_EVENT', '100'))
+    INITIAL_TRANSACTIONS_PER_USER = int(os.getenv('INITIAL_TRANSACTIONS_PER_USER', '20'))
+    FETCH_DETAILED_INFO = os.getenv('FETCH_DETAILED_INFO', 'false').lower() == 'true'
+
+    # Whale Tracking Configuration
+    MIN_TRANSACTION_SIZE = float(os.getenv('MIN_TRANSACTION_SIZE', '500'))
+    MIN_WHALE_WALLET = float(os.getenv('MIN_WHALE_WALLET', '10000'))
+    MIN_WHALE_TRADE = float(os.getenv('MIN_WHALE_TRADE', '10000'))
+
+    # Legacy compatibility
+    MIN_BET_AMOUNT = float(os.getenv('MIN_BET_AMOUNT', '1000'))
+    MIN_WHALE_VOLUME = float(os.getenv('MIN_WHALE_VOLUME', '10000'))
+    UPDATE_INTERVAL = int(os.getenv('UPDATE_INTERVAL', '300'))
+    MAX_TRACKED_WALLETS = int(os.getenv('MAX_TRACKED_WALLETS', '100'))
+    MAX_RECENT_BETS = int(os.getenv('MAX_RECENT_BETS', '500'))
 
     @classmethod
     def get_api_headers(cls):

@@ -18,3 +18,26 @@ Next I want to do the same thing for the tags. I have a cell that will do the in
 
 To implement all of this functionality and work with my flask application, I want to have these functions controlling each of the tables in different files in the backend. One file per big table because there is going to be a lot more functionality implemented. 
 
+
+
+
+
+
+
+
+
+
+📊 Database Statistics:
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    events: 51,259 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    markets: 9,353 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    tags: 1,076 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    series: 543 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    collections: 0 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    event_tags: 297,045 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    market_tags: 0 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    users: 920 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    transactions: 0 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    users: 920 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    transactions: 0 records
+2025-11-09 23:20:14,488 - PolymarketDataFetcher - INFO -    user_positions: 0 records
+2025-11-09 23:20:14,489 - PolymarketDataFetcher - INFO - ============================================================
