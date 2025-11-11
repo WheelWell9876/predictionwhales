@@ -299,9 +299,11 @@ class EventsManager(DatabaseManager):
         Store basic tag information from event response
         """
         for tag in tags:
+            tag_id = tag.get('id')
+
             # Store tag
             tag_record = {
-                'id': tag.get('id'),
+                'id': tag_id,
                 'label': tag.get('label'),
                 'slug': tag.get('slug'),
                 'force_show': tag.get('forceShow', False),
@@ -311,21 +313,36 @@ class EventsManager(DatabaseManager):
                 'updated_at': tag.get('updatedAt')
             }
             self.insert_or_ignore('tags', tag_record)
-            
+
             # Store event-tag relationship
-            relationship = {
-                'event_id': event_id,
-                'tag_id': tag.get('id')
-            }
-            self.insert_or_ignore('event_tags', relationship)
-    
+            conn = self.get_persistent_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT event_ids FROM event_tags WHERE tag_id = ?", (tag_id,))
+            result = cursor.fetchone()
+
+            if result:
+                event_ids = json.loads(result[0])
+                if event_id not in event_ids:
+                    event_ids.append(event_id)
+                    cursor.execute(
+                        "UPDATE event_tags SET event_ids = ? WHERE tag_id = ?",
+                        (json.dumps(event_ids), tag_id)
+                    )
+            else:
+                cursor.execute(
+                    "INSERT INTO event_tags (tag_id, event_ids) VALUES (?, ?)",
+                    (tag_id, json.dumps([event_id]))
+                )
+
+            conn.commit()
+
     def _fetch_and_store_event_tags(self, event_id: str, tags: List[Dict]):
         """
         Store detailed tag information and relationships
         """
         tag_records = []
-        relationships = []
-        
+
         for tag in tags:
             tag_record = {
                 'id': tag.get('id'),
@@ -342,18 +359,36 @@ class EventsManager(DatabaseManager):
                 'fetched_at': datetime.now().isoformat()
             }
             tag_records.append(tag_record)
-            
-            relationship = {
-                'event_id': event_id,
-                'tag_id': tag.get('id')
-            }
-            relationships.append(relationship)
-        
-        # Bulk insert
+
+        # Bulk insert tags
         if tag_records:
             self.bulk_insert_or_replace('tags', tag_records)
-        if relationships:
-            self.bulk_insert_or_replace('event_tags', relationships)
+
+        # Store event-tag relationships
+        for tag in tags:
+            tag_id = tag.get('id')
+
+            conn = self.get_persistent_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT event_ids FROM event_tags WHERE tag_id = ?", (tag_id,))
+            result = cursor.fetchone()
+
+            if result:
+                event_ids = json.loads(result[0])
+                if event_id not in event_ids:
+                    event_ids.append(event_id)
+                    cursor.execute(
+                        "UPDATE event_tags SET event_ids = ? WHERE tag_id = ?",
+                        (json.dumps(event_ids), tag_id)
+                    )
+            else:
+                cursor.execute(
+                    "INSERT INTO event_tags (tag_id, event_ids) VALUES (?, ?)",
+                    (tag_id, json.dumps([event_id]))
+                )
+
+            conn.commit()
         
         self.logger.debug(f"Stored {len(tags)} tags for event {event_id}")
     

@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "table_name": "event_live_volume",
+    "total_rows": 0,
+    "sample_size": 0,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "name": "event_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "total_volume",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "market_volumes",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "timestamp",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ],
+    "exported_at": "2025-11-10T23:37:53.518369"
+  },
+  "data": []
+}

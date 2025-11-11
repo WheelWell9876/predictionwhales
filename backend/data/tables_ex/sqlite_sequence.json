@@ -1,0 +1,34 @@
+{
+  "metadata": {
+    "table_name": "sqlite_sequence",
+    "total_rows": 2,
+    "sample_size": 2,
+    "columns": [
+      {
+        "name": "name",
+        "type": "",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "seq",
+        "type": "",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      }
+    ],
+    "exported_at": "2025-11-10T23:37:53.540526"
+  },
+  "data": [
+    {
+      "name": "market_holders",
+      "seq": 2831
+    },
+    {
+      "name": "market_open_interest",
+      "seq": 1
+    }
+  ]
+}

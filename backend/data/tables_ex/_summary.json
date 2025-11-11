@@ -1,0 +1,36 @@
+{
+  "export_timestamp": "2025-11-10T23:37:53.544042",
+  "database_path": "polymarket_terminal.db",
+  "total_tables": 25,
+  "tables_with_data": [
+    "event_tags",
+    "events",
+    "market_holders",
+    "market_open_interest",
+    "markets",
+    "series",
+    "series_events",
+    "sqlite_sequence",
+    "tags",
+    "users"
+  ],
+  "empty_tables": [
+    "collection_tags",
+    "collections",
+    "comment_reactions",
+    "comments",
+    "event_live_volume",
+    "market_tags",
+    "series_collections",
+    "series_tags",
+    "tag_relationships",
+    "transactions",
+    "user_activity",
+    "user_positions_closed",
+    "user_positions_current",
+    "user_trades",
+    "user_values"
+  ],
+  "total_rows_exported": 803,
+  "export_limit_per_table": 100
+}

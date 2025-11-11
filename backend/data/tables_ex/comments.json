@@ -1,0 +1,95 @@
+{
+  "metadata": {
+    "table_name": "comments",
+    "total_rows": 0,
+    "sample_size": 0,
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "name": "event_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "market_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "proxy_wallet",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "username",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "profile_image",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "content",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "parent_comment_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "created_at",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "likes_count",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": "0",
+        "pk": 0
+      },
+      {
+        "name": "replies_count",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": "0",
+        "pk": 0
+      }
+    ],
+    "exported_at": "2025-11-10T23:37:53.518221"
+  },
+  "data": []
+}

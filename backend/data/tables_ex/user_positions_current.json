@@ -1,0 +1,207 @@
+{
+  "metadata": {
+    "table_name": "user_positions_current",
+    "total_rows": 0,
+    "sample_size": 0,
+    "columns": [
+      {
+        "name": "id",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "name": "proxy_wallet",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "asset",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "size",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "avg_price",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "initial_value",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "current_value",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "cash_pnl",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "percent_pnl",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "total_bought",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "realized_pnl",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "percent_realized_pnl",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "cur_price",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "redeemable",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": "0",
+        "pk": 0
+      },
+      {
+        "name": "mergeable",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": "0",
+        "pk": 0
+      },
+      {
+        "name": "negative_risk",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": "0",
+        "pk": 0
+      },
+      {
+        "name": "title",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "slug",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "icon",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "event_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "event_slug",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "outcome",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "outcome_index",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "opposite_outcome",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "opposite_asset",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "end_date",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "updated_at",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "default": "CURRENT_TIMESTAMP",
+        "pk": 0
+      }
+    ],
+    "exported_at": "2025-11-10T23:37:53.542478"
+  },
+  "data": []
+}

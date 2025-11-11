@@ -1,0 +1,25 @@
+{
+  "metadata": {
+    "table_name": "series_tags",
+    "total_rows": 0,
+    "sample_size": 0,
+    "columns": [
+      {
+        "name": "series_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "name": "tag_id",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": null,
+        "pk": 2
+      }
+    ],
+    "exported_at": "2025-11-10T23:37:53.540320"
+  },
+  "data": []
+}

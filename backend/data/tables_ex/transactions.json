@@ -1,0 +1,116 @@
+{
+  "metadata": {
+    "table_name": "transactions",
+    "total_rows": 0,
+    "sample_size": 0,
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 1
+      },
+      {
+        "name": "proxy_wallet",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "username",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "time_created",
+        "type": "TIMESTAMP",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "usdc_size",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "shares_count",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "avg_price",
+        "type": "REAL",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "side",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "type",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "market_id",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "transaction_hash",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "outcome",
+        "type": "TEXT",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "outcome_index",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": null,
+        "pk": 0
+      },
+      {
+        "name": "is_whale",
+        "type": "INTEGER",
+        "nullable": true,
+        "default": "0",
+        "pk": 0
+      }
+    ],
+    "exported_at": "2025-11-10T23:37:53.541962"
+  },
+  "data": []
+}

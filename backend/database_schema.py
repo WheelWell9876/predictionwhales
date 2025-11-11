@@ -468,10 +468,8 @@ def create_complete_schema(db_path='polymarket_terminal.db'):
     # Event-Tags relationship
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS event_tags (
-        event_id TEXT,
-        tag_id INTEGER,
-        PRIMARY KEY (event_id, tag_id),
-        FOREIGN KEY (event_id) REFERENCES events(id),
+        tag_id INTEGER PRIMARY KEY,
+        event_ids TEXT NOT NULL,
         FOREIGN KEY (tag_id) REFERENCES tags(id)
     )""")
 
@@ -488,11 +486,9 @@ def create_complete_schema(db_path='polymarket_terminal.db'):
     # Series-Events relationship
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS series_events (
-        series_id TEXT,
-        event_id TEXT,
-        PRIMARY KEY (series_id, event_id),
-        FOREIGN KEY (series_id) REFERENCES series(id),
-        FOREIGN KEY (event_id) REFERENCES events(id)
+        series_id TEXT PRIMARY KEY,
+        event_ids TEXT NOT NULL,
+        FOREIGN KEY (series_id) REFERENCES series(id)
     )""")
 
     # Series-Collections relationship

@@ -191,8 +191,7 @@ class SeriesManager(DatabaseManager):
         Store events associated with a series
         """
         event_records = []
-        relationships = []
-        
+
         for event in events:
             # Store event data
             event_record = {
@@ -232,33 +231,50 @@ class SeriesManager(DatabaseManager):
                 'fetched_at': datetime.now().isoformat()
             }
             event_records.append(event_record)
-            
-            # Create series-event relationship
-            relationship = {
-                'series_id': series_id,
-                'event_id': event.get('id')
-            }
-            relationships.append(relationship)
-            
+
             # Store event tags if present
             if 'tags' in event:
                 self._store_event_tags(event['id'], event['tags'])
-        
-        # Bulk insert
+
+        # Bulk insert events
         if event_records:
             self.bulk_insert_or_replace('events', event_records)
-        if relationships:
-            self.bulk_insert_or_replace('series_events', relationships)
-        
+
+        # Store series-event relationship
+        conn = self.get_persistent_connection()
+        cursor = conn.cursor()
+
+        event_ids = [event.get('id') for event in events]
+
+        cursor.execute("SELECT event_ids FROM series_events WHERE series_id = ?", (series_id,))
+        result = cursor.fetchone()
+
+        if result:
+            existing_event_ids = json.loads(result[0])
+            for event_id in event_ids:
+                if event_id not in existing_event_ids:
+                    existing_event_ids.append(event_id)
+            cursor.execute(
+                "UPDATE series_events SET event_ids = ? WHERE series_id = ?",
+                (json.dumps(existing_event_ids), series_id)
+            )
+        else:
+            cursor.execute(
+                "INSERT INTO series_events (series_id, event_ids) VALUES (?, ?)",
+                (series_id, json.dumps(event_ids))
+            )
+
+        conn.commit()
+
         self.logger.debug(f"Stored {len(events)} events for series {series_id}")
-    
+
     def _store_series_collections(self, series_id: str, collections: List[Dict]):
         """
         Store collections associated with a series
         """
         collection_records = []
         relationships = []
-        
+
         for collection in collections:
             # Store collection data
             collection_record = {
@@ -292,33 +308,32 @@ class SeriesManager(DatabaseManager):
                 'fetched_at': datetime.now().isoformat()
             }
             collection_records.append(collection_record)
-            
+
             # Create series-collection relationship
             relationship = {
                 'series_id': series_id,
                 'collection_id': collection.get('id')
             }
             relationships.append(relationship)
-            
+
             # Store collection tags if present
             if 'tags' in collection and isinstance(collection['tags'], list):
                 self._store_collection_tags(collection['id'], collection['tags'])
-        
+
         # Bulk insert
         if collection_records:
             self.bulk_insert_or_replace('collections', collection_records)
         if relationships:
             self.bulk_insert_or_replace('series_collections', relationships)
-        
+
         self.logger.debug(f"Stored {len(collections)} collections for series {series_id}")
-    
+
     def _store_event_tags(self, event_id: str, tags: List[Dict]):
         """
         Store tags for an event in a series
         """
         tag_records = []
-        relationships = []
-        
+
         for tag in tags:
             tag_record = {
                 'id': tag.get('id'),
@@ -330,17 +345,35 @@ class SeriesManager(DatabaseManager):
                 'updated_at': tag.get('updatedAt')
             }
             tag_records.append(tag_record)
-            
-            relationship = {
-                'event_id': event_id,
-                'tag_id': tag.get('id')
-            }
-            relationships.append(relationship)
-        
+
         if tag_records:
             self.bulk_insert_or_replace('tags', tag_records)
-        if relationships:
-            self.bulk_insert_or_replace('event_tags', relationships)
+
+        # Store event-tag relationships
+        for tag in tags:
+            tag_id = tag.get('id')
+
+            conn = self.get_persistent_connection()
+            cursor = conn.cursor()
+
+            cursor.execute("SELECT event_ids FROM event_tags WHERE tag_id = ?", (tag_id,))
+            result = cursor.fetchone()
+
+            if result:
+                event_ids = json.loads(result[0])
+                if event_id not in event_ids:
+                    event_ids.append(event_id)
+                    cursor.execute(
+                        "UPDATE event_tags SET event_ids = ? WHERE tag_id = ?",
+                        (json.dumps(event_ids), tag_id)
+                    )
+            else:
+                cursor.execute(
+                    "INSERT INTO event_tags (tag_id, event_ids) VALUES (?, ?)",
+                    (tag_id, json.dumps([event_id]))
+                )
+
+            conn.commit()
     
     def _store_collection_tags(self, collection_id: str, tags: List[Dict]):
         """
