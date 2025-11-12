@@ -115,18 +115,19 @@ class PolymarketDataFetcher:
             self.logger.info(f"✅ Whale users found: {result['total_whales_found']}")
 
             # 6. Fetch complete profiles for ALL whales
-            self.logger.info("\n📊 Phase 6: Fetching Complete Whale Profiles...")
+            self.logger.info("\n🔍 Phase 6: Enriching Complete Whale Profiles...")
             self.logger.info("   For each whale:")
-            self.logger.info("     - Top 10 trades by size")
-            self.logger.info("     - Top 10 activity by size")
+            self.logger.info("     - Trade history")
+            self.logger.info("     - Activity history")
             self.logger.info("     - Wallet value")
-            self.logger.info("     - Top 10 current positions")
-            self.logger.info("     - Top 10 closed positions")
+            self.logger.info("     - Current positions")
+            self.logger.info("     - Closed positions")
             self.logger.info("     - Comments and reactions")
             
-            self.users_manager.fetch_all_whale_profiles()
+            enrich_result = self.users_manager.enrich_all_whale_users()
             
-            self.logger.info(f"✅ Complete whale profiles fetched")
+            self.logger.info(f"✅ Enriched {enrich_result['total_whales_enriched']} whale profiles")
+            self.logger.info(f"   Errors: {enrich_result['errors']}")
 
             # 7. Fetch whale transactions from top markets
             if Config.FETCH_TRANSACTIONS:
@@ -268,11 +269,12 @@ class PolymarketDataFetcher:
                 LIMIT 50
             """)
             
-            for whale in stale_whales:
-                self.users_manager.fetch_whale_user_complete_profile(whale['proxy_wallet'])
-                time.sleep(Config.RATE_LIMIT_DELAY)
-            
-            results['whale_updates'] = len(stale_whales)
+            if stale_whales:
+                wallet_list = [w['proxy_wallet'] for w in stale_whales]
+                update_result = self.users_manager.batch_enrich_whales(wallet_list)
+                results['whale_updates'] = update_result['total_enriched']
+            else:
+                results['whale_updates'] = 0
 
             self.logger.info("\n" + "=" * 60)
             self.logger.info("✅ Daily update complete!")

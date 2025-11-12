@@ -1,6 +1,6 @@
 """
 Users Manager for Polymarket Terminal - WHALE FOCUSED
-Handles fetching high-value users (whales) and their complete activity profiles
+Handles fetching high-value users (whales) and their complete activity profiles with multithreading support
 Focused on users with $1000+ wallets or $250+ positions
 """
 
@@ -9,12 +9,14 @@ import json
 import time
 from datetime import datetime
 from typing import Dict, List, Optional, Set
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 from .database_manager import DatabaseManager
 
 class UsersManager(DatabaseManager):
-    """Manager for whale user operations"""
+    """Manager for whale user operations with multithreading support"""
 
-    def __init__(self):
+    def __init__(self, max_workers: int = None):
         super().__init__()
         from .config import Config
         self.config = Config
@@ -26,16 +28,28 @@ class UsersManager(DatabaseManager):
         self.MIN_WALLET_VALUE = 1000  # $1000 minimum wallet value
         self.MIN_POSITION_VALUE = 250  # $250 minimum position value
         self.TOP_HOLDERS_PER_MARKET = 25  # Top 25 holders per market
+        
+        # Set max workers (defaults to min of 10 or available CPU cores * 2)
+        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
+        
+        # Thread-safe lock for database operations
+        self._db_lock = Lock()
+        
+        # Thread-safe counters and collections
+        self._progress_lock = Lock()
+        self._progress_counter = 0
+        self._error_counter = 0
+        self._whale_wallets = set()
 
     # ==================== PHASE 1: FETCH TOP HOLDERS FROM MARKETS ====================
     
     def fetch_top_holders_for_all_markets(self) -> Dict[str, int]:
         """
-        Fetch top 25 holders for ALL active markets
+        Fetch top 25 holders for ALL active markets using multithreading
         Only store users meeting whale criteria ($1000+ wallet OR $250+ position)
         Returns: {'total_markets_processed': X, 'total_whales_found': Y}
         """
-        self.logger.info("🐋 Fetching top holders for all active markets...")
+        self.logger.info("🐋 Fetching top holders for all active markets with multithreading...")
         
         # Get all active markets
         markets = self.fetch_all("""
@@ -45,45 +59,76 @@ class UsersManager(DatabaseManager):
             ORDER BY volume DESC
         """)
         
-        total_whales = set()
-        markets_processed = 0
+        # Reset counters
+        self._progress_counter = 0
+        self._error_counter = 0
+        self._whale_wallets = set()
         
-        for market in markets:
-            try:
-                whales_in_market = self._fetch_and_filter_market_holders(
-                    market['id'], 
-                    market['condition_id']
-                )
-                total_whales.update(whales_in_market)
-                markets_processed += 1
-                
-                if markets_processed % 10 == 0:
-                    self.logger.info(f"  Processed {markets_processed}/{len(markets)} markets, found {len(total_whales)} unique whales")
-                
-                time.sleep(self.config.RATE_LIMIT_DELAY)
-                
-            except Exception as e:
-                self.logger.error(f"Error processing market {market['id']}: {e}")
-                continue
+        self.logger.info(f"Processing {len(markets)} markets using {self.max_workers} threads...")
         
-        self.logger.info(f"✅ Found {len(total_whales)} whale users across {markets_processed} markets")
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Submit all tasks
+            future_to_market = {
+                executor.submit(self._fetch_and_filter_market_holders_thread_safe, market, len(markets)): market 
+                for market in markets
+            }
+            
+            # Process completed tasks
+            for future in as_completed(future_to_market):
+                market = future_to_market[future]
+                try:
+                    whale_wallets = future.result()
+                    with self._progress_lock:
+                        self._whale_wallets.update(whale_wallets)
+                except Exception as e:
+                    self.logger.error(f"Error processing market {market['id']}: {e}")
+        
+        self.logger.info(f"✅ Found {len(self._whale_wallets)} whale users across {self._progress_counter} markets")
         
         return {
-            'total_markets_processed': markets_processed,
-            'total_whales_found': len(total_whales)
+            'total_markets_processed': self._progress_counter,
+            'total_whales_found': len(self._whale_wallets)
         }
+    
+    def _fetch_and_filter_market_holders_thread_safe(self, market: Dict, total_markets: int) -> Set[str]:
+        """
+        Thread-safe wrapper for fetching and filtering market holders
+        """
+        try:
+            whale_wallets = self._fetch_and_filter_market_holders(market['id'], market['condition_id'])
+            
+            with self._progress_lock:
+                self._progress_counter += 1
+                if self._progress_counter % 10 == 0:
+                    self.logger.info(f"  Processed {self._progress_counter}/{total_markets} markets, found {len(self._whale_wallets)} unique whales")
+            
+            # Rate limiting (distributed across threads)
+            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
+            
+            return whale_wallets
+            
+        except Exception as e:
+            with self._progress_lock:
+                self._error_counter += 1
+            raise e
     
     def _fetch_and_filter_market_holders(self, market_id: str, condition_id: str) -> Set[str]:
         """
-        Fetch top 25 holders for a specific market and filter by whale criteria
+        Fetch top holders for a specific market and filter by whale criteria
         Returns set of wallet addresses that meet whale criteria
         """
         try:
-            # Fetch market holders
-            url = f"{self.clob_url}/markets/{condition_id}/participants"
+            # Fetch market holders using DATA API
+            url = f"{self.data_api_url}/holders"
+            params = {
+                "market": condition_id,
+                "minBalance": 1,  # Get all holders with at least 1 share
+                "limit": 100  # Get more holders to filter for whales
+            }
             
             response = requests.get(
                 url,
+                params=params,
                 headers=self.config.get_api_headers(),
                 timeout=self.config.REQUEST_TIMEOUT
             )
@@ -91,49 +136,56 @@ class UsersManager(DatabaseManager):
             if response.status_code != 200:
                 return set()
             
-            data = response.json()
+            holders_data = response.json()
             
-            if not data or 'data' not in data:
+            if not holders_data:
                 return set()
-            
-            participants = data['data'][:self.TOP_HOLDERS_PER_MARKET]  # Top 25
             
             whale_wallets = set()
             holder_records = []
             
-            for participant in participants:
-                proxy_wallet = participant.get('address')
-                if not proxy_wallet:
-                    continue
+            # Process all token groups (YES/NO outcomes)
+            for token_group in holders_data:
+                token_id = token_group.get('token')
+                holders = token_group.get('holders', [])
+                outcome_index = token_group.get('outcomeIndex', 0)
                 
-                # Check if meets whale criteria
-                is_whale, user_data = self._check_whale_criteria(participant, market_id)
-                
-                if is_whale:
-                    whale_wallets.add(proxy_wallet)
+                # Process each holder
+                for holder in holders[:self.TOP_HOLDERS_PER_MARKET]:  # Top 25 per outcome
+                    proxy_wallet = holder.get('proxyWallet')
+                    if not proxy_wallet:
+                        continue
                     
-                    # Store user data
-                    if user_data:
-                        self.insert_or_replace('users', user_data)
+                    # Check if meets whale criteria
+                    is_whale, user_data = self._check_whale_criteria_from_holder(holder, market_id)
                     
-                    # Store holder record
-                    holder_record = {
-                        'market_id': market_id,
-                        'token_id': participant.get('tokenID'),
-                        'proxy_wallet': proxy_wallet,
-                        'username': participant.get('username'),
-                        'pseudonym': participant.get('pseudonym'),
-                        'amount': participant.get('shares', 0),
-                        'outcome_index': participant.get('outcomeIndex'),
-                        'bio': participant.get('bio'),
-                        'profile_image': participant.get('profileImage'),
-                        'updated_at': datetime.now().isoformat()
-                    }
-                    holder_records.append(holder_record)
+                    if is_whale:
+                        whale_wallets.add(proxy_wallet)
+                        
+                        # Store user data (thread-safe)
+                        if user_data:
+                            with self._db_lock:
+                                self.insert_or_replace('users', user_data)
+                        
+                        # Store holder record
+                        holder_record = {
+                            'market_id': market_id,
+                            'token_id': token_id,
+                            'proxy_wallet': proxy_wallet,
+                            'username': holder.get('name'),
+                            'pseudonym': holder.get('pseudonym'),
+                            'amount': holder.get('amount', 0),
+                            'outcome_index': outcome_index,
+                            'bio': holder.get('bio'),
+                            'profile_image': holder.get('profileImage'),
+                            'updated_at': datetime.now().isoformat()
+                        }
+                        holder_records.append(holder_record)
             
-            # Bulk insert holders
+            # Bulk insert holders (thread-safe)
             if holder_records:
-                self.bulk_insert_or_replace('market_holders', holder_records)
+                with self._db_lock:
+                    self.bulk_insert_or_replace('market_holders', holder_records)
             
             return whale_wallets
             
@@ -141,23 +193,33 @@ class UsersManager(DatabaseManager):
             self.logger.error(f"Error fetching holders for market {market_id}: {e}")
             return set()
     
-    def _check_whale_criteria(self, participant: Dict, market_id: str) -> tuple[bool, Optional[Dict]]:
+    def _check_whale_criteria_from_holder(self, holder: Dict, market_id: str) -> tuple[bool, Optional[Dict]]:
         """
-        Check if participant meets whale criteria:
+        Check if holder meets whale criteria:
         - $1000+ wallet value OR
         - $250+ position value
         
         Returns: (is_whale: bool, user_data: Dict or None)
         """
-        proxy_wallet = participant.get('address')
+        proxy_wallet = holder.get('proxyWallet')
         
         # First check: Get wallet value
         wallet_value = self._fetch_user_wallet_value(proxy_wallet)
         
         # Second check: Check position value
-        position_value = participant.get('shares', 0) * participant.get('price', 0)
+        # Get current market price for this outcome
+        position_shares = holder.get('amount', 0)
         
-        is_whale = wallet_value >= self.MIN_WALLET_VALUE or position_value >= self.MIN_POSITION_VALUE
+        # Estimate position value (shares typically trade between $0.01 and $0.99)
+        # A conservative estimate: if they have >250 shares, position likely >$250
+        estimated_position_value = position_shares * 0.5  # Conservative $0.50 per share estimate
+        
+        # Check whale criteria
+        is_whale = (
+            wallet_value >= self.MIN_WALLET_VALUE or 
+            estimated_position_value >= self.MIN_POSITION_VALUE or
+            (wallet_value >= 500 and position_shares >= 100)  # Medium wallet + significant position
+        )
         
         if not is_whale:
             return False, None
@@ -165,11 +227,11 @@ class UsersManager(DatabaseManager):
         # Prepare user record
         user_data = {
             'proxy_wallet': proxy_wallet,
-            'username': participant.get('username'),
-            'pseudonym': participant.get('pseudonym'),
-            'bio': participant.get('bio'),
-            'profile_image': participant.get('profileImage'),
-            'profile_image_optimized': participant.get('profileImageOptimized'),
+            'username': holder.get('name'),
+            'pseudonym': holder.get('pseudonym'),
+            'bio': holder.get('bio'),
+            'profile_image': holder.get('profileImage'),
+            'profile_image_optimized': holder.get('profileImageOptimized'),
             'total_value': wallet_value,
             'is_whale': 1,
             'last_updated': datetime.now().isoformat(),
@@ -201,150 +263,95 @@ class UsersManager(DatabaseManager):
             
         except Exception as e:
             return 0
+
+    # ==================== PHASE 2: ENRICH WHALE USER DATA ====================
     
-    # ==================== PHASE 2: FETCH WHALE USER DETAILS ====================
-    
-    def fetch_whale_user_complete_profile(self, proxy_wallet: str) -> Dict:
+    def enrich_all_whale_users(self) -> Dict[str, int]:
         """
-        Fetch COMPLETE profile for a whale user:
-        - Top 10 trades by size
-        - Top 10 user activity by size
-        - Wallet value
-        - Top 10 largest positions
-        - Top 10 closed positions
-        - Top 10 current positions
-        - Comments and reactions
-        
-        Returns summary dict
+        Enrich all whale users with complete profile data using multithreading
+        Returns statistics about enrichment process
         """
-        self.logger.info(f"Fetching complete profile for whale: {proxy_wallet[:10]}...")
+        self.logger.info("🔍 Enriching whale user profiles with multithreading...")
         
-        summary = {
-            'wallet': proxy_wallet,
-            'trades_fetched': 0,
-            'activity_fetched': 0,
-            'current_positions': 0,
-            'closed_positions': 0,
-            'wallet_value': 0,
-            'comments_fetched': 0,
-            'reactions_fetched': 0
-        }
-        
-        try:
-            # 1. Wallet value
-            summary['wallet_value'] = self.fetch_user_portfolio_value(proxy_wallet)
-            
-            # 2. Top 10 trades by size
-            trades = self.fetch_user_top_trades(proxy_wallet, limit=10)
-            summary['trades_fetched'] = len(trades)
-            
-            # 3. Top 10 activity by size
-            activity = self.fetch_user_top_activity(proxy_wallet, limit=10)
-            summary['activity_fetched'] = len(activity)
-            
-            # 4. Top 10 current positions
-            current_pos = self.fetch_user_top_current_positions(proxy_wallet, limit=10)
-            summary['current_positions'] = len(current_pos)
-            
-            # 5. Top 10 closed positions
-            closed_pos = self.fetch_user_top_closed_positions(proxy_wallet, limit=10)
-            summary['closed_positions'] = len(closed_pos)
-            
-            # 6. Comments and reactions
-            comments, reactions = self.fetch_user_comments_and_reactions(proxy_wallet)
-            summary['comments_fetched'] = len(comments)
-            summary['reactions_fetched'] = len(reactions)
-            
-            # Update user record with latest data
-            self.update_record(
-                'users',
-                {
-                    'total_value': summary['wallet_value'],
-                    'last_updated': datetime.now().isoformat()
-                },
-                'proxy_wallet = ?',
-                (proxy_wallet,)
-            )
-            
-            return summary
-            
-        except Exception as e:
-            self.logger.error(f"Error fetching profile for {proxy_wallet}: {e}")
-            return summary
-    
-    def fetch_all_whale_profiles(self):
-        """
-        Fetch complete profiles for ALL whales in database
-        """
-        self.logger.info("🐋 Fetching complete profiles for all whales...")
-        
-        # Get all whale wallets
+        # Get all whale users
         whales = self.fetch_all("SELECT proxy_wallet FROM users WHERE is_whale = 1")
+        whale_wallets = [w['proxy_wallet'] for w in whales]
         
-        total_whales = len(whales)
-        processed = 0
+        self.logger.info(f"Enriching {len(whale_wallets)} whale users using {self.max_workers} threads...")
         
-        for whale in whales:
-            try:
-                self.fetch_whale_user_complete_profile(whale['proxy_wallet'])
-                processed += 1
-                
-                if processed % 10 == 0:
-                    self.logger.info(f"  Processed {processed}/{total_whales} whale profiles")
-                
-                time.sleep(self.config.RATE_LIMIT_DELAY)
-                
-            except Exception as e:
-                self.logger.error(f"Error processing whale {whale['proxy_wallet']}: {e}")
-                continue
+        # Reset counters
+        self._progress_counter = 0
+        self._error_counter = 0
         
-        self.logger.info(f"✅ Processed {processed} whale profiles")
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Submit all tasks
+            future_to_wallet = {
+                executor.submit(self._enrich_single_whale_thread_safe, wallet, len(whale_wallets)): wallet 
+                for wallet in whale_wallets
+            }
+            
+            # Process completed tasks
+            for future in as_completed(future_to_wallet):
+                wallet = future_to_wallet[future]
+                try:
+                    future.result()
+                except Exception as e:
+                    self.logger.error(f"Error enriching whale {wallet}: {e}")
+        
+        self.logger.info(f"✅ Enriched {self._progress_counter} whale users, Errors: {self._error_counter}")
+        
+        return {
+            'total_whales_enriched': self._progress_counter,
+            'errors': self._error_counter
+        }
     
-    # ==================== USER DATA FETCHING METHODS ====================
-    
-    def fetch_user_portfolio_value(self, proxy_wallet: str) -> float:
-        """Fetch user's portfolio value and store in user_values table"""
+    def _enrich_single_whale_thread_safe(self, proxy_wallet: str, total_whales: int):
+        """
+        Thread-safe wrapper for enriching a single whale user
+        """
         try:
-            url = f"{self.data_api_url}/portfolio-value"
-            params = {"user": proxy_wallet}
+            self._enrich_whale_user_data(proxy_wallet)
             
-            response = requests.get(
-                url,
-                params=params,
-                headers=self.config.get_api_headers(),
-                timeout=self.config.REQUEST_TIMEOUT
-            )
+            with self._progress_lock:
+                self._progress_counter += 1
+                if self._progress_counter % 10 == 0:
+                    self.logger.info(f"  Enriched {self._progress_counter}/{total_whales} whale users")
             
-            if response.status_code == 200:
-                data = response.json()
-                total_value = data.get('totalValue', 0) if data else 0
-                
-                # Store value record
-                value_record = {
-                    'proxy_wallet': proxy_wallet,
-                    'market_condition_id': None,  # NULL for total portfolio
-                    'value': total_value,
-                    'timestamp': datetime.now().isoformat()
-                }
-                self.insert_or_replace('user_values', value_record)
-                
-                return total_value
-            
-            return 0
+            # Rate limiting (distributed across threads)
+            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
             
         except Exception as e:
-            self.logger.error(f"Error fetching portfolio value for {proxy_wallet}: {e}")
-            return 0
+            with self._progress_lock:
+                self._error_counter += 1
+            raise e
     
-    def fetch_user_top_trades(self, proxy_wallet: str, limit: int = 10) -> List[Dict]:
-        """Fetch top trades by size"""
+    def _enrich_whale_user_data(self, proxy_wallet: str):
+        """
+        Fetch and store complete data for a whale user
+        """
+        # Use ThreadPoolExecutor for parallel sub-requests
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures = []
+            
+            # Fetch all user data in parallel
+            futures.append(executor.submit(self._fetch_user_trades, proxy_wallet))
+            futures.append(executor.submit(self._fetch_user_activity, proxy_wallet))
+            futures.append(executor.submit(self._fetch_user_current_positions, proxy_wallet))
+            futures.append(executor.submit(self._fetch_user_closed_positions, proxy_wallet))
+            futures.append(executor.submit(self._fetch_user_comments, proxy_wallet))
+            
+            # Wait for all to complete
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception as e:
+                    self.logger.error(f"Error in user enrichment subtask: {e}")
+    
+    def _fetch_user_trades(self, proxy_wallet: str) -> List[Dict]:
+        """Fetch user trade history"""
         try:
             url = f"{self.data_api_url}/trades"
-            params = {
-                "user": proxy_wallet,
-                "limit": 100,  # Fetch more, then sort
-                "takerOnly": "false"
-            }
+            params = {"user": proxy_wallet, "limit": 100}
             
             response = requests.get(
                 url,
@@ -354,30 +361,22 @@ class UsersManager(DatabaseManager):
             )
             
             if response.status_code == 200:
-                trades = response.json()
-                
+                trades = response.json() or []
                 if trades:
-                    # Sort by size and take top N
-                    sorted_trades = sorted(trades, key=lambda x: float(x.get('size', 0)), reverse=True)[:limit]
-                    self._store_user_trades(proxy_wallet, sorted_trades)
-                    return sorted_trades
+                    with self._db_lock:
+                        self._store_user_trades(proxy_wallet, trades)
+                return trades
             
             return []
             
         except Exception as e:
-            self.logger.error(f"Error fetching trades for {proxy_wallet}: {e}")
             return []
     
-    def fetch_user_top_activity(self, proxy_wallet: str, limit: int = 10) -> List[Dict]:
-        """Fetch top activity by size"""
+    def _fetch_user_activity(self, proxy_wallet: str) -> List[Dict]:
+        """Fetch user activity history"""
         try:
             url = f"{self.data_api_url}/activity"
-            params = {
-                "user": proxy_wallet,
-                "limit": 100,
-                "sortBy": "TIMESTAMP",
-                "sortDirection": "DESC"
-            }
+            params = {"user": proxy_wallet, "limit": 100}
             
             response = requests.get(
                 url,
@@ -387,31 +386,22 @@ class UsersManager(DatabaseManager):
             )
             
             if response.status_code == 200:
-                activity = response.json()
-                
+                activity = response.json() or []
                 if activity:
-                    # Sort by USDC size and take top N
-                    sorted_activity = sorted(activity, key=lambda x: float(x.get('usdcSize', 0)), reverse=True)[:limit]
-                    self._store_user_activity(proxy_wallet, sorted_activity)
-                    return sorted_activity
+                    with self._db_lock:
+                        self._store_user_activity(proxy_wallet, activity)
+                return activity
             
             return []
             
         except Exception as e:
-            self.logger.error(f"Error fetching activity for {proxy_wallet}: {e}")
             return []
     
-    def fetch_user_top_current_positions(self, proxy_wallet: str, limit: int = 10) -> List[Dict]:
-        """Fetch top 10 current positions by value"""
+    def _fetch_user_current_positions(self, proxy_wallet: str) -> List[Dict]:
+        """Fetch user's current positions"""
         try:
             url = f"{self.data_api_url}/positions"
-            params = {
-                "user": proxy_wallet,
-                "sizeThreshold": "1",
-                "limit": 100,
-                "sortBy": "VALUE",  # Sort by value
-                "sortDirection": "DESC"
-            }
+            params = {"user": proxy_wallet, "status": "ACTIVE"}
             
             response = requests.get(
                 url,
@@ -421,27 +411,22 @@ class UsersManager(DatabaseManager):
             )
             
             if response.status_code == 200:
-                positions = response.json()
-                
+                positions = response.json() or []
                 if positions:
-                    top_positions = positions[:limit]
-                    self._store_user_current_positions(proxy_wallet, top_positions)
-                    return top_positions
+                    with self._db_lock:
+                        self._store_user_current_positions(proxy_wallet, positions)
+                return positions
             
             return []
             
         except Exception as e:
-            self.logger.error(f"Error fetching current positions for {proxy_wallet}: {e}")
             return []
     
-    def fetch_user_top_closed_positions(self, proxy_wallet: str, limit: int = 10) -> List[Dict]:
-        """Fetch top 10 closed positions"""
+    def _fetch_user_closed_positions(self, proxy_wallet: str) -> List[Dict]:
+        """Fetch user's closed positions"""
         try:
-            url = f"{self.data_api_url}/closed-positions"
-            params = {
-                "user": proxy_wallet,
-                "limit": limit
-            }
+            url = f"{self.data_api_url}/positions"
+            params = {"user": proxy_wallet, "status": "CLOSED", "limit": 100}
             
             response = requests.get(
                 url,
@@ -451,33 +436,22 @@ class UsersManager(DatabaseManager):
             )
             
             if response.status_code == 200:
-                positions = response.json()
-                
+                positions = response.json() or []
                 if positions:
-                    self._store_user_closed_positions(proxy_wallet, positions)
-                    return positions
+                    with self._db_lock:
+                        self._store_user_closed_positions(proxy_wallet, positions)
+                return positions
             
             return []
             
         except Exception as e:
-            self.logger.error(f"Error fetching closed positions for {proxy_wallet}: {e}")
             return []
     
-    def fetch_user_comments_and_reactions(self, proxy_wallet: str) -> tuple[List[Dict], List[Dict]]:
-        """
-        Fetch all comments and reactions for a user
-        Returns: (comments, reactions)
-        """
-        comments = []
-        reactions = []
-        
+    def _fetch_user_comments(self, proxy_wallet: str) -> List[Dict]:
+        """Fetch user's comments"""
         try:
-            # Fetch user's comments
             url = f"{self.base_url}/comments"
-            params = {
-                "user": proxy_wallet,
-                "limit": 100
-            }
+            params = {"userAddress": proxy_wallet, "limit": 100}
             
             response = requests.get(
                 url,
@@ -489,20 +463,36 @@ class UsersManager(DatabaseManager):
             if response.status_code == 200:
                 comments = response.json() or []
                 
-                # Store comments
                 if comments:
-                    self._store_user_comments(comments)
+                    with self._db_lock:
+                        self._store_user_comments(comments)
                     
-                    # For each comment, fetch its reactions
-                    for comment in comments:
-                        comment_reactions = self._fetch_comment_reactions(comment['id'])
-                        reactions.extend(comment_reactions)
+                    # Fetch reactions for each comment (in parallel within this method)
+                    self._fetch_comments_reactions_parallel(comments)
+                
+                return comments
             
-            return comments, reactions
+            return []
             
         except Exception as e:
-            self.logger.error(f"Error fetching comments for {proxy_wallet}: {e}")
-            return comments, reactions
+            return []
+    
+    def _fetch_comments_reactions_parallel(self, comments: List[Dict]):
+        """Fetch reactions for multiple comments in parallel"""
+        if not comments:
+            return
+        
+        with ThreadPoolExecutor(max_workers=5) as executor:
+            futures = {
+                executor.submit(self._fetch_comment_reactions, comment.get('id')): comment 
+                for comment in comments if comment.get('id')
+            }
+            
+            for future in as_completed(futures):
+                try:
+                    future.result()
+                except Exception as e:
+                    self.logger.error(f"Error fetching comment reactions: {e}")
     
     def _fetch_comment_reactions(self, comment_id: str) -> List[Dict]:
         """Fetch reactions for a specific comment"""
@@ -519,7 +509,8 @@ class UsersManager(DatabaseManager):
                 reactions = response.json() or []
                 
                 if reactions:
-                    self._store_comment_reactions(comment_id, reactions)
+                    with self._db_lock:
+                        self._store_comment_reactions(comment_id, reactions)
                 
                 return reactions
             
@@ -531,7 +522,7 @@ class UsersManager(DatabaseManager):
     # ==================== STORAGE METHODS ====================
     
     def _store_user_trades(self, proxy_wallet: str, trades: List[Dict]):
-        """Store user trades"""
+        """Store user trades (thread-safe when called with _db_lock)"""
         trade_records = []
         
         for trade in trades:
@@ -562,7 +553,7 @@ class UsersManager(DatabaseManager):
             self.bulk_insert_or_replace('user_trades', trade_records)
     
     def _store_user_activity(self, proxy_wallet: str, activity: List[Dict]):
-        """Store user activity"""
+        """Store user activity (thread-safe when called with _db_lock)"""
         activity_records = []
         
         for act in activity:
@@ -593,7 +584,7 @@ class UsersManager(DatabaseManager):
             self.bulk_insert_or_replace('user_activity', activity_records)
     
     def _store_user_current_positions(self, proxy_wallet: str, positions: List[Dict]):
-        """Store user current positions"""
+        """Store user current positions (thread-safe when called with _db_lock)"""
         position_records = []
         
         for pos in positions:
@@ -632,7 +623,7 @@ class UsersManager(DatabaseManager):
             self.bulk_insert_or_replace('user_positions_current', position_records)
     
     def _store_user_closed_positions(self, proxy_wallet: str, positions: List[Dict]):
-        """Store user closed positions"""
+        """Store user closed positions (thread-safe when called with _db_lock)"""
         position_records = []
         
         for pos in positions:
@@ -661,7 +652,7 @@ class UsersManager(DatabaseManager):
             self.bulk_insert_or_replace('user_positions_closed', position_records)
     
     def _store_user_comments(self, comments: List[Dict]):
-        """Store user comments"""
+        """Store user comments (thread-safe when called with _db_lock)"""
         comment_records = []
         
         for comment in comments:
@@ -685,7 +676,7 @@ class UsersManager(DatabaseManager):
             self.bulk_insert_or_replace('comments', comment_records)
     
     def _store_comment_reactions(self, comment_id: str, reactions: List[Dict]):
-        """Store comment reactions"""
+        """Store comment reactions (thread-safe when called with _db_lock)"""
         reaction_records = []
         
         for reaction in reactions:
@@ -699,6 +690,42 @@ class UsersManager(DatabaseManager):
         
         if reaction_records:
             self.bulk_insert_or_replace('comment_reactions', reaction_records)
+    
+    # ==================== BATCH OPERATIONS ====================
+    
+    def batch_enrich_whales(self, wallet_addresses: List[str]) -> Dict[str, int]:
+        """
+        Enrich multiple whale users in parallel
+        
+        Args:
+            wallet_addresses: List of wallet addresses to enrich
+            
+        Returns:
+            Dictionary with enrichment statistics
+        """
+        self.logger.info(f"Batch enriching {len(wallet_addresses)} whale users...")
+        
+        # Reset counters
+        self._progress_counter = 0
+        self._error_counter = 0
+        
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            future_to_wallet = {
+                executor.submit(self._enrich_single_whale_thread_safe, wallet, len(wallet_addresses)): wallet 
+                for wallet in wallet_addresses
+            }
+            
+            for future in as_completed(future_to_wallet):
+                wallet = future_to_wallet[future]
+                try:
+                    future.result()
+                except Exception as e:
+                    self.logger.error(f"Error enriching whale {wallet}: {e}")
+        
+        return {
+            'total_enriched': self._progress_counter,
+            'errors': self._error_counter
+        }
     
     # ==================== LEGACY/COMPATIBILITY METHODS ====================
     

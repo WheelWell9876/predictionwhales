@@ -1,23 +1,36 @@
 """
 Transactions Manager for Polymarket Terminal
-Handles fetching, processing, and storing transaction data from CLOB API
+Handles fetching, processing, and storing transaction data from CLOB API with multithreading support
 """
 
 import requests
 import time
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 from .database_manager import DatabaseManager
 
 class TransactionsManager(DatabaseManager):
-    """Manager for transaction-related operations"""
+    """Manager for transaction-related operations with multithreading support"""
 
-    def __init__(self):
+    def __init__(self, max_workers: int = None):
         super().__init__()
         from .config import Config
         self.config = Config
         self.clob_api_url = Config.CLOB_API_URL if Config.CLOB_API_URL else "https://clob.polymarket.com"
         self.data_api_url = Config.DATA_API_URL if Config.DATA_API_URL else "https://data-api.polymarket.com"
+        
+        # Set max workers (defaults to min of 10 or available CPU cores * 2)
+        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
+        
+        # Thread-safe lock for database operations
+        self._db_lock = Lock()
+        
+        # Thread-safe counters
+        self._progress_lock = Lock()
+        self._progress_counter = 0
+        self._error_counter = 0
 
     def fetch_recent_transactions(self, market_id: str = None, limit: int = 100) -> List[Dict]:
         """
@@ -216,25 +229,26 @@ class TransactionsManager(DatabaseManager):
             return []
 
     def _store_transactions(self, transactions: List[Dict]):
-        """Store transactions in database (only whale transactions)"""
+        """
+        Store transactions in database (only whale transactions)
+        Thread-safe when called with _db_lock
+        """
         transaction_records = []
 
         for tx in transactions:
             # Calculate USDC size if not provided
-            usdc_size = tx.get('usdcSize') or (tx.get('size', 0) * tx.get('price', 0))
-
-            # Only store transactions above minimum threshold
+            usdc_size = tx.get('usdcSize', 0) or (tx.get('size', 0) * tx.get('price', 0))
+            
+            # Only store transactions meeting minimum size
             if usdc_size < self.config.MIN_TRANSACTION_SIZE:
                 continue
 
             record = {
-                'id': tx.get('id') or tx.get('transactionHash'),
+                'id': tx.get('id'),
                 'proxy_wallet': tx.get('proxyWallet') or tx.get('user'),
-                'username': tx.get('name') or tx.get('username'),
-                'condition_id': tx.get('conditionId'),
-                'time_created': tx.get('timestamp') or tx.get('createdAt'),
+                'time_created': tx.get('timestamp'),
+                'size': tx.get('size'),
                 'usdc_size': usdc_size,
-                'shares_count': tx.get('size'),
                 'avg_price': tx.get('price'),
                 'side': tx.get('side'),
                 'type': tx.get('type') or 'TRADE',
@@ -259,7 +273,10 @@ class TransactionsManager(DatabaseManager):
         self.logger.debug(f"Filtered {len(transactions) - len(transaction_records)} small transactions")
 
     def _update_user_from_transaction(self, tx: Dict):
-        """Update user information from transaction data"""
+        """
+        Update user information from transaction data
+        Thread-safe when called with _db_lock
+        """
         proxy_wallet = tx.get('proxyWallet') or tx.get('user')
         if not proxy_wallet:
             return
@@ -397,7 +414,7 @@ class TransactionsManager(DatabaseManager):
 
     def process_all_active_markets_transactions(self):
         """
-        Process transactions for all active markets
+        Process transactions for all active markets with multithreading
         """
         # Get active markets
         markets = self.fetch_all("""
@@ -408,43 +425,125 @@ class TransactionsManager(DatabaseManager):
             LIMIT 100
         """)
 
-        self.logger.info(f"Processing transactions for {len(markets)} active markets...")
+        self.logger.info(f"Processing transactions for {len(markets)} active markets using {self.max_workers} threads...")
 
-        processed = 0
-        errors = 0
+        # Reset counters
+        self._progress_counter = 0
+        self._error_counter = 0
 
-        for market in markets:
-            try:
-                self.fetch_market_transactions(
-                    market['id'],
-                    market['condition_id']
-                )
-                processed += 1
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            # Submit all tasks
+            future_to_market = {
+                executor.submit(self._process_market_transactions_thread_safe, market, len(markets)): market 
+                for market in markets
+            }
+            
+            # Process completed tasks
+            for future in as_completed(future_to_market):
+                market = future_to_market[future]
+                try:
+                    future.result()
+                except Exception as e:
+                    self.logger.error(f"Error processing market {market['id']}: {e}")
 
-                if processed % 10 == 0:
-                    self.logger.info(f"Processed {processed}/{len(markets)} markets")
+        self.logger.info(f"Market transaction processing complete. Processed: {self._progress_counter}, Errors: {self._error_counter}")
 
-                # Rate limiting
-                time.sleep(self.config.RATE_LIMIT_DELAY)
+    def _process_market_transactions_thread_safe(self, market: Dict, total_markets: int):
+        """
+        Thread-safe wrapper for processing market transactions
+        """
+        try:
+            self.fetch_market_transactions(market['id'], market['condition_id'])
+            
+            with self._progress_lock:
+                self._progress_counter += 1
+                if self._progress_counter % 10 == 0:
+                    self.logger.info(f"Processed {self._progress_counter}/{total_markets} markets")
+            
+            # Rate limiting (distributed across threads)
+            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
+            
+        except Exception as e:
+            with self._progress_lock:
+                self._error_counter += 1
+            raise e
 
-            except Exception as e:
-                self.logger.error(f"Error processing market {market['id']}: {e}")
-                errors += 1
+    def batch_fetch_user_transactions(self, wallet_addresses: List[str], limit: int = 100) -> Dict[str, List[Dict]]:
+        """
+        Fetch transactions for multiple users in parallel
+        
+        Args:
+            wallet_addresses: List of wallet addresses
+            limit: Number of transactions per user
+            
+        Returns:
+            Dictionary mapping wallet address to list of transactions
+        """
+        self.logger.info(f"Batch fetching transactions for {len(wallet_addresses)} users using {self.max_workers} threads...")
+        
+        results = {}
+        
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            future_to_wallet = {
+                executor.submit(self.fetch_user_transactions, wallet, limit): wallet 
+                for wallet in wallet_addresses
+            }
+            
+            for future in as_completed(future_to_wallet):
+                wallet = future_to_wallet[future]
+                try:
+                    transactions = future.result()
+                    results[wallet] = transactions
+                except Exception as e:
+                    self.logger.error(f"Error fetching transactions for {wallet}: {e}")
+                    results[wallet] = []
+        
+        return results
 
-        self.logger.info(f"Market transaction processing complete. Processed: {processed}, Errors: {errors}")
+    def batch_fetch_market_transactions(self, market_ids: List[tuple], limit: int = 100) -> Dict[str, List[Dict]]:
+        """
+        Fetch transactions for multiple markets in parallel
+        
+        Args:
+            market_ids: List of tuples (market_id, condition_id)
+            limit: Number of transactions per market
+            
+        Returns:
+            Dictionary mapping market_id to list of transactions
+        """
+        self.logger.info(f"Batch fetching transactions for {len(market_ids)} markets using {self.max_workers} threads...")
+        
+        results = {}
+        
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            future_to_market = {
+                executor.submit(self.fetch_market_transactions, market_id, condition_id, limit): market_id 
+                for market_id, condition_id in market_ids
+            }
+            
+            for future in as_completed(future_to_market):
+                market_id = future_to_market[future]
+                try:
+                    transactions = future.result()
+                    results[market_id] = transactions
+                except Exception as e:
+                    self.logger.error(f"Error fetching transactions for {market_id}: {e}")
+                    results[market_id] = []
+        
+        return results
 
     def daily_scan(self):
         """
-        Perform daily scan for transaction updates
+        Perform daily scan for transaction updates with multithreading
         """
-        self.logger.info("Starting daily transaction scan...")
+        self.logger.info("Starting daily transaction scan with multithreading...")
 
         # Fetch recent whale transactions
         self.logger.info("Fetching whale transactions...")
         whale_txs = self.fetch_whale_transactions(min_size=10000, limit=500)
         self.logger.info(f"Found {len(whale_txs)} whale transactions")
 
-        # Process transactions for active markets
+        # Process transactions for active markets (parallelized)
         self.process_all_active_markets_transactions()
 
         # Analyze overall flow

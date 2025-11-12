@@ -1,6 +1,6 @@
 """
-Events Manager for Polymarket Terminal
-Handles fetching, processing, and storing event data
+Events Manager for Polymarket Terminal - MULTITHREADED
+Handles fetching, processing, and storing event data with concurrent requests
 """
 
 import requests
@@ -8,11 +8,13 @@ import json
 import time
 from datetime import datetime
 from typing import Dict, List, Optional
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from threading import Lock
 from .database_manager import DatabaseManager
 from .config import Config
 
 class EventsManager(DatabaseManager):
-    """Manager for event-related operations"""
+    """Manager for event-related operations with multithreading support"""
     
     def __init__(self):
         super().__init__()
@@ -20,66 +22,123 @@ class EventsManager(DatabaseManager):
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
         self.data_api_url = Config.DATA_API_URL
+        self._lock = Lock()  # Thread-safe database operations
         
-    def fetch_all_events(self, closed: bool = False, limit: int = 100) -> List[Dict]:
+    def fetch_all_events(self, closed: bool = False, limit: int = 100, num_threads: int = 5) -> List[Dict]:
         """
-        Fetch all events from the API
-        Used for initial data load and daily scans
+        Fetch all events from the API with multithreading
         ONLY fetches active events (closed=false)
+        
+        Args:
+            closed: Ignored, always fetches active events
+            limit: Events per request
+            num_threads: Number of concurrent threads (default: 5)
         """
-        all_events = []
-        offset = 0
+        self.logger.info(f"Starting MULTITHREADED fetch of active events ({num_threads} threads)...")
         
-        self.logger.info(f"Starting to fetch all active events...")
+        # First, get total count to calculate offsets
+        first_batch = self._fetch_events_batch(0, limit)
+        if not first_batch:
+            self.logger.warning("No events returned from API")
+            return []
         
-        while True:
-            try:
-                # Prepare request parameters - ONLY fetch non-closed (active) events
-                params = {
-                    "closed": "false",  # ALWAYS false - only get active events
-                    "limit": limit,
-                    "offset": offset,
-                    "order": "volume",
-                    "ascending": "false"
-                }
-                
-                # Make API request
-                response = requests.get(
-                    f"{self.base_url}/events",
-                    params=params,
-                    headers=self.config.get_api_headers(),
-                    timeout=self.config.REQUEST_TIMEOUT
-                )
-                response.raise_for_status()
-                
-                events = response.json()
-                
-                if not events:
-                    break
-                
-                all_events.extend(events)
-                self.logger.info(f"Fetched {len(events)} events (offset: {offset}, total: {len(all_events)})")
-                
-                # Store events in database
-                self._store_events(events)
-                
-                offset += limit
-                
-                # Rate limiting
-                time.sleep(self.config.RATE_LIMIT_DELAY)
-                
-                if len(events) < limit:
-                    break
+        # Store first batch
+        self._store_events(first_batch)
+        all_events = first_batch.copy()
+        
+        # If we got fewer than limit, we're done
+        if len(first_batch) < limit:
+            self.logger.info(f"Total active events fetched: {len(all_events)}")
+            return all_events
+        
+        # Calculate how many more batches we need
+        # We'll fetch until we get a batch with < limit events
+        self.logger.info(f"First batch: {len(first_batch)} events. Fetching remaining batches...")
+        
+        # Generate offset list (start from next batch)
+        offsets = []
+        offset = limit
+        # Estimate max offsets (we'll break when we get empty results)
+        max_estimated_events = 10000  # Adjust based on your needs
+        while offset < max_estimated_events:
+            offsets.append(offset)
+            offset += limit
+        
+        # Fetch batches concurrently
+        completed_offsets = []
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            # Submit all tasks
+            future_to_offset = {
+                executor.submit(self._fetch_events_batch, offset, limit): offset 
+                for offset in offsets
+            }
+            
+            # Process completed tasks
+            for future in as_completed(future_to_offset):
+                offset = future_to_offset[future]
+                try:
+                    events = future.result()
                     
-            except requests.exceptions.RequestException as e:
-                self.logger.error(f"Error fetching events at offset {offset}: {e}")
-                break
-            except Exception as e:
-                self.logger.error(f"Unexpected error: {e}")
-                break
+                    if events:
+                        # Thread-safe storage
+                        with self._lock:
+                            self._store_events(events)
+                            all_events.extend(events)
+                            completed_offsets.append(offset)
+                        
+                        if len(completed_offsets) % 10 == 0:
+                            self.logger.info(f"Fetched {len(completed_offsets)} batches, total: {len(all_events)} events")
+                        
+                        # If we got fewer than limit, we've reached the end
+                        if len(events) < limit:
+                            self.logger.info(f"Reached end of events at offset {offset}")
+                            # Cancel remaining futures
+                            for f in future_to_offset.keys():
+                                if not f.done():
+                                    f.cancel()
+                            break
+                    else:
+                        # Empty result, we've passed the end
+                        self.logger.info(f"Empty batch at offset {offset}, stopping")
+                        break
+                        
+                except Exception as e:
+                    self.logger.error(f"Error fetching batch at offset {offset}: {e}")
+                    continue
         
-        self.logger.info(f"Total active events fetched: {len(all_events)}")
+        self.logger.info(f"✅ Total active events fetched: {len(all_events)} (using {num_threads} threads)")
         return all_events
+    
+    def _fetch_events_batch(self, offset: int, limit: int) -> List[Dict]:
+        """
+        Fetch a single batch of events (thread-safe)
+        """
+        try:
+            params = {
+                "closed": "false",  # ALWAYS false - only get active events
+                "limit": limit,
+                "offset": offset,
+                "order": "volume",
+                "ascending": "false"
+            }
+            
+            response = requests.get(
+                f"{self.base_url}/events",
+                params=params,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+            
+            events = response.json()
+            return events if events else []
+            
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Error fetching events at offset {offset}: {e}")
+            return []
+        except Exception as e:
+            self.logger.error(f"Unexpected error at offset {offset}: {e}")
+            return []
     
     def fetch_event_by_id(self, event_id: str) -> Optional[Dict]:
         """
@@ -177,7 +236,7 @@ class EventsManager(DatabaseManager):
     
     def _store_events(self, events: List[Dict]):
         """
-        Store multiple events in the database
+        Store multiple events in the database (thread-safe)
         """
         event_records = []
         
@@ -296,7 +355,7 @@ class EventsManager(DatabaseManager):
         """
         for tag in tags:
             tag_id = tag.get('id')
-
+            
             # Store tag
             tag_record = {
                 'id': tag_id,
@@ -309,14 +368,14 @@ class EventsManager(DatabaseManager):
                 'updated_at': tag.get('updatedAt')
             }
             self.insert_or_ignore('tags', tag_record)
-
+            
             # Store event-tag relationship
             conn = self.get_persistent_connection()
             cursor = conn.cursor()
-
+            
             cursor.execute("SELECT event_ids FROM event_tags WHERE tag_id = ?", (tag_id,))
             result = cursor.fetchone()
-
+            
             if result:
                 event_ids = json.loads(result[0])
                 if event_id not in event_ids:
@@ -330,15 +389,15 @@ class EventsManager(DatabaseManager):
                     "INSERT INTO event_tags (tag_id, event_ids) VALUES (?, ?)",
                     (tag_id, json.dumps([event_id]))
                 )
-
+            
             conn.commit()
-
+    
     def _fetch_and_store_event_tags(self, event_id: str, tags: List[Dict]):
         """
         Store detailed tag information and relationships
         """
         tag_records = []
-
+        
         for tag in tags:
             tag_record = {
                 'id': tag.get('id'),
@@ -355,21 +414,21 @@ class EventsManager(DatabaseManager):
                 'fetched_at': datetime.now().isoformat()
             }
             tag_records.append(tag_record)
-
+        
         # Bulk insert tags
         if tag_records:
             self.bulk_insert_or_replace('tags', tag_records)
-
+        
         # Store event-tag relationships
         for tag in tags:
             tag_id = tag.get('id')
-
+            
             conn = self.get_persistent_connection()
             cursor = conn.cursor()
-
+            
             cursor.execute("SELECT event_ids FROM event_tags WHERE tag_id = ?", (tag_id,))
             result = cursor.fetchone()
-
+            
             if result:
                 event_ids = json.loads(result[0])
                 if event_id not in event_ids:
@@ -383,7 +442,7 @@ class EventsManager(DatabaseManager):
                     "INSERT INTO event_tags (tag_id, event_ids) VALUES (?, ?)",
                     (tag_id, json.dumps([event_id]))
                 )
-
+            
             conn.commit()
         
         self.logger.debug(f"Stored {len(tags)} tags for event {event_id}")
@@ -411,34 +470,40 @@ class EventsManager(DatabaseManager):
         
         self.logger.debug(f"Stored live volume for event {event_id}: ${volume_data.get('total', 0):,.2f}")
     
-    def process_all_events_detailed(self):
+    def process_all_events_detailed(self, num_threads: int = 10):
         """
-        Process all events to fetch detailed information
+        Process all events to fetch detailed information with multithreading
+        
+        Args:
+            num_threads: Number of concurrent threads (default: 10)
         """
         # Get all event IDs from database
         events = self.fetch_all("SELECT id, slug FROM events ORDER BY volume DESC")
         
-        self.logger.info(f"Processing {len(events)} events for detailed information...")
+        self.logger.info(f"Processing {len(events)} events for detailed information ({num_threads} threads)...")
         
         processed = 0
         errors = 0
+        lock = Lock()
         
-        for event in events:
+        def process_event(event):
+            nonlocal processed, errors
             try:
                 self.fetch_event_by_id(event['id'])
-                processed += 1
-                
-                if processed % 10 == 0:
-                    self.logger.info(f"Processed {processed}/{len(events)} events")
-                
-                # Rate limiting
-                time.sleep(self.config.RATE_LIMIT_DELAY)
-                
+                with lock:
+                    processed += 1
+                    if processed % 50 == 0:
+                        self.logger.info(f"Processed {processed}/{len(events)} events")
             except Exception as e:
+                with lock:
+                    errors += 1
                 self.logger.error(f"Error processing event {event['id']}: {e}")
-                errors += 1
         
-        self.logger.info(f"Event processing complete. Processed: {processed}, Errors: {errors}")
+        # Process events concurrently
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            executor.map(process_event, events)
+        
+        self.logger.info(f"✅ Event processing complete. Processed: {processed}, Errors: {errors}")
     
     def daily_scan(self):
         """
@@ -447,11 +512,11 @@ class EventsManager(DatabaseManager):
         """
         self.logger.info("Starting daily event scan...")
         
-        # Fetch ONLY active events
-        active_events = self.fetch_all_events(closed=False)
+        # Fetch ONLY active events with multithreading
+        active_events = self.fetch_all_events(closed=False, num_threads=5)
         
-        # Process detailed information for new events
-        self.process_all_events_detailed()
+        # Process detailed information for new events with multithreading
+        self.process_all_events_detailed(num_threads=10)
         
         self.logger.info("Daily event scan complete")
         
