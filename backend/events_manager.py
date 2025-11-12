@@ -25,17 +25,18 @@ class EventsManager(DatabaseManager):
         """
         Fetch all events from the API
         Used for initial data load and daily scans
+        ONLY fetches active events (closed=false)
         """
         all_events = []
         offset = 0
         
-        self.logger.info(f"Starting to fetch all {'closed' if closed else 'active'} events...")
+        self.logger.info(f"Starting to fetch all active events...")
         
         while True:
             try:
-                # Prepare request parameters
+                # Prepare request parameters - ONLY fetch non-closed (active) events
                 params = {
-                    "closed": str(closed).lower(),
+                    "closed": "false",  # ALWAYS false - only get active events
                     "limit": limit,
                     "offset": offset,
                     "order": "volume",
@@ -57,15 +58,10 @@ class EventsManager(DatabaseManager):
                     break
                 
                 all_events.extend(events)
-                self.logger.info(f"Fetched {len(events)} events (offset: {offset})")
+                self.logger.info(f"Fetched {len(events)} events (offset: {offset}, total: {len(all_events)})")
                 
                 # Store events in database
                 self._store_events(events)
-                
-                # Check if we've reached the limit
-                if len(all_events) >= self.config.MAX_EVENTS_PER_RUN:
-                    self.logger.warning(f"Reached maximum events limit: {self.config.MAX_EVENTS_PER_RUN}")
-                    break
                 
                 offset += limit
                 
@@ -82,7 +78,7 @@ class EventsManager(DatabaseManager):
                 self.logger.error(f"Unexpected error: {e}")
                 break
         
-        self.logger.info(f"Total events fetched: {len(all_events)}")
+        self.logger.info(f"Total active events fetched: {len(all_events)}")
         return all_events
     
     def fetch_event_by_id(self, event_id: str) -> Optional[Dict]:
@@ -447,16 +443,12 @@ class EventsManager(DatabaseManager):
     def daily_scan(self):
         """
         Perform daily scan for new events
+        ONLY fetches active events
         """
         self.logger.info("Starting daily event scan...")
         
-        # Fetch active events
+        # Fetch ONLY active events
         active_events = self.fetch_all_events(closed=False)
-        
-        # Optionally fetch closed events
-        if self.config.FETCH_CLOSED_EVENTS:
-            closed_events = self.fetch_all_events(closed=True)
-            self.logger.info(f"Fetched {len(closed_events)} closed events")
         
         # Process detailed information for new events
         self.process_all_events_detailed()
@@ -464,3 +456,31 @@ class EventsManager(DatabaseManager):
         self.logger.info("Daily event scan complete")
         
         return len(active_events)
+    
+    def remove_closed_events(self):
+        """
+        Remove all closed events from the database
+        Use this to clean up if closed events were accidentally fetched
+        """
+        self.logger.info("Removing closed events from database...")
+        
+        # Count closed events
+        result = self.fetch_one("SELECT COUNT(*) as count FROM events WHERE closed = 1")
+        closed_count = result['count'] if result else 0
+        
+        self.logger.info(f"Found {closed_count} closed events to remove")
+        
+        if closed_count > 0:
+            # Delete closed events
+            deleted = self.delete_records('events', 'closed = 1', commit=True)
+            self.logger.info(f"Removed {deleted} closed events")
+            
+            # Count remaining
+            result = self.fetch_one("SELECT COUNT(*) as count FROM events WHERE closed = 0")
+            remaining = result['count'] if result else 0
+            self.logger.info(f"Remaining active events: {remaining}")
+            
+            return deleted
+        else:
+            self.logger.info("No closed events to remove")
+            return 0

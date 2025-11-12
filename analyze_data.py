@@ -71,7 +71,24 @@ class DataAnalyzer:
         cursor.execute("SELECT active, COUNT(*) as count FROM events GROUP BY active")
         status = {bool(row[0]): row[1] for row in cursor.fetchall()}
         analysis['active_events'] = status.get(True, 0)
-        analysis['closed_events'] = status.get(False, 0)
+        analysis['inactive_events'] = status.get(False, 0)
+
+        # Closed vs open
+        cursor.execute("SELECT closed, COUNT(*) as count FROM events GROUP BY closed")
+        closed_status = {bool(row[0]): row[1] for row in cursor.fetchall()}
+        analysis['closed_events'] = closed_status.get(True, 0)
+        analysis['open_events'] = closed_status.get(False, 0)
+
+        # Combined status
+        cursor.execute("""
+            SELECT 
+                CASE WHEN active = 1 THEN 'Active' ELSE 'Inactive' END as active_status,
+                CASE WHEN closed = 1 THEN 'Closed' ELSE 'Open' END as closed_status,
+                COUNT(*) as count
+            FROM events
+            GROUP BY active, closed
+        """)
+        analysis['status_breakdown'] = {f"{row[0]}/{row[1]}": row[2] for row in cursor.fetchall()}
 
         # Top events by volume
         cursor.execute("""
@@ -93,6 +110,14 @@ class DataAnalyzer:
             LIMIT 10
         """)
         analysis['events_with_most_markets'] = [dict(row) for row in cursor.fetchall()]
+
+        # Events without markets
+        cursor.execute("""
+            SELECT COUNT(*)
+            FROM events e
+            WHERE NOT EXISTS (SELECT 1 FROM markets m WHERE m.event_id = e.id)
+        """)
+        analysis['events_without_markets'] = cursor.fetchone()[0]
 
         return analysis
 
@@ -330,13 +355,23 @@ class DataAnalyzer:
 
         print(f"\n📊 Key Metrics:")
         print(
-            f"   Events: {report['events_analysis']['total_events']:,} ({report['events_analysis']['active_events']:,} active)")
+            f"   Events: {report['events_analysis']['total_events']:,} ({report['events_analysis']['active_events']:,} active, {report['events_analysis']['closed_events']:,} closed)")
         print(
             f"   Markets: {report['markets_analysis']['total_markets']:,} ({report['markets_analysis']['active_markets']:,} active)")
         print(
             f"   Users: {report['users_analysis']['total_users']:,} ({report['users_analysis']['whale_users']:,} whales)")
         print(f"   Transactions: {report['transactions_analysis']['total_transactions']:,}")
         print(f"   Total Volume: ${report['transactions_analysis']['total_volume']:,.2f}")
+
+        # Add warnings if needed
+        events_analysis = report['events_analysis']
+        if events_analysis['closed_events'] > events_analysis['open_events']:
+            print(f"\n⚠️  WARNING: More closed events ({events_analysis['closed_events']:,}) than open events ({events_analysis['open_events']:,})")
+            print("   Check if FETCH_CLOSED_EVENTS is enabled in config")
+        
+        if events_analysis.get('events_without_markets', 0) > 0:
+            print(f"\n⚠️  INFO: {events_analysis['events_without_markets']:,} events have no markets")
+            print("   This may be normal for recently added events")
 
         # Save to file if requested
         if output_file:
