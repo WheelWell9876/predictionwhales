@@ -1,7 +1,7 @@
 """
-Polymarket Data Fetcher Orchestrator
+Polymarket Data Fetcher Orchestrator - WHALE FOCUSED
 Main entry point for fetching all Polymarket data
-Coordinates all managers and handles scheduling
+Initial load focused on high-value users (whales) and their complete profiles
 """
 
 import time
@@ -63,10 +63,10 @@ class PolymarketDataFetcher:
     def initial_data_load(self, reset_database: bool = False):
         """
         Perform initial data load from Polymarket APIs
-        This should be run once when setting up the system
+        WHALE-FOCUSED: Gets top holders from all markets and their complete profiles
         """
         self.logger.info("=" * 60)
-        self.logger.info("Starting initial Polymarket data load...")
+        self.logger.info("Starting WHALE-FOCUSED Polymarket data load...")
         self.logger.info(f"Time: {datetime.now()}")
         self.logger.info("=" * 60)
 
@@ -88,15 +88,10 @@ class PolymarketDataFetcher:
                 tags = self.tags_manager.fetch_all_tags()
                 self.logger.info(f"✅ Tags fetched: {len(tags)}")
 
-            # 2. Fetch all events
-            self.logger.info("\n📈 Phase 2: Fetching Events...")
+            # 2. Fetch all ACTIVE events only
+            self.logger.info("\n📈 Phase 2: Fetching Active Events...")
             events = self.events_manager.fetch_all_events(closed=False)
             self.logger.info(f"✅ Active events fetched: {len(events)}")
-
-            if Config.FETCH_CLOSED_EVENTS:
-                closed_events = self.events_manager.fetch_all_events(closed=True)
-                self.logger.info(f"✅ Closed events fetched: {len(closed_events)}")
-                events.extend(closed_events)
 
             # 3. Fetch markets for all events
             self.logger.info("\n💹 Phase 3: Fetching Markets...")
@@ -109,277 +104,227 @@ class PolymarketDataFetcher:
                 series = self.series_manager.fetch_all_series()
                 self.logger.info(f"✅ Series fetched: {len(series)}")
 
-            # 5. Skip detailed information fetching if disabled
-            if Config.FETCH_DETAILED_INFO:
-                self.logger.info("\n🔍 Phase 5: Fetching Detailed Information...")
-                self.logger.info("⚠️ Detailed fetching is currently disabled to prevent connection issues")
-                self.logger.info("Enable FETCH_DETAILED_INFO in config to activate")
-            else:
-                self.logger.info("\n🔍 Phase 5: Skipping Detailed Information (disabled in config)")
+            # ========== NEW WHALE-FOCUSED APPROACH ==========
+            # 5. Fetch top 25 holders from ALL active markets
+            self.logger.info("\n🐋 Phase 5: Fetching Top Holders from ALL Markets...")
+            self.logger.info("   Criteria: $1000+ wallet OR $250+ position")
+            
+            result = self.users_manager.fetch_top_holders_for_all_markets()
+            
+            self.logger.info(f"✅ Markets processed: {result['total_markets_processed']}")
+            self.logger.info(f"✅ Whale users found: {result['total_whales_found']}")
 
-            # 6. Fetch initial user and transaction data
-            if Config.FETCH_USERS or Config.FETCH_TRANSACTIONS:
-                self.logger.info("\n👥 Phase 6: Fetching Initial User and Transaction Data...")
+            # 6. Fetch complete profiles for ALL whales
+            self.logger.info("\n📊 Phase 6: Fetching Complete Whale Profiles...")
+            self.logger.info("   For each whale:")
+            self.logger.info("     - Top 10 trades by size")
+            self.logger.info("     - Top 10 activity by size")
+            self.logger.info("     - Wallet value")
+            self.logger.info("     - Top 10 current positions")
+            self.logger.info("     - Top 10 closed positions")
+            self.logger.info("     - Comments and reactions")
+            
+            self.users_manager.fetch_all_whale_profiles()
+            
+            self.logger.info(f"✅ Complete whale profiles fetched")
 
-                # First, fetch top holders for multiple markets efficiently
-                if Config.FETCH_USERS:
-                    self.logger.info("Fetching top holders for markets...")
-                    # This will fetch holders for top 100 markets in one go
-                    total_holders = self.users_manager.fetch_top_holders_for_markets(
-                        limit_markets=min(100, Config.MAX_MARKETS_PER_EVENT)
+            # 7. Fetch whale transactions from top markets
+            if Config.FETCH_TRANSACTIONS:
+                self.logger.info("\n💰 Phase 7: Fetching Whale Transactions...")
+                
+                # Get top 20 markets by volume
+                top_markets = self.db_manager.fetch_all("""
+                    SELECT id, condition_id, question, volume
+                    FROM markets
+                    WHERE active = 1 AND condition_id IS NOT NULL
+                    ORDER BY volume DESC
+                    LIMIT 20
+                """)
+                
+                for market in top_markets:
+                    self.logger.info(f"   Fetching transactions for: {market['question'][:50]}...")
+                    self.transactions_manager.fetch_market_transactions(
+                        market_id=market['id'],
+                        condition_id=market['condition_id'],
+                        limit=100
                     )
-                    self.logger.info(f"✅ Fetched holders: {total_holders}")
-
-                # Now fetch whale transactions
-                if Config.FETCH_TRANSACTIONS:
-                    self.logger.info("Fetching whale transactions...")
-
-                    # Get top markets for transaction fetching
-                    top_markets = self.db_manager.fetch_all("""
-                        SELECT id, condition_id, question, volume
-                        FROM markets
-                        WHERE active = 1 AND condition_id IS NOT NULL
-                        ORDER BY volume DESC
-                        LIMIT 20
-                    """)
-
-                    # Fetch transactions for top markets
-                    for market in top_markets[:10]:  # Limit to top 10 for initial load
-                        self.logger.info(f"Fetching transactions for: {market['question'][:50]}...")
-                        self.transactions_manager.fetch_market_transactions(
-                            market_id=market['id'],
-                            condition_id=market['condition_id'],
-                            limit=100
-                        )
-                        time.sleep(Config.RATE_LIMIT_DELAY)
-
-                    # Fetch global whale transactions
-                    self.logger.info("Fetching global whale transactions...")
-                    whale_txs = self.transactions_manager.fetch_whale_transactions(
-                        min_size=Config.MIN_WHALE_TRADE,
-                        limit=Config.MAX_RECENT_BETS
-                    )
-                    self.logger.info(f"✅ Whale transactions fetched: {len(whale_txs)}")
-
-                    # Identify and process whale users from transactions
-                    if Config.FETCH_USERS:
-                        whale_users = self.users_manager.identify_whale_users()
-                        self.logger.info(f"✅ Identified {len(whale_users)} whale users")
-
-                        # Fetch detailed data for top whale users
-                        self.logger.info("Fetching detailed data for whale users...")
-                        for wallet in whale_users[:Config.INITIAL_USERS_PER_EVENT]:
-                            try:
-                                # Fetch user positions and portfolio value
-                                self.users_manager.fetch_user_current_positions(wallet)
-                                self.users_manager.fetch_user_portfolio_value(wallet)
-
-                                # Fetch recent trades for this user
-                                self.transactions_manager.fetch_user_transactions(
-                                    wallet,
-                                    limit=Config.INITIAL_TRANSACTIONS_PER_USER
-                                )
-
-                                time.sleep(Config.RATE_LIMIT_DELAY)
-                            except Exception as e:
-                                self.logger.error(f"Error processing whale {wallet}: {e}")
-                                continue
-
-            # 7. Fetch global metrics
-            if Config.FETCH_OPEN_INTEREST:
-                self.logger.info("\n💰 Phase 7: Fetching Global Metrics...")
-                global_oi = self.markets_manager.fetch_global_open_interest()
-                if global_oi:
-                    self.logger.info(f"✅ Global Open Interest: ${global_oi:,.2f}")
+                    time.sleep(Config.RATE_LIMIT_DELAY)
+                
+                # Fetch global whale transactions
+                self.logger.info("   Fetching global whale transactions...")
+                whale_txs = self.transactions_manager.fetch_whale_transactions(
+                    min_size=1000,  # $1000+ trades
+                    limit=500
+                )
+                self.logger.info(f"✅ Whale transactions fetched: {len(whale_txs)}")
 
             elapsed_time = time.time() - start_time
 
             # Get final statistics
             stats = self.db_manager.get_statistics()
 
-            # Add user and transaction stats
-            user_count = self.db_manager.get_table_count('users')
-            tx_count = self.db_manager.get_table_count('transactions')
-            position_count = self.db_manager.get_table_count('user_positions_current')
-
+            # Print summary
             self.logger.info("\n" + "=" * 60)
-            self.logger.info("✅ Initial data load complete!")
-            self.logger.info(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
-            self.logger.info("\n📊 Database Statistics:")
+            self.logger.info("🎉 INITIAL LOAD COMPLETE!")
+            self.logger.info("=" * 60)
+            self.logger.info(f"⏱️  Time taken: {elapsed_time/60:.2f} minutes")
+            self.logger.info(f"\n📊 Final Statistics:")
             for table, count in stats.items():
-                self.logger.info(f"   {table}: {count:,} records")
-            self.logger.info(f"   users: {user_count:,} records")
-            self.logger.info(f"   transactions: {tx_count:,} records")
-            self.logger.info(f"   user_positions: {position_count:,} records")
+                self.logger.info(f"   {table:<30} {count:>10,} records")
+            
+            # Whale-specific stats
+            whale_count = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
+            self.logger.info(f"\n🐋 Whale Users: {whale_count['count']:,}")
+            
+            avg_whale_value = self.db_manager.fetch_one("""
+                SELECT AVG(total_value) as avg_value 
+                FROM users 
+                WHERE is_whale = 1 AND total_value > 0
+            """)
+            if avg_whale_value and avg_whale_value['avg_value']:
+                self.logger.info(f"💰 Average Whale Wallet: ${avg_whale_value['avg_value']:,.2f}")
+
             self.logger.info("=" * 60)
 
             return True
 
         except Exception as e:
             self.logger.error(f"Error during initial data load: {e}")
-            import traceback
-            self.logger.error(traceback.format_exc())
+            self.logger.exception("Full traceback:")
             return False
-    
-    def daily_update(self):
+
+    def daily_update(self) -> Dict:
         """
         Perform daily update scan
-        This should be run via cron job or scheduler
+        Updates existing data and fetches new markets/whales
         """
-        self.logger.info("\n" + "=" * 60)
-        self.logger.info("Starting daily update scan...")
-        self.logger.info(f"Time: {datetime.now()}")
         self.logger.info("=" * 60)
-        
-        start_time = time.time()
-        results = {}
-        
+        self.logger.info("Starting daily update scan...")
+        self.logger.info("=" * 60)
+
+        results = {
+            'events': 0,
+            'markets': 0,
+            'tags': 0,
+            'series': 0,
+            'new_whales': 0,
+            'whale_updates': 0
+        }
+
         try:
-            # Backup database before updates
-            backup_path = self.db_manager.backup_database()
-            self.logger.info(f"Database backed up to: {backup_path}")
-            
-            # Update tags
+            # 1. Update tags
             if Config.FETCH_TAGS:
-                self.logger.info("\n📌 Updating tags...")
+                self.logger.info("\n📌 Updating Tags...")
                 results['tags'] = self.tags_manager.daily_scan()
-            
-            # Update events
-            self.logger.info("\n📈 Updating events...")
+
+            # 2. Update events
+            self.logger.info("\n📈 Updating Events...")
             results['events'] = self.events_manager.daily_scan()
-            
-            # Update markets
-            self.logger.info("\n💹 Updating markets...")
-            results['markets'] = self.markets_manager.daily_scan()
-            
-            # Update series
+
+            # 3. Update markets
+            self.logger.info("\n💹 Updating Markets...")
+            # Get recent events
+            recent_events = self.db_manager.fetch_all("""
+                SELECT id, slug FROM events 
+                WHERE active = 1 
+                ORDER BY updated_at DESC 
+                LIMIT 100
+            """)
+            results['markets'] = self.markets_manager.fetch_all_markets_from_events(recent_events)
+
+            # 4. Update series
             if Config.FETCH_SERIES:
-                self.logger.info("\n📚 Updating series...")
+                self.logger.info("\n📚 Updating Series...")
                 results['series'] = self.series_manager.daily_scan()
+
+            # 5. Check for new whales in updated markets
+            self.logger.info("\n🐋 Checking for New Whales...")
+            before_count = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
             
-            elapsed_time = time.time() - start_time
+            # Scan top 50 markets for new whales
+            top_markets = self.db_manager.fetch_all("""
+                SELECT id FROM markets 
+                WHERE active = 1 
+                ORDER BY updated_at DESC 
+                LIMIT 50
+            """)
             
-            # Get final statistics
-            stats = self.db_manager.get_statistics()
+            # This will find and add new whales
+            whale_result = self.users_manager.fetch_top_holders_for_all_markets()
             
+            after_count = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
+            results['new_whales'] = after_count['count'] - before_count['count']
+            
+            if results['new_whales'] > 0:
+                self.logger.info(f"✅ Found {results['new_whales']} new whales")
+
+            # 6. Update whale profiles
+            self.logger.info("\n📊 Updating Whale Profiles...")
+            # Update profiles for whales that haven't been updated recently
+            stale_whales = self.db_manager.fetch_all("""
+                SELECT proxy_wallet FROM users 
+                WHERE is_whale = 1 
+                AND (last_updated IS NULL OR last_updated < datetime('now', '-1 day'))
+                LIMIT 50
+            """)
+            
+            for whale in stale_whales:
+                self.users_manager.fetch_whale_user_complete_profile(whale['proxy_wallet'])
+                time.sleep(Config.RATE_LIMIT_DELAY)
+            
+            results['whale_updates'] = len(stale_whales)
+
             self.logger.info("\n" + "=" * 60)
             self.logger.info("✅ Daily update complete!")
-            self.logger.info(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
-            self.logger.info("\n📊 Update Results:")
-            for entity, count in results.items():
-                self.logger.info(f"   {entity}: {count} updated")
-            self.logger.info("\n📊 Database Statistics:")
-            for table, count in stats.items():
-                self.logger.info(f"   {table}: {count:,} records")
+            self.logger.info(f"   Events: {results['events']}")
+            self.logger.info(f"   Markets: {results['markets']}")
+            self.logger.info(f"   New Whales: {results['new_whales']}")
+            self.logger.info(f"   Whale Updates: {results['whale_updates']}")
             self.logger.info("=" * 60)
-            
+
             return results
-            
+
         except Exception as e:
             self.logger.error(f"Error during daily update: {e}")
-            return None
-    
+            return results
+
     def start_scheduler(self):
         """
         Start the scheduler for daily updates
-        Runs in a separate thread
         """
         if not Config.ENABLE_DAILY_SCAN:
-            self.logger.info("Daily scanning is disabled")
+            self.logger.info("Daily scanning is disabled in config")
             return
-        
+
+        self.logger.info(f"Scheduling daily scans at {Config.DAILY_SCAN_TIME}")
+
         # Schedule daily update
         schedule.every().day.at(Config.DAILY_SCAN_TIME).do(self.daily_update)
-        
-        self.logger.info(f"Scheduler started. Daily scan scheduled at {Config.DAILY_SCAN_TIME}")
-        
+
+        # Run scheduler in background
         def run_scheduler():
             while True:
                 schedule.run_pending()
-                time.sleep(60)  # Check every minute
-        
+                time.sleep(60)
+
         scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
         scheduler_thread.start()
-    
-    def start_websocket(self):
-        """
-        Start WebSocket connection for real-time updates
-        To be implemented for live data streaming
-        """
-        self.logger.info("WebSocket functionality not yet implemented")
-        # TODO: Implement WebSocket connection for real-time updates
-        # This will connect to Polymarket's WebSocket API
-        # and update the database with live data
-        pass
-    
-    def reset_database(self):
-        """
-        Reset the entire database (clear all data but keep schema)
-        """
-        self.logger.warning("Resetting database...")
-        self.db_manager.reset_database()
-        self.logger.info("Database reset complete")
-    
-    def reset_table(self, table_name: str):
-        """
-        Reset a specific table
-        """
-        self.logger.warning(f"Resetting table: {table_name}")
-        self.db_manager.reset_table(table_name)
-        self.logger.info(f"Table {table_name} reset complete")
-    
+
+        self.logger.info("✅ Scheduler started")
+
     def get_statistics(self) -> Dict:
-        """
-        Get current database statistics
-        """
+        """Get database statistics"""
         return self.db_manager.get_statistics()
+
+    def reset_database(self):
+        """Reset the database"""
+        self.db_manager.reset_database()
 
 
 def main():
-    """
-    Main entry point for the data fetcher
-    """
-    import argparse
-    
-    parser = argparse.ArgumentParser(description='Polymarket Data Fetcher')
-    parser.add_argument('--initial-load', action='store_true', 
-                       help='Perform initial data load')
-    parser.add_argument('--daily-update', action='store_true',
-                       help='Perform daily update')
-    parser.add_argument('--reset-database', action='store_true',
-                       help='Reset database before loading')
-    parser.add_argument('--start-scheduler', action='store_true',
-                       help='Start the scheduler for daily updates')
-    parser.add_argument('--statistics', action='store_true',
-                       help='Show database statistics')
-    
-    args = parser.parse_args()
-    
+    """Main function"""
     fetcher = PolymarketDataFetcher()
-    
-    if args.statistics:
-        stats = fetcher.get_statistics()
-        print("\n📊 Database Statistics:")
-        for table, count in stats.items():
-            print(f"   {table}: {count:,} records")
-    
-    elif args.initial_load:
-        fetcher.initial_data_load(reset_database=args.reset_database)
-    
-    elif args.daily_update:
-        fetcher.daily_update()
-    
-    elif args.start_scheduler:
-        fetcher.start_scheduler()
-        # Keep the main thread alive
-        try:
-            while True:
-                time.sleep(1)
-        except KeyboardInterrupt:
-            print("\nScheduler stopped")
-    
-    else:
-        print("No action specified. Use --help for options")
+    fetcher.initial_data_load()
 
 
 if __name__ == "__main__":
