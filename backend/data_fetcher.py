@@ -86,43 +86,67 @@ class PolymarketDataFetcher:
         try:
             # 1. Fetch all tags first (they're used by other entities)
             if Config.FETCH_TAGS:
-                self.logger.info("\n📌 Phase 1: Fetching Tags...")
+                self.logger.info("\n Phase 1: Fetching Tags...")
                 tags = self.tags_manager.fetch_all_tags()
-                self.logger.info(f"✅ Tags fetched: {len(tags)}")
+                self.logger.info(f"Tags fetched: {len(tags)}")
+                
+                # Clean up closed events after tags
+                self.logger.info("   Cleaning up closed events...")
+                self.events_manager.remove_closed_events()
 
             # 2. Fetch all ACTIVE events only
-            self.logger.info("\n📈 Phase 2: Fetching Active Events...")
+            self.logger.info(" Phase 2: Fetching Active Events...")
             events = self.events_manager.fetch_all_events(closed=False)
-            self.logger.info(f"✅ Active events fetched: {len(events)}")
+            self.logger.info(f" Active events fetched: {len(events)}")
+            
+            # Clean up closed events after events fetch
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 3. Fetch markets for all events
-            self.logger.info("\n💹 Phase 3: Fetching Markets...")
+            self.logger.info("\n Phase 3: Fetching Markets...")
             markets = self.markets_manager.fetch_all_markets_from_events(events)
-            self.logger.info(f"✅ Markets fetched: {len(markets)}")
+            self.logger.info(f" Markets fetched: {len(markets)}")
+            
+            # Clean up closed events after markets fetch
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 3.5. Clean up closed/inactive events and their data
-            self.logger.info("\n🧹 Phase 3.5: Cleaning Up Closed Events...")
+            self.logger.info("\n Phase 3.5: Cleaning Up Closed Events...")
             removed_count = self.db_manager.remove_closed_events()
-            self.logger.info(f"✅ Removed {removed_count} closed events and associated data")
+            self.logger.info(f" Removed {removed_count} closed events and associated data")
+            
+            # Clean up closed events after cleanup phase
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 4. Fetch series if enabled
             if Config.FETCH_SERIES:
-                self.logger.info("\n📚 Phase 4: Fetching Series...")
+                self.logger.info("\n Phase 4: Fetching Series...")
                 series = self.series_manager.fetch_all_series()
-                self.logger.info(f"✅ Series fetched: {len(series)}")
+                self.logger.info(f" Series fetched: {len(series)}")
+                
+                # Clean up closed events after series fetch
+                self.logger.info("   Cleaning up closed events...")
+                self.events_manager.remove_closed_events()
 
             # ========== NEW WHALE-FOCUSED APPROACH ==========
             # 5. Fetch top 25 holders from ALL active markets
-            self.logger.info("\n🐋 Phase 5: Fetching Top Holders from ALL Markets...")
+            self.logger.info("\n Phase 5: Fetching Top Holders from ALL Markets...")
             self.logger.info("   Criteria: $1000+ wallet OR $250+ position")
             
             result = self.users_manager.fetch_top_holders_for_all_markets()
             
-            self.logger.info(f"✅ Markets processed: {result['total_markets_processed']}")
-            self.logger.info(f"✅ Whale users found: {result['total_whales_found']}")
+            self.logger.info(f" Markets processed: {result['total_markets_processed']}")
+            self.logger.info(f" Whale users found: {result['total_whales_found']}")
+            
+            # Clean up closed events after holders fetch
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 6. Fetch complete profiles for ALL whales
-            self.logger.info("\n🔍 Phase 6: Enriching Complete Whale Profiles...")
+            self.logger.info("\n Phase 6: Enriching Complete Whale Profiles...")
             self.logger.info("   For each whale:")
             self.logger.info("     - Trade history")
             self.logger.info("     - Activity history")
@@ -132,18 +156,26 @@ class PolymarketDataFetcher:
             
             enrich_result = self.users_manager.enrich_all_whale_users()
             
-            self.logger.info(f"✅ Enriched {enrich_result['total_whales_enriched']} whale profiles")
+            self.logger.info(f" Enriched {enrich_result['total_whales_enriched']} whale profiles")
             self.logger.info(f"   Errors: {enrich_result['errors']}")
+            
+            # Clean up closed events after whale enrichment
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 7. Fetch comments for events (top 15 per event)
-            self.logger.info("\n💬 Phase 7: Fetching Comments for Events...")
+            self.logger.info("\n Phase 7: Fetching Comments for Events...")
             comments_result = self.comments_manager.fetch_comments_for_all_events(limit_per_event=15)
-            self.logger.info(f"✅ Comments fetched: {comments_result['comments_fetched']}")
+            self.logger.info(f" Comments fetched: {comments_result['comments_fetched']}")
             self.logger.info(f"   Reactions fetched: {comments_result['reactions_fetched']}")
+            
+            # Clean up closed events after comments fetch
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 8. Fetch whale transactions from top markets
             if Config.FETCH_TRANSACTIONS:
-                self.logger.info("\n💰 Phase 8: Fetching Whale Transactions...")
+                self.logger.info("\n Phase 8: Fetching Whale Transactions...")
                 
                 # Get top 20 markets by volume
                 top_markets = self.db_manager.fetch_all("""
@@ -169,7 +201,11 @@ class PolymarketDataFetcher:
                     min_size=1000,  # $1000+ trades
                     limit=500
                 )
-                self.logger.info(f"✅ Whale transactions fetched: {len(whale_txs)}")
+                self.logger.info(f" Whale transactions fetched: {len(whale_txs)}")
+                
+                # Clean up closed events after transactions fetch
+                self.logger.info("   Cleaning up closed events...")
+                self.events_manager.remove_closed_events()
 
             elapsed_time = time.time() - start_time
 
@@ -178,16 +214,16 @@ class PolymarketDataFetcher:
 
             # Print summary
             self.logger.info("\n" + "=" * 60)
-            self.logger.info("🎉 INITIAL LOAD COMPLETE!")
+            self.logger.info("INITIAL LOAD COMPLETE!")
             self.logger.info("=" * 60)
-            self.logger.info(f"⏱️  Time taken: {elapsed_time/60:.2f} minutes")
-            self.logger.info(f"\n📊 Final Statistics:")
+            self.logger.info(f" Time taken: {elapsed_time/60:.2f} minutes")
+            self.logger.info(f"\n Final Statistics:")
             for table, count in stats.items():
                 self.logger.info(f"   {table:<30} {count:>10,} records")
             
             # Whale-specific stats
             whale_count = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
-            self.logger.info(f"\n🐋 Whale Users: {whale_count['count']:,}")
+            self.logger.info(f"\n Whale Users: {whale_count['count']:,}")
             
             avg_whale_value = self.db_manager.fetch_one("""
                 SELECT AVG(total_value) as avg_value 
@@ -195,7 +231,7 @@ class PolymarketDataFetcher:
                 WHERE is_whale = 1 AND total_value > 0
             """)
             if avg_whale_value and avg_whale_value['avg_value']:
-                self.logger.info(f"💰 Average Whale Wallet: ${avg_whale_value['avg_value']:,.2f}")
+                self.logger.info(f" Average Whale Wallet: ${avg_whale_value['avg_value']:,.2f}")
 
             self.logger.info("=" * 60)
 
@@ -227,15 +263,23 @@ class PolymarketDataFetcher:
         try:
             # 1. Update tags
             if Config.FETCH_TAGS:
-                self.logger.info("\n📌 Updating Tags...")
+                self.logger.info("\n Updating Tags...")
                 results['tags'] = self.tags_manager.daily_scan()
+                
+                # Clean up closed events after tags update
+                self.logger.info("   Cleaning up closed events...")
+                self.events_manager.remove_closed_events()
 
             # 2. Update events
-            self.logger.info("\n📈 Updating Events...")
+            self.logger.info("\n Updating Events...")
             results['events'] = self.events_manager.daily_scan()
+            
+            # Clean up closed events after events update
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 3. Update markets
-            self.logger.info("\n💹 Updating Markets...")
+            self.logger.info("\n Updating Markets...")
             # Get recent events
             recent_events = self.db_manager.fetch_all("""
                 SELECT id, slug FROM events 
@@ -244,14 +288,22 @@ class PolymarketDataFetcher:
                 LIMIT 100
             """)
             results['markets'] = self.markets_manager.fetch_all_markets_from_events(recent_events)
+            
+            # Clean up closed events after markets update
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 4. Update series
             if Config.FETCH_SERIES:
-                self.logger.info("\n📚 Updating Series...")
+                self.logger.info("\n Updating Series...")
                 results['series'] = self.series_manager.daily_scan()
+                
+                # Clean up closed events after series update
+                self.logger.info("   Cleaning up closed events...")
+                self.events_manager.remove_closed_events()
 
             # 5. Check for new whales in updated markets
-            self.logger.info("\n🐋 Checking for New Whales...")
+            self.logger.info("\n Checking for New Whales...")
             before_count = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
             
             # Scan top 50 markets for new whales
@@ -269,10 +321,14 @@ class PolymarketDataFetcher:
             results['new_whales'] = after_count['count'] - before_count['count']
             
             if results['new_whales'] > 0:
-                self.logger.info(f"✅ Found {results['new_whales']} new whales")
+                self.logger.info(f"âœ… Found {results['new_whales']} new whales")
+            
+            # Clean up closed events after whale check
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             # 6. Update whale profiles
-            self.logger.info("\n📊 Updating Whale Profiles...")
+            self.logger.info("\n Updating Whale Profiles...")
             # Update profiles for whales that haven't been updated recently
             stale_whales = self.db_manager.fetch_all("""
                 SELECT proxy_wallet FROM users 
@@ -287,9 +343,13 @@ class PolymarketDataFetcher:
                 results['whale_updates'] = update_result['total_enriched']
             else:
                 results['whale_updates'] = 0
+            
+            # Clean up closed events after whale updates
+            self.logger.info("   Cleaning up closed events...")
+            self.events_manager.remove_closed_events()
 
             self.logger.info("\n" + "=" * 60)
-            self.logger.info("✅ Daily update complete!")
+            self.logger.info(" Daily update complete!")
             self.logger.info(f"   Events: {results['events']}")
             self.logger.info(f"   Markets: {results['markets']}")
             self.logger.info(f"   New Whales: {results['new_whales']}")
@@ -324,7 +384,7 @@ class PolymarketDataFetcher:
         scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
         scheduler_thread.start()
 
-        self.logger.info("✅ Scheduler started")
+        self.logger.info(" Scheduler started")
 
     def get_statistics(self) -> Dict:
         """Get database statistics"""
