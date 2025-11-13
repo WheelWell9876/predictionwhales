@@ -16,6 +16,7 @@ from backend.series_manager import SeriesManager
 from backend.tags_manager import TagsManager
 from backend.users_manager import UsersManager
 from backend.transactions_manager import TransactionsManager
+from backend.comments_manager import CommentsManager
 from backend.config import Config
 import logging
 
@@ -31,6 +32,7 @@ class PolymarketDataFetcher:
         self.tags_manager = TagsManager()
         self.users_manager = UsersManager()
         self.transactions_manager = TransactionsManager()
+        self.comments_manager = CommentsManager()
 
         # WebSocket connection (for future implementation)
         self.ws_connection = None
@@ -98,6 +100,11 @@ class PolymarketDataFetcher:
             markets = self.markets_manager.fetch_all_markets_from_events(events)
             self.logger.info(f"✅ Markets fetched: {len(markets)}")
 
+            # 3.5. Clean up closed/inactive events and their data
+            self.logger.info("\n🧹 Phase 3.5: Cleaning Up Closed Events...")
+            removed_count = self.db_manager.remove_closed_events()
+            self.logger.info(f"✅ Removed {removed_count} closed events and associated data")
+
             # 4. Fetch series if enabled
             if Config.FETCH_SERIES:
                 self.logger.info("\n📚 Phase 4: Fetching Series...")
@@ -122,16 +129,21 @@ class PolymarketDataFetcher:
             self.logger.info("     - Wallet value")
             self.logger.info("     - Current positions")
             self.logger.info("     - Closed positions")
-            self.logger.info("     - Comments and reactions")
             
             enrich_result = self.users_manager.enrich_all_whale_users()
             
             self.logger.info(f"✅ Enriched {enrich_result['total_whales_enriched']} whale profiles")
             self.logger.info(f"   Errors: {enrich_result['errors']}")
 
-            # 7. Fetch whale transactions from top markets
+            # 7. Fetch comments for events (top 15 per event)
+            self.logger.info("\n💬 Phase 7: Fetching Comments for Events...")
+            comments_result = self.comments_manager.fetch_comments_for_all_events(limit_per_event=15)
+            self.logger.info(f"✅ Comments fetched: {comments_result['comments_fetched']}")
+            self.logger.info(f"   Reactions fetched: {comments_result['reactions_fetched']}")
+
+            # 8. Fetch whale transactions from top markets
             if Config.FETCH_TRANSACTIONS:
-                self.logger.info("\n💰 Phase 7: Fetching Whale Transactions...")
+                self.logger.info("\n💰 Phase 8: Fetching Whale Transactions...")
                 
                 # Get top 20 markets by volume
                 top_markets = self.db_manager.fetch_all("""

@@ -219,6 +219,47 @@ class DataAnalyzer:
         """)
         analysis['users_by_portfolio_size'] = {row[0]: row[1] for row in cursor.fetchall()}
 
+        # User enrichment data stats
+        cursor.execute("SELECT COUNT(*) FROM user_trades")
+        analysis['total_user_trades'] = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM user_activity")
+        analysis['total_user_activity'] = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM user_positions_current")
+        analysis['total_current_positions'] = cursor.fetchone()[0]
+
+        cursor.execute("SELECT COUNT(*) FROM user_positions_closed")
+        analysis['total_closed_positions'] = cursor.fetchone()[0]
+
+        # Users with enrichment data
+        cursor.execute("""
+            SELECT COUNT(DISTINCT proxy_wallet) 
+            FROM user_trades
+        """)
+        analysis['users_with_trades'] = cursor.fetchone()[0]
+
+        cursor.execute("""
+            SELECT COUNT(DISTINCT proxy_wallet) 
+            FROM user_positions_current
+        """)
+        analysis['users_with_positions'] = cursor.fetchone()[0]
+
+        # Top traders by trade count
+        cursor.execute("""
+            SELECT proxy_wallet, COUNT(*) as trade_count
+            FROM user_trades
+            GROUP BY proxy_wallet
+            ORDER BY trade_count DESC
+            LIMIT 10
+        """)
+        analysis['top_traders'] = []
+        for row in cursor.fetchall():
+            trader = dict(row)
+            if trader['proxy_wallet']:
+                trader['proxy_wallet'] = trader['proxy_wallet'][:10] + '...'
+            analysis['top_traders'].append(trader)
+
         return analysis
 
     def analyze_transactions(self) -> Dict:
@@ -240,10 +281,16 @@ class DataAnalyzer:
         total_volume = cursor.fetchone()[0]
         analysis['total_volume'] = total_volume if total_volume else 0
 
+        # Average transaction size
+        cursor.execute("SELECT AVG(usdc_size) FROM transactions WHERE usdc_size > 0")
+        avg_size = cursor.fetchone()[0]
+        analysis['average_transaction_size'] = avg_size if avg_size else 0
+
         # Buy vs Sell
         cursor.execute("""
             SELECT side, COUNT(*) as count, SUM(usdc_size) as volume
             FROM transactions
+            WHERE side IS NOT NULL
             GROUP BY side
         """)
         analysis['buy_sell_breakdown'] = {}
@@ -256,7 +303,7 @@ class DataAnalyzer:
 
         # Largest transactions
         cursor.execute("""
-            SELECT proxy_wallet, usdc_size, side, outcome, time_created
+            SELECT proxy_wallet, usdc_size, side, time_created
             FROM transactions
             WHERE usdc_size > 0
             ORDER BY usdc_size DESC
@@ -266,7 +313,7 @@ class DataAnalyzer:
         for row in cursor.fetchall():
             tx = dict(row)
             # Anonymize wallet
-            if tx['proxy_wallet']:
+            if tx.get('proxy_wallet'):
                 tx['proxy_wallet'] = tx['proxy_wallet'][:10] + '...'
             analysis['largest_transactions'].append(tx)
 
@@ -288,6 +335,29 @@ class DataAnalyzer:
             ORDER BY MIN(usdc_size)
         """)
         analysis['transactions_by_size'] = {row[0]: row[1] for row in cursor.fetchall()}
+
+        # Recent transactions (last 24 hours)
+        cursor.execute("""
+            SELECT COUNT(*) 
+            FROM transactions
+            WHERE time_created >= datetime('now', '-1 day')
+        """)
+        analysis['transactions_last_24h'] = cursor.fetchone()[0]
+
+        # Most active traders
+        cursor.execute("""
+            SELECT proxy_wallet, COUNT(*) as tx_count, SUM(usdc_size) as total_volume
+            FROM transactions
+            GROUP BY proxy_wallet
+            ORDER BY tx_count DESC
+            LIMIT 10
+        """)
+        analysis['most_active_traders'] = []
+        for row in cursor.fetchall():
+            trader = dict(row)
+            if trader.get('proxy_wallet'):
+                trader['proxy_wallet'] = trader['proxy_wallet'][:10] + '...'
+            analysis['most_active_traders'].append(trader)
 
         return analysis
 
@@ -327,6 +397,61 @@ class DataAnalyzer:
 
         return analysis
 
+    def analyze_comments(self) -> Dict:
+        """Analyze comments and reactions data"""
+        cursor = self.conn.cursor()
+
+        analysis = {}
+
+        # Total comments
+        cursor.execute("SELECT COUNT(*) FROM comments")
+        analysis['total_comments'] = cursor.fetchone()[0]
+
+        # Comments with reactions
+        cursor.execute("""
+            SELECT COUNT(DISTINCT comment_id) 
+            FROM comment_reactions
+        """)
+        analysis['comments_with_reactions'] = cursor.fetchone()[0]
+
+        # Total reactions
+        cursor.execute("SELECT COUNT(*) FROM comment_reactions")
+        analysis['total_reactions'] = cursor.fetchone()[0]
+
+        # Users who commented
+        cursor.execute("""
+            SELECT COUNT(DISTINCT proxy_wallet) 
+            FROM comments
+        """)
+        analysis['users_who_commented'] = cursor.fetchone()[0]
+
+        # Top commenters
+        cursor.execute("""
+            SELECT proxy_wallet, username, COUNT(*) as comment_count
+            FROM comments
+            GROUP BY proxy_wallet
+            ORDER BY comment_count DESC
+            LIMIT 10
+        """)
+        analysis['top_commenters'] = []
+        for row in cursor.fetchall():
+            commenter = dict(row)
+            if commenter['proxy_wallet']:
+                commenter['proxy_wallet'] = commenter['proxy_wallet'][:10] + '...'
+            analysis['top_commenters'].append(commenter)
+
+        # Most liked comments
+        cursor.execute("""
+            SELECT content, likes_count, username
+            FROM comments
+            WHERE likes_count > 0
+            ORDER BY likes_count DESC
+            LIMIT 5
+        """)
+        analysis['most_liked_comments'] = [dict(row) for row in cursor.fetchall()]
+
+        return analysis
+
     def generate_full_report(self, output_file: str = None) -> Dict:
         """Generate a comprehensive analysis report"""
         self.connect()
@@ -342,7 +467,8 @@ class DataAnalyzer:
             'markets_analysis': self.analyze_markets(),
             'users_analysis': self.analyze_users(),
             'transactions_analysis': self.analyze_transactions(),
-            'holders_analysis': self.analyze_market_holders()
+            'holders_analysis': self.analyze_market_holders(),
+            'comments_analysis': self.analyze_comments()
         }
 
         self.disconnect()
@@ -354,14 +480,27 @@ class DataAnalyzer:
         print(f"   Total Records: {report['overview']['total_records']:,}")
 
         print(f"\n📊 Key Metrics:")
-        print(
-            f"   Events: {report['events_analysis']['total_events']:,} ({report['events_analysis']['active_events']:,} active, {report['events_analysis']['closed_events']:,} closed)")
-        print(
-            f"   Markets: {report['markets_analysis']['total_markets']:,} ({report['markets_analysis']['active_markets']:,} active)")
-        print(
-            f"   Users: {report['users_analysis']['total_users']:,} ({report['users_analysis']['whale_users']:,} whales)")
-        print(f"   Transactions: {report['transactions_analysis']['total_transactions']:,}")
+        print(f"   Events: {report['events_analysis']['total_events']:,} ({report['events_analysis']['active_events']:,} active, {report['events_analysis']['closed_events']:,} closed)")
+        print(f"   Markets: {report['markets_analysis']['total_markets']:,} ({report['markets_analysis']['active_markets']:,} active)")
+        print(f"   Users: {report['users_analysis']['total_users']:,} ({report['users_analysis']['whale_users']:,} whales)")
+        print(f"   Transactions: {report['transactions_analysis']['total_transactions']:,} ({report['transactions_analysis']['whale_transactions']:,} whale)")
         print(f"   Total Volume: ${report['transactions_analysis']['total_volume']:,.2f}")
+
+        # User enrichment stats
+        print(f"\n🔍 User Enrichment Data:")
+        print(f"   Trades: {report['users_analysis']['total_user_trades']:,}")
+        print(f"   Activity Records: {report['users_analysis']['total_user_activity']:,}")
+        print(f"   Current Positions: {report['users_analysis']['total_current_positions']:,}")
+        print(f"   Closed Positions: {report['users_analysis']['total_closed_positions']:,}")
+        print(f"   Users with Trades: {report['users_analysis']['users_with_trades']:,}")
+        print(f"   Users with Positions: {report['users_analysis']['users_with_positions']:,}")
+
+        # Comments stats
+        print(f"\n💬 Comments & Engagement:")
+        print(f"   Total Comments: {report['comments_analysis']['total_comments']:,}")
+        print(f"   Total Reactions: {report['comments_analysis']['total_reactions']:,}")
+        print(f"   Users Who Commented: {report['comments_analysis']['users_who_commented']:,}")
+        print(f"   Comments with Reactions: {report['comments_analysis']['comments_with_reactions']:,}")
 
         # Add warnings if needed
         events_analysis = report['events_analysis']
@@ -373,8 +512,16 @@ class DataAnalyzer:
             print(f"\n⚠️  INFO: {events_analysis['events_without_markets']:,} events have no markets")
             print("   This may be normal for recently added events")
 
+        # Enrichment warnings
+        users_count = report['users_analysis']['total_users']
+        trades_count = report['users_analysis']['total_user_trades']
+        if users_count > 0 and trades_count == 0:
+            print(f"\n⚠️  WARNING: No user trade data found")
+            print("   Run whale enrichment: users_manager.enrich_all_whale_users()")
+
         # Save to file if requested
         if output_file:
+            from pathlib import Path
             Path(os.path.dirname(output_file)).mkdir(parents=True, exist_ok=True)
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(report, f, indent=2, ensure_ascii=False, default=str)

@@ -29,8 +29,8 @@ class UsersManager(DatabaseManager):
         self.MIN_POSITION_VALUE = 250  # $250 minimum position value
         self.TOP_HOLDERS_PER_MARKET = 25  # Top 25 holders per market
         
-        # Set max workers (defaults to min of 10 or available CPU cores * 2)
-        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
+        # Set max workers (defaults to 20 for aggressive parallelization)
+        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
         
         # Thread-safe lock for database operations
         self._db_lock = Lock()
@@ -330,15 +330,14 @@ class UsersManager(DatabaseManager):
         Fetch and store complete data for a whale user
         """
         # Use ThreadPoolExecutor for parallel sub-requests
-        with ThreadPoolExecutor(max_workers=5) as executor:
+        with ThreadPoolExecutor(max_workers=4) as executor:
             futures = []
             
-            # Fetch all user data in parallel
+            # Fetch all user data in parallel (removed comments)
             futures.append(executor.submit(self._fetch_user_trades, proxy_wallet))
             futures.append(executor.submit(self._fetch_user_activity, proxy_wallet))
             futures.append(executor.submit(self._fetch_user_current_positions, proxy_wallet))
             futures.append(executor.submit(self._fetch_user_closed_positions, proxy_wallet))
-            futures.append(executor.submit(self._fetch_user_comments, proxy_wallet))
             
             # Wait for all to complete
             for future in as_completed(futures):

@@ -21,8 +21,8 @@ class TransactionsManager(DatabaseManager):
         self.clob_api_url = Config.CLOB_API_URL if Config.CLOB_API_URL else "https://clob.polymarket.com"
         self.data_api_url = Config.DATA_API_URL if Config.DATA_API_URL else "https://data-api.polymarket.com"
         
-        # Set max workers (defaults to min of 10 or available CPU cores * 2)
-        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
+        # Set max workers (defaults to 20 for aggressive parallelization)
+        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
         
         # Thread-safe lock for database operations
         self._db_lock = Lock()

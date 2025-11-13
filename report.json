@@ -1,130 +1,132 @@
 {
-  "generated_at": "2025-11-11T23:32:37.235394",
+  "generated_at": "2025-11-12T20:44:01.456306",
   "database_path": "polymarket_terminal.db",
   "overview": {
-    "database_size": 56.46484375,
+    "database_size": 124.11328125,
     "tables": {
       "collection_tags": 0,
       "collections": 0,
       "comment_reactions": 0,
-      "comments": 0,
+      "comments": 6248,
       "event_live_volume": 0,
-      "event_tags": 932,
-      "events": 4732,
-      "market_holders": 1080,
+      "event_tags": 942,
+      "events": 54444,
+      "market_holders": 1088,
       "market_open_interest": 0,
       "market_tags": 0,
-      "markets": 21459,
-      "series": 585,
+      "markets": 22066,
+      "series": 592,
       "series_collections": 0,
-      "series_events": 502,
+      "series_events": 508,
       "series_tags": 0,
       "sqlite_sequence": 2,
       "tag_relationships": 0,
-      "tags": 1183,
+      "tags": 1193,
       "transactions": 0,
-      "user_activity": 0,
-      "user_positions_closed": 5,
+      "user_activity": 97,
+      "user_positions_closed": 0,
       "user_positions_current": 0,
       "user_trades": 0,
       "user_values": 0,
-      "users": 759
+      "users": 4019
     },
     "total_tables": 25,
-    "total_records": 31239
+    "total_records": 91199
   },
   "events_analysis": {
-    "total_events": 4732,
-    "active_events": 4191,
-    "inactive_events": 541,
-    "closed_events": 0,
-    "open_events": 4732,
+    "total_events": 54444,
+    "active_events": 53767,
+    "inactive_events": 677,
+    "closed_events": 49582,
+    "open_events": 4862,
     "status_breakdown": {
-      "Inactive/Open": 541,
-      "Active/Open": 4191
+      "Inactive/Open": 556,
+      "Inactive/Closed": 121,
+      "Active/Open": 4306,
+      "Active/Closed": 49461
     },
     "top_events_by_volume": [
       {
         "title": "Super Bowl Champion 2026",
-        "volume": 523395342.436462,
-        "liquidity": 30237176.93885,
-        "comment_count": 61
+        "volume": 525287930.719036,
+        "liquidity": 30577832.21487,
+        "comment_count": 63
       },
       {
         "title": "Democratic Presidential Nominee 2028",
-        "volume": 292774336.763647,
-        "liquidity": 14876843.90529,
+        "volume": 295302267.777598,
+        "liquidity": 15518985.60402,
         "comment_count": 256
       },
       {
-        "title": "2025 National Heads-Up Poker Championship Winner",
-        "volume": 176285056.610253,
-        "liquidity": 1731326.41034,
-        "comment_count": 113
-      },
-      {
-        "title": "F1 Drivers Champion",
-        "volume": 146383877.962135,
-        "liquidity": 246952.13062,
-        "comment_count": 228
-      },
-      {
-        "title": "Presidential Election Winner 2028",
-        "volume": 117400833.908492,
-        "liquidity": 9809262.25997,
-        "comment_count": 378
-      },
-      {
-        "title": "English Premier League Winner ",
-        "volume": 96845450.096677,
-        "liquidity": 5687149.73374,
-        "comment_count": 9
-      },
-      {
-        "title": "Republican Presidential Nominee 2028",
-        "volume": 85306009.032071,
-        "liquidity": 6282844.1997,
-        "comment_count": 112
-      },
-      {
-        "title": "Fed decision in December?",
-        "volume": 74357865.826169,
-        "liquidity": 4319807.37154,
+        "title": "Fed decision in October?",
+        "volume": 252485550.016563,
+        "liquidity": null,
         "comment_count": null
       },
       {
-        "title": "UEFA Champions League Winner ",
-        "volume": 72098967.772182,
-        "liquidity": 9528941.98506,
-        "comment_count": 39
+        "title": "Fed decision in September?",
+        "volume": 220591460.745363,
+        "liquidity": null,
+        "comment_count": null
       },
       {
-        "title": "Highest grossing movie in 2025?",
-        "volume": 67510577.489698,
-        "liquidity": 3435669.84272,
-        "comment_count": 874
+        "title": "Fed decision in January?",
+        "volume": 190915049.199301,
+        "liquidity": null,
+        "comment_count": null
+      },
+      {
+        "title": "Fed Interest Rates: November 2024",
+        "volume": 189537155.167586,
+        "liquidity": null,
+        "comment_count": null
+      },
+      {
+        "title": "2025 National Heads-Up Poker Championship Winner",
+        "volume": 176396954.164673,
+        "liquidity": 1783866.65467,
+        "comment_count": 115
+      },
+      {
+        "title": "F1 Drivers Champion",
+        "volume": 146427774.282387,
+        "liquidity": 339310.20266,
+        "comment_count": 228
+      },
+      {
+        "title": "Fed decision in July?",
+        "volume": 136613627.403447,
+        "liquidity": null,
+        "comment_count": null
+      },
+      {
+        "title": "Presidential Election Winner 2028",
+        "volume": 118328900.285754,
+        "liquidity": 9785819.21856,
+        "comment_count": 381
       }
     ],
     "events_with_most_markets": [
       {
         "title": "NHL Hart Memorial Trophy Winner",
         "market_count": 139,
-        "volume": 22321.716748
+        "volume": 22341.716748
       },
       {
         "title": "Democratic Presidential Nominee 2028",
         "market_count": 128,
-        "volume": 292774336.763647
+        "volume": 295302267.777598
       },
       {
         "title": "Presidential Election Winner 2028",
         "market_count": 128,
-        "volume": 117400833.908492
+        "volume": 118328900.285754
       },
       {
         "title": "Republican Presidential Nominee 2028",
         "market_count": 128,
-        "volume": 85306009.032071
+        "volume": 86469987.514516
       },
       {
         "title": "NHL Art Ross Trophy Winner",
@@ -134,12 +136,12 @@
       {
         "title": "2025 National Heads-Up Poker Championship Winner",
         "market_count": 104,
-        "volume": 176285056.610253
+        "volume": 176396954.164673
       },
       {
         "title": "The Masters - Winner ",
         "market_count": 102,
-        "volume": 20739.243321
+        "volume": 20778.239841
       },
       {
         "title": "NHL Calder Memorial Trophy Winner",
@@ -157,129 +159,139 @@
         "volume": 11895.086478
       }
     ],
-    "events_without_markets": 652
+    "events_without_markets": 50436
   },
   "markets_analysis": {
-    "total_markets": 21459,
-    "active_markets": 15546,
-    "closed_markets": 5913,
+    "total_markets": 22066,
+    "active_markets": 15820,
+    "closed_markets": 6246,
     "top_markets_by_volume": [
       {
         "question": "Will the Tennessee Titans win Super Bowl 2026?",
-        "volume": 67209831.321336,
-        "liquidity": 2475566.55113,
+        "volume": 67359247.638322,
+        "liquidity": 2490421.52562,
         "open_interest": null,
         "last_trade_price": 0.003
       },
       {
         "question": "Will the Miami Dolphins win Super Bowl 2026?",
-        "volume": 57216334.613688,
-        "liquidity": 2445805.79047,
+        "volume": 57325616.018187,
+        "liquidity": 2385841.67998,
         "open_interest": null,
         "last_trade_price": 0.002
       },
       {
         "question": "Xi Jinping out in 2025?",
-        "volume": 53778562.217948,
-        "liquidity": 789550.76332,
+        "volume": 54203660.51423,
+        "liquidity": 831396.198,
         "open_interest": null,
-        "last_trade_price": 0.024
+        "last_trade_price": 0.022
       },
       {
         "question": "Will the New York Jets win Super Bowl 2026?",
-        "volume": 52233282.523588,
-        "liquidity": 1932633.50699,
+        "volume": 52338289.683577,
+        "liquidity": 1879607.29342,
         "open_interest": null,
         "last_trade_price": 0.003
       },
       {
         "question": "Fed increases interest rates by 25+ bps after December 2025 meeting?",
-        "volume": 49575820.28247,
-        "liquidity": 2657582.43452,
+        "volume": 51055181.019784,
+        "liquidity": 2828158.7775,
         "open_interest": null,
         "last_trade_price": 0.006
       },
       {
         "question": "Will the Cleveland Browns win Super Bowl 2026?",
-        "volume": 48241360.478915,
-        "liquidity": 1521682.81857,
+        "volume": 48342835.155915,
+        "liquidity": 1469251.65773,
         "open_interest": null,
         "last_trade_price": 0.004
       },
       {
         "question": "Will the Las Vegas Raiders win Super Bowl 2026?",
-        "volume": 47194308.333292,
-        "liquidity": 2426615.30225,
+        "volume": 47292287.845286,
+        "liquidity": 2482176.28785,
         "open_interest": null,
-        "last_trade_price": 0.003
+        "last_trade_price": 0.004
       },
       {
         "question": "Will the New Orleans Saints win Super Bowl 2026?",
-        "volume": 44818261.176627,
-        "liquidity": 2025129.80086,
+        "volume": 44900182.097286,
+        "liquidity": 1986210.60348,
         "open_interest": null,
         "last_trade_price": 0.003
       },
       {
         "question": "Will the Carolina Panthers win Super Bowl 2026?",
-        "volume": 40284396.250969,
-        "liquidity": 1992517.39138,
+        "volume": 40366766.205632,
+        "liquidity": 1970931.68441,
         "open_interest": null,
-        "last_trade_price": 0.003
+        "last_trade_price": 0.002
       },
       {
         "question": "Will Rob Riggle win the 2025 National Heads-Up Poker Championship?",
-        "volume": 38141844.5702,
-        "liquidity": 19659.88341,
+        "volume": 38143350.6202,
+        "liquidity": 21614.66799,
         "open_interest": null,
-        "last_trade_price": 0.002
+        "last_trade_price": 0.001
       }
     ],
     "markets_by_volume_range": {
-      "< $1K": 5228,
-      "$1K - $10K": 2879,
-      "$10K - $100K": 2233,
-      "$100K - $1M": 1128,
-      "> $1M": 433
+      "< $1K": 5215,
+      "$1K - $10K": 2983,
+      "$10K - $100K": 2304,
+      "$100K - $1M": 1175,
+      "> $1M": 435
     }
   },
   "users_analysis": {
-    "total_users": 759,
-    "whale_users": 759,
-    "users_with_names": 759,
+    "total_users": 4019,
+    "whale_users": 816,
+    "users_with_names": 4019,
     "top_users_by_value": [],
-    "users_by_portfolio_size": {}
+    "users_by_portfolio_size": {},
+    "total_user_trades": 0,
+    "total_user_activity": 97,
+    "total_current_positions": 0,
+    "total_closed_positions": 0,
+    "users_with_trades": 0,
+    "users_with_positions": 0,
+    "top_traders": []
   },
   "transactions_analysis": {
     "total_transactions": 0,
     "whale_transactions": 0,
     "total_volume": 0,
+    "average_transaction_size": 0,
     "buy_sell_breakdown": {},
     "largest_transactions": [],
-    "transactions_by_size": {}
+    "transactions_by_size": {},
+    "transactions_last_24h": 0,
+    "most_active_traders": []
   },
   "holders_analysis": {
-    "total_holder_records": 1080,
-    "unique_holders": 759,
-    "markets_with_holders": 39,
+    "total_holder_records": 1088,
+    "unique_holders": 816,
+    "markets_with_holders": 47,
     "top_holders": [
       {
         "proxy_wallet": "0x9c667a1d...",
         "username": "InfiniteCrypt0",
         "position_count": 5,
-        "total_amount": 7272698.616891
+        "total_amount": 8006441.640084
       },
       {
         "proxy_wallet": "0xd4f584f5...",
         "username": "MountCuni4Ever",
-        "position_count": 5,
-        "total_amount": 5604127.21879
+        "position_count": 4,
+        "total_amount": 4425877.096281
       },
       {
         "proxy_wallet": "0xa61ef877...",
         "username": "risk-manager",
-        "position_count": 13,
-        "total_amount": 5338586.40188
+        "position_count": 10,
+        "total_amount": 4279879.840996
       },
       {
         "proxy_wallet": "0x60073655...",
@@ -300,28 +312,22 @@
         "total_amount": 2077997.458745
       },
       {
-        "proxy_wallet": "0x2e3ea056...",
-        "username": "HDGB",
-        "position_count": 5,
-        "total_amount": 1962501.228584
-      },
-      {
         "proxy_wallet": "0x4e09ac04...",
         "username": "scottxia1988",
         "position_count": 1,
         "total_amount": 1959571.641161
       },
       {
+        "proxy_wallet": "0x2e3ea056...",
+        "username": "HDGB",
+        "position_count": 3,
+        "total_amount": 1868187.845051
+      },
+      {
         "proxy_wallet": "0x8b5a7da2...",
         "username": "Joe-Biden",
         "position_count": 1,
         "total_amount": 1446463.421859
-      },
-      {
-        "proxy_wallet": "0xa9679eed...",
-        "username": "vitalikxbt2",
-        "position_count": 7,
-        "total_amount": 1369829.798294
       },
       {
         "proxy_wallet": "0xaf7ffa4e...",
@@ -342,10 +348,10 @@
         "total_amount": 999999.995
       },
       {
-        "proxy_wallet": "0xb4f2f0c8...",
-        "username": "Desy-1725192185234",
-        "position_count": 2,
-        "total_amount": 921446.569476
+        "proxy_wallet": "0xa9679eed...",
+        "username": "vitalikxbt2",
+        "position_count": 4,
+        "total_amount": 999999.877993
       },
       {
         "proxy_wallet": "0xefdcf6e7...",
@@ -360,16 +366,10 @@
         "total_amount": 821214.16143
       },
       {
-        "proxy_wallet": "0x921d8ed2...",
-        "username": "e5c0eeEF61a5E65eC63Fa744D51F3b",
-        "position_count": 1,
-        "total_amount": 803133.509593
-      },
-      {
-        "proxy_wallet": "0x216509be...",
-        "username": "HotChili",
-        "position_count": 4,
-        "total_amount": 789413.733472
+        "proxy_wallet": "0x011f2d37...",
+        "username": "11122",
+        "position_count": 9,
+        "total_amount": 817328.467066
       },
       {
         "proxy_wallet": "0xc6587b11...",
@@ -378,10 +378,107 @@
         "total_amount": 745824.699231
       },
       {
-        "proxy_wallet": "0x011f2d37...",
-        "username": "11122",
-        "position_count": 9,
-        "total_amount": 740686.854562
+        "proxy_wallet": "0xd281aea9...",
+        "username": "Solapump",
+        "position_count": 1,
+        "total_amount": 711999.941394
+      },
+      {
+        "proxy_wallet": "0x216509be...",
+        "username": "HotChili",
+        "position_count": 4,
+        "total_amount": 619012.280341
+      },
+      {
+        "proxy_wallet": "0x66afc16f...",
+        "username": "whts",
+        "position_count": 1,
+        "total_amount": 586209.459854
+      }
+    ]
+  },
+  "comments_analysis": {
+    "total_comments": 6248,
+    "comments_with_reactions": 0,
+    "total_reactions": 0,
+    "users_who_commented": 3247,
+    "top_commenters": [
+      {
+        "proxy_wallet": "0x5ce43a3e...",
+        "username": "lmtfalone",
+        "comment_count": 107
+      },
+      {
+        "proxy_wallet": "0x1f64f273...",
+        "username": "Car",
+        "comment_count": 36
+      },
+      {
+        "proxy_wallet": "0x6d1c71f7...",
+        "username": "masnjr",
+        "comment_count": 24
+      },
+      {
+        "proxy_wallet": "0x2a27ea41...",
+        "username": "pink.impala",
+        "comment_count": 24
+      },
+      {
+        "proxy_wallet": "0x21f9d4ce...",
+        "username": "frosen",
+        "comment_count": 24
+      },
+      {
+        "proxy_wallet": "0x0b587a2d...",
+        "username": "PMTraderAdam",
+        "comment_count": 24
+      },
+      {
+        "proxy_wallet": "0xfbba7a06...",
+        "username": "BigRabbit",
+        "comment_count": 23
+      },
+      {
+        "proxy_wallet": "0x4a844c53...",
+        "username": "Peerless.Gem",
+        "comment_count": 22
+      },
+      {
+        "proxy_wallet": "0x793a4f86...",
+        "username": "DeacLCFS06",
+        "comment_count": 21
+      },
+      {
+        "proxy_wallet": "0x30ab4092...",
+        "username": "NoSteinNoGate",
+        "comment_count": 21
+      }
+    ],
+    "most_liked_comments": [
+      {
+        "content": "You may even get tired of winning! And you'll say, 'Please, please. It's too much winning. We can't take it anymore. Mr. President, it's too much winning!'",
+        "likes_count": 28,
+        "username": "masnjr"
+      },
+      {
+        "content": "\"Trump says the Moon Landing was faked\". Ok, Barron, I am not betting on this one.",
+        "likes_count": 24,
+        "username": "McBet"
+      },
+      {
+        "content": "BREAKING : gemini 3.0 release shifted from dec to nov to \"satisfy influx of polymarket gamblers\" (internal sources)",
+        "likes_count": 23,
+        "username": "GiantCumRat"
+      },
+      {
+        "content": "I need a parlay on flat earth, jesus returning, and aliens existing!",
+        "likes_count": 23,
+        "username": "MomoAyase"
+      },
+      {
+        "content": "Imagine losing your hard earned money because of 4chan incels trying to be detectives lmao.",
+        "likes_count": 17,
+        "username": "Kamala4Prison"
       }
     ]
   }

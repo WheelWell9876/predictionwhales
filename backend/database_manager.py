@@ -348,6 +348,60 @@ class DatabaseManager:
 
         self.logger.info("Database reset complete")
 
+    def remove_closed_events(self):
+        """Remove all closed/inactive events and their associated data"""
+        self.logger.info("🧹 Removing closed/inactive events and associated data...")
+        
+        conn = self.get_persistent_connection()
+        cursor = conn.cursor()
+        
+        # Get count before deletion
+        cursor.execute("SELECT COUNT(*) FROM events WHERE closed = 1 OR active = 0")
+        closed_count = cursor.fetchone()[0]
+        
+        if closed_count == 0:
+            self.logger.info("No closed events to remove")
+            return 0
+        
+        self.logger.info(f"Found {closed_count} closed/inactive events to remove")
+        
+        # Get IDs of closed events
+        cursor.execute("SELECT id FROM events WHERE closed = 1 OR active = 0")
+        closed_event_ids = [row[0] for row in cursor.fetchall()]
+        
+        if not closed_event_ids:
+            return 0
+        
+        # Create placeholders for SQL IN clause
+        placeholders = ','.join('?' * len(closed_event_ids))
+        
+        # Delete markets associated with closed events
+        cursor.execute(f"SELECT COUNT(*) FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
+        markets_count = cursor.fetchone()[0]
+        
+        cursor.execute(f"DELETE FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
+        self.logger.info(f"  Deleted {markets_count} markets associated with closed events")
+        
+        # Delete comments associated with closed events
+        cursor.execute(f"SELECT COUNT(*) FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
+        comments_count = cursor.fetchone()[0]
+        
+        cursor.execute(f"DELETE FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
+        self.logger.info(f"  Deleted {comments_count} comments associated with closed events")
+        
+        # Delete the closed events themselves
+        cursor.execute(f"DELETE FROM events WHERE id IN ({placeholders})", closed_event_ids)
+        
+        conn.commit()
+        
+        # Vacuum to reclaim space
+        self.logger.info("  Running VACUUM to reclaim space...")
+        conn.execute("VACUUM")
+        
+        self.logger.info(f"✅ Successfully removed {closed_count} closed events and associated data")
+        
+        return closed_count
+
     def get_statistics(self) -> Dict[str, int]:
         """Get database statistics"""
         stats = {}
