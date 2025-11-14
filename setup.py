@@ -90,16 +90,24 @@ def print_selective_help():
     print("  • events   - Prediction markets events")
     print("  • markets  - Individual prediction markets")
     print("  • users    - User profiles (primarily whales)")
-    print("  • transactions - Trading transactions")
+    print("  • transactions - COMPREHENSIVE whale trading data:")
+    print("                   - Whale transactions")
+    print("                   - Current positions")
+    print("                   - User activity")
+    print("                   - Portfolio values")
+    print("                   - Closed positions (>$500)")
+    print("                   - User trades")
     print("  • comments - Event comments and reactions")
     print("\n💡 Example Commands:")
     print("  python setup.py --load-tags        # Load only tags")
     print("  python setup.py --delete-markets   # Delete only markets")
     print("  python setup.py --load-users       # Load only whale users")
+    print("  python setup.py --load-transactions # Load comprehensive whale data")
+    print("  python setup.py --load-transactions --basic-transactions # Basic mode")
     print("\n⚠️  Note: Some data types depend on others:")
     print("  • Markets require Events")
     print("  • Users require Markets")
-    print("  • Transactions require Markets")
+    print("  • Transactions work best with Users and Markets loaded")
     print("  • Comments require Events")
     print("=" * 70)
 
@@ -189,7 +197,7 @@ UTILITIES:
     load_group.add_argument('--load-users', action='store_true',
                            help='Load only users data (whales)')
     load_group.add_argument('--load-transactions', action='store_true',
-                           help='Load only transactions data')
+                           help='Load comprehensive whale transaction data (positions, activity, values, trades)')
     load_group.add_argument('--load-comments', action='store_true',
                            help='Load only comments data')
     
@@ -206,7 +214,7 @@ UTILITIES:
     delete_group.add_argument('--delete-users', action='store_true',
                              help='Delete only users data')
     delete_group.add_argument('--delete-transactions', action='store_true',
-                             help='Delete only transactions data')
+                             help='Delete all transaction and trading data')
     delete_group.add_argument('--delete-comments', action='store_true',
                              help='Delete only comments data')
     
@@ -217,8 +225,10 @@ UTILITIES:
                         help='Show detailed help for selective operations')
     parser.add_argument('--closed-events', action='store_true',
                         help='Include closed events when loading events')
-    parser.add_argument('--limit-markets', type=int, default=20,
-                        help='Limit number of markets for transaction loading (default: 20)')
+    parser.add_argument('--comprehensive', action='store_true', default=True,
+                        help='Use comprehensive whale data fetching for transactions (default: True)')
+    parser.add_argument('--basic-transactions', action='store_true',
+                        help='Use basic transaction fetching instead of comprehensive')
 
     args = parser.parse_args()
 
@@ -315,7 +325,9 @@ UTILITIES:
     if args.load_users:
         selective_loads.append(('users', fetcher.load_users_only))
     if args.load_transactions:
-        selective_loads.append(('transactions', lambda: fetcher.load_transactions_only(limit_markets=args.limit_markets)))
+        # Use comprehensive fetching by default, unless --basic-transactions is specified
+        use_comprehensive = not args.basic_transactions
+        selective_loads.append(('transactions', lambda: fetcher.load_transactions_only(comprehensive=use_comprehensive)))
     if args.load_comments:
         selective_loads.append(('comments', fetcher.load_comments_only))
     
@@ -347,8 +359,19 @@ UTILITIES:
                     print(f"  ✅ {name}: {result['whales_found']} whales, {result['enriched']} enriched")
                 elif 'comments' in result:
                     print(f"  ✅ {name}: {result['comments']} comments, {result['reactions']} reactions")
+                elif 'whale_users' in result:
+                    # Comprehensive transaction data results
+                    print(f"  ✅ {name}: Comprehensive whale data loaded")
+                    print(f"     Whale users: {result.get('whale_users', 0):,}")
+                    print(f"     Positions: {result.get('current_positions', 0):,}")
+                    print(f"     Closed positions: {result.get('closed_positions', 0):,}")
+                    print(f"     Activities: {result.get('user_activities', 0):,}")
+                    print(f"     Portfolio values: {result.get('portfolio_values', 0):,}")
+                    print(f"     Trades: {result.get('trades', 0):,}")
+                    print(f"     Transactions: {result.get('transactions', 0):,}")
                 elif 'transactions' in result:
-                    print(f"  ✅ {name}: {result['transactions']} from {result['markets_processed']} markets")
+                    # Basic transaction results (legacy)
+                    print(f"  ✅ {name}: {result['transactions']} transactions loaded")
             else:
                 print(f"  ❌ {name}: Failed")
         

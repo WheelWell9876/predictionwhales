@@ -30,7 +30,7 @@ class UsersManager(DatabaseManager):
         self.TOP_HOLDERS_PER_MARKET = 25  # Top 25 holders per market
         
         # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
+        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
         
         # Thread-safe lock for database operations
         self._db_lock = Lock()

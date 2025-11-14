@@ -224,3 +224,6 @@ frontend/node_modules
 *.db
 polymarket_terminal.db
 polymarket_terminal.db.backup*
+
+*.db-shm
+*.db-shm
