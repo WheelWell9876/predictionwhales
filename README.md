@@ -29,6 +29,9 @@ python setup.py --delete-users --load-users
 python setup.py --delete-transactions --load-transactions
 python setup.py --delete-comments --load-comments
 
+python db_utils.py delete-tx
+python db_utils.py status
+
 
 python cleanup_closed_events.py
 python analyze_data.py --db polymarket_terminal.db --output report.json
@@ -36,3 +39,6 @@ python analyze_data.py --db polymarket_terminal.db --output report.json
 
 
 
+
+
+I need help with setting up functionality with my API endpoints for Polymarket. 
