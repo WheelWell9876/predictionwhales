@@ -13,8 +13,8 @@ import logging
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).parent))
 
-from backend.data_fetcher import PolymarketDataFetcher
-from backend.database_schema import create_complete_schema
+from backend.database.data_fetcher import PolymarketDataFetcher
+from backend.database.database_schema import create_complete_schema
 
 
 def setup_environment():

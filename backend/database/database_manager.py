@@ -18,7 +18,7 @@ class DatabaseManager:
 
     def __init__(self, db_path: str = None):
         # Import Config here to avoid circular import
-        from .config import Config
+        from ..config import Config
 
         self.db_path = db_path or Config.DATABASE_PATH
         self.config = Config

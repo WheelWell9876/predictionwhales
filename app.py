@@ -537,7 +537,7 @@ def internal_error(error):
 
 if __name__ == '__main__':
     # Initialize database if needed
-    from backend import database_schema
+    from backend.database import database_schema
 
     database_schema.create_complete_schema(DATABASE_PATH)
     

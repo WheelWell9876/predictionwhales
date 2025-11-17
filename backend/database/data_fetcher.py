@@ -10,7 +10,7 @@ import schedule
 import threading
 from datetime import datetime
 from typing import Dict, Optional, List
-from backend.database_manager import DatabaseManager
+from backend.database.database_manager import DatabaseManager
 from backend.events_manager import EventsManager
 from backend.markets_manager import MarketsManager
 from backend.series_manager import SeriesManager
