@@ -1,58 +1,50 @@
+"""
+Store Markets
+Handles storage functionality for markets data
+"""
+
 from datetime import datetime
 import json
 from threading import Lock
 from typing import Dict, List
 from backend.database.database_manager import DatabaseManager
 
-class StoreMarkets(DatabaseManager):
-    """Manager for storing markets with multithreading support"""
+class StoreMarketsManager(DatabaseManager):
+    """Manager for storing market data with thread-safe operations"""
 
-    def __init__(self, max_workers: int = None):
+    def __init__(self):
         super().__init__()
-        from ...config import Config
+        from backend.config import Config
         self.config = Config
-        self.base_url = Config.GAMMA_API_URL
-        
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
         
         # Thread-safe lock for database operations
         self._db_lock = Lock()
-        
-        # Thread-safe counters
-        self._progress_lock = Lock()
-        self._progress_counter = 0
-        self._error_counter = 0
-        self._comments_counter = 0
-        self._reactions_counter = 0
-
 
     def _store_markets(self, markets: List[Dict], event_id: str = None):
-            """
-            Store multiple markets in the database
-            Thread-safe when called with _db_lock
-            """
-            market_records = []
-            
-            for market in markets:
-                market_record = self._prepare_market_record(market, event_id)
-                market_records.append(market_record)
-            
-            if market_records:
+        """
+        Store multiple markets in the database (thread-safe)
+        """
+        market_records = []
+        
+        for market in markets:
+            market_record = self._prepare_market_record(market, event_id)
+            market_records.append(market_record)
+        
+        if market_records:
+            with self._db_lock:
                 self.bulk_insert_or_replace('markets', market_records)
                 self.logger.debug(f"Stored {len(market_records)} markets for event {event_id}")
-    
+
     def _store_market_detailed(self, market: Dict):
         """
-        Store detailed market information
-        Thread-safe when called with _db_lock
+        Store detailed market information (thread-safe)
         """
-        market_record = self._prepare_detailed_market_record(market)
+        market_record = self._prepare_market_record(market, market.get('eventId'))
         
         with self._db_lock:
             self.insert_or_replace('markets', market_record)
             self.logger.debug(f"Stored detailed market {market.get('id')}")
-    
+
     def _prepare_market_record(self, market: Dict, event_id: str = None) -> Dict:
         """
         Prepare a market record for database insertion
@@ -134,9 +126,3 @@ class StoreMarkets(DatabaseManager):
             'updated_at': market.get('updatedAt'),
             'fetched_at': datetime.now().isoformat()
         }
-    
-    def _prepare_detailed_market_record(self, market: Dict) -> Dict:
-        """
-        Prepare a detailed market record for database insertion
-        """
-        return self._prepare_market_record(market)

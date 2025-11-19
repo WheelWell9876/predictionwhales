@@ -1,274 +1,240 @@
 """
-Markets Manager for Polymarket Terminal
-Handles fetching, processing, and storing market data with multithreading support
+Markets Manager for Polymarket Terminal - MULTITHREADED
+Handles fetching, processing, and storing market data with concurrent requests
 """
 
 import requests
 import json
 import time
+import sqlite3
+import gc
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-from .database.database_manager import DatabaseManager
-from .config import Config
+from backend.database.database_manager import DatabaseManager
+from backend.config import Config
+from backend.fetch.entity.batch.batch_markets import BatchMarketsManager
+from backend.fetch.entity.id.id_markets import IdMarketsManager
+from backend.database.entity.store_markets import StoreMarketsManager
 
-class MarketsManager(DatabaseManager):
+class MarketsManager:
     """Manager for market-related operations with multithreading support"""
     
-    def __init__(self, max_workers: int = None):
-        super().__init__()
-        from .config import Config
+    def __init__(self):
+        # Core configuration
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
         self.data_api_url = Config.DATA_API_URL
         
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
+        # Initialize managers
+        self.db_manager = DatabaseManager()
+        self.batch_manager = BatchMarketsManager()
+        self.id_manager = IdMarketsManager()
+        self.store_manager = StoreMarketsManager()
         
-        # Thread-safe lock for database operations
-        self._db_lock = Lock()
+        # Setup logging
+        self.logger = self.db_manager.logger
         
-        # Thread-safe counters
-        self._progress_lock = Lock()
-        self._progress_counter = 0
-        self._error_counter = 0
-    
+        # Thread safety
+        self._lock = Lock()
 
-    
-    def _fetch_and_store_event_markets(self, event: Dict, idx: int, total_events: int) -> List[Dict]:
+    def fetch_all_markets_from_events(self, events: List[Dict]) -> List[Dict]:
         """
-        Helper method to fetch and store markets for a single event
-        Thread-safe wrapper for parallel execution
-        """
-        event_id = event.get('id') if isinstance(event, dict) else event
-        
-        try:
-            # Fetch markets for this event
-            markets = self._fetch_markets_for_event(event_id)
-            
-            if markets:
-                # Store markets (thread-safe)
-                with self._db_lock:
-                    self._store_markets(markets, event_id)
-            
-            # Update progress (thread-safe)
-            with self._progress_lock:
-                self._progress_counter += 1
-                if self._progress_counter % 10 == 0 or self._progress_counter == total_events:
-                    self.logger.info(f"Progress: {self._progress_counter}/{total_events} events processed")
-            
-            # Rate limiting (distributed across threads)
-            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
-            
-            return markets
-            
-        except Exception as e:
-            with self._progress_lock:
-                self._error_counter += 1
-            self.logger.error(f"Error fetching markets for event {event_id}: {e}")
-            return []
-    
-
-    
-
-
-    
-    def _fetch_markets_for_event(self, event_id: str) -> List[Dict]:
-        """
-        Fetch markets for a specific event
-        """
-        try:
-            # First try to get markets from event endpoint
-            url = f"{self.base_url}/events/{event_id}"
-            params = {"include_markets": "true"}
-            
-            response = requests.get(
-                url,
-                params=params,
-                headers=self.config.get_api_headers(),
-                timeout=self.config.REQUEST_TIMEOUT
-            )
-            
-            if response.status_code == 200:
-                event_data = response.json()
-                return event_data.get('markets', [])
-            
-            # Fallback to markets endpoint with event filter
-            url = f"{self.base_url}/markets"
-            params = {"event_id": event_id, "limit": self.config.MAX_MARKETS_PER_EVENT}
-            
-            response = requests.get(
-                url,
-                params=params,
-                headers=self.config.get_api_headers(),
-                timeout=self.config.REQUEST_TIMEOUT
-            )
-            response.raise_for_status()
-            
-            return response.json()
-            
-        except requests.exceptions.RequestException as e:
-            self.logger.error(f"Error fetching markets for event {event_id}: {e}")
-            return []
-    
-
-    
-
-    
-
-    
-    def process_all_markets_detailed(self, use_parallel: bool = True):
-        """
-        Process all markets to fetch detailed information
+        Fetch all markets from a list of events with multithreading
         
         Args:
-            use_parallel: If True, uses parallel fetching for sub-requests (tags, OI)
+            events: List of event dictionaries
+        """
+        return self.batch_manager.fetch_all_markets_from_events(events)
+
+    def fetch_market_by_id(self, market_id: str) -> Optional[Dict]:
+        """
+        Fetch detailed information for a specific market
+        """
+        return self.id_manager.fetch_market_by_id(market_id)
+
+    def process_all_markets_detailed(self, num_threads: int = 20):
+        """
+        Process all markets to fetch detailed information with multithreading
+        
+        Args:
+            num_threads: Number of concurrent threads (default: 20)
         """
         # Get all market IDs from database
-        markets = self.fetch_all("SELECT id, condition_id FROM markets ORDER BY volume DESC")
+        markets = self.db_manager.fetch_all("SELECT id, question FROM markets ORDER BY volume DESC")
         
-        self.logger.info(f"Processing {len(markets)} markets for detailed information using {self.max_workers} threads...")
+        self.logger.info(f"Processing {len(markets)} markets for detailed information ({num_threads} threads)...")
         
-        # Reset counters
-        self._progress_counter = 0
-        self._error_counter = 0
+        processed = 0
+        errors = 0
+        lock = Lock()
         
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            # Choose which fetch method to use
-            fetch_method = self.fetch_market_by_id_parallel if use_parallel else self.fetch_market_by_id
-            
-            # Submit all tasks
-            future_to_market = {
-                executor.submit(self._process_market_detailed, market, fetch_method, len(markets)): market 
-                for market in markets
-            }
-            
-            # Process completed tasks
-            for future in as_completed(future_to_market):
-                market = future_to_market[future]
-                try:
-                    future.result()
-                except Exception as e:
-                    self.logger.error(f"Error processing market {market['id']}: {e}")
+        def process_market(market):
+            nonlocal processed, errors
+            try:
+                self.fetch_market_by_id(market['id'])
+                with lock:
+                    processed += 1
+                    if processed % 100 == 0:
+                        self.logger.info(f"Processed {processed}/{len(markets)} markets")
+            except Exception as e:
+                with lock:
+                    errors += 1
+                self.logger.error(f"Error processing market {market['id']}: {e}")
         
-        self.logger.info(f"Market processing complete. Processed: {self._progress_counter}, Errors: {self._error_counter}")
-    
-    def _process_market_detailed(self, market: Dict, fetch_method, total_markets: int):
+        # Process markets concurrently
+        with ThreadPoolExecutor(max_workers=num_threads) as executor:
+            executor.map(process_market, markets)
+        
+        self.logger.info(f"✅ Market processing complete. Processed: {processed}, Errors: {errors}")
+
+    def fetch_market_open_interest(self, market_id: str, condition_id: str):
         """
-        Helper method to process a single market
-        Thread-safe wrapper for parallel execution
+        Fetch open interest data for a market (placeholder for future implementation)
         """
+        # This would be implemented based on your open interest API endpoint
+        pass
+
+    def _close_all_connections(self):
+        """Close all database connections from managers"""
+        self.logger.info("Closing all market manager database connections...")
+        
+        # Close connections from all sub-managers
+        managers = [
+            self.db_manager,
+            self.batch_manager,
+            self.id_manager,
+            self.store_manager
+        ]
+        
+        for manager in managers:
+            try:
+                if hasattr(manager, 'close_connection'):
+                    manager.close_connection()
+            except:
+                pass
+        
+        # Force garbage collection
+        gc.collect()
+        
+        # Small delay to ensure connections are closed
+        time.sleep(0.5)
+
+    def delete_markets_only(self) -> Dict:
+        """
+        Delete markets data
+        
+        Returns:
+            Dict with success status, number deleted, and any error
+        """
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("🗑️  Deleting MARKETS Data")
+        self.logger.info("=" * 60)
+        
+        result = {'success': False, 'deleted': 0, 'error': None}
+        
         try:
-            fetch_method(market['id'])
+            # Close all connections first
+            self._close_all_connections()
             
-            with self._progress_lock:
-                self._progress_counter += 1
-                if self._progress_counter % 50 == 0:
-                    self.logger.info(f"Processed {self._progress_counter}/{total_markets} markets")
+            # Create a fresh database connection for deletion
+            conn = sqlite3.connect(
+                self.db_manager.db_path,
+                timeout=30.0,
+                isolation_level='EXCLUSIVE'
+            )
             
-            # Rate limiting (distributed across threads)
-            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
+            try:
+                cursor = conn.cursor()
+                
+                # Enable WAL mode
+                cursor.execute("PRAGMA journal_mode=WAL")
+                cursor.execute("PRAGMA synchronous=NORMAL")
+                
+                # Get current count
+                cursor.execute("SELECT COUNT(*) FROM markets")
+                before_count = cursor.fetchone()[0]
+                
+                # Begin exclusive transaction
+                cursor.execute("BEGIN EXCLUSIVE")
+                
+                # Delete all related data
+                tables_to_clear = [
+                    'market_tags',
+                    'market_open_interest',
+                    'market_holders',
+                    'markets'
+                ]
+                
+                for table in tables_to_clear:
+                    cursor.execute(f"DELETE FROM {table}")
+                    self.logger.info(f"  Cleared table: {table}")
+                
+                # Commit the transaction
+                conn.commit()
+                
+                result['deleted'] = before_count
+                
+            finally:
+                conn.close()
+            
+            result['success'] = True
+            self.logger.info(f"✅ Deleted {result['deleted']} markets and related data")
             
         except Exception as e:
-            with self._progress_lock:
-                self._error_counter += 1
-            raise e
-    
-    def batch_fetch_markets(self, market_ids: List[str], use_parallel: bool = True) -> List[Dict]:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error deleting markets: {e}")
+        
+        finally:
+            # Reinitialize connections for future operations
+            self.db_manager = DatabaseManager()
+            
+        return result
+
+    def load_markets_only(self, event_ids: List[str] = None) -> Dict:
         """
-        Fetch multiple markets in parallel
+        Load only markets data
         
         Args:
-            market_ids: List of market IDs to fetch
-            use_parallel: If True, uses parallel fetching for sub-requests
-            
+            event_ids: Optional list of event IDs to fetch markets for
+        
         Returns:
-            List of market dictionaries
+            Dict with success status, count of markets loaded, and any error
         """
-        self.logger.info(f"Batch fetching {len(market_ids)} markets using {self.max_workers} threads...")
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("📊 Loading MARKETS Only")
+        self.logger.info("=" * 60)
         
-        markets = []
-        fetch_method = self.fetch_market_by_id_parallel if use_parallel else self.fetch_market_by_id
+        start_time = time.time()
+        result = {'success': False, 'count': 0, 'error': None}
         
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            future_to_id = {
-                executor.submit(fetch_method, market_id): market_id 
-                for market_id in market_ids
-            }
-            
-            for future in as_completed(future_to_id):
-                market_id = future_to_id[future]
-                try:
-                    market = future.result()
-                    if market:
-                        markets.append(market)
-                except Exception as e:
-                    self.logger.error(f"Error fetching market {market_id}: {e}")
-        
-        return markets
-    
-    def fetch_global_open_interest(self) -> Optional[float]:
-        """
-        Fetch global open interest across all markets
-        """
         try:
-            url = f"{self.data_api_url}/oi"
-            params = {"market": "GLOBAL"}
-            
-            response = requests.get(
-                url,
-                params=params,
-                headers=self.config.get_api_headers(),
-                timeout=self.config.REQUEST_TIMEOUT
-            )
-            response.raise_for_status()
-            
-            data = response.json()
-            
-            if data and len(data) > 0:
-                global_oi = data[0].get('value', 0)
+            if event_ids:
+                # Load markets for specific events
+                events = [{'id': eid} for eid in event_ids]
+            else:
+                # Load markets for all active events
+                events = self.db_manager.fetch_all("""
+                    SELECT id, slug FROM events 
+                    WHERE active = 1
+                """)
                 
-                # Store global OI
-                record = {
-                    'market_id': 'GLOBAL',
-                    'condition_id': 'GLOBAL',
-                    'open_interest': global_oi,
-                    'timestamp': datetime.now().isoformat()
-                }
-                self.insert_or_replace('market_open_interest', record)
-                
-                self.logger.info(f"Global Open Interest: ${global_oi:,.2f}")
-                return global_oi
+                if not events:
+                    self.logger.warning("⚠️  No active events found. Please load events first.")
+                    result['error'] = "No events available"
+                    return result
             
-            return None
+            markets = self.fetch_all_markets_from_events(events)
+            result['count'] = len(markets)
+            result['success'] = True
             
-        except requests.exceptions.RequestException as e:
-            self.logger.error(f"Error fetching global open interest: {e}")
-            return None
-    
-    def daily_scan(self, use_parallel: bool = True):
-        """
-        Perform daily scan for market updates
-        
-        Args:
-            use_parallel: If True, uses parallel fetching optimizations
-        """
-        self.logger.info("Starting daily market scan with multithreading...")
-        
-        # Get all active events
-        events = self.fetch_all("SELECT id FROM events WHERE active = 1")
-        
-        # Fetch markets for active events (parallelized)
-        all_markets = self.fetch_all_markets_from_events(events)
-        
-        # Process detailed information for markets (parallelized)
-        self.process_all_markets_detailed(use_parallel=use_parallel)
-        
-        # Fetch global open interest
-        if self.config.FETCH_OPEN_INTEREST:
-            self.fetch_global_open_interest()
-        
-        self.logger.info(f"Daily market scan complete. Total markets: {len(all_markets)}")
-        
-        return len(all_markets)
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"✅ Markets loaded: {result['count']}")
+            self.logger.info(f"⏱️  Time taken: {elapsed_time:.2f} seconds")
+            
+        except Exception as e:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error loading markets: {e}")
+            
+        return result

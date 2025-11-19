@@ -1,459 +1,318 @@
 #!/usr/bin/env python3
 """
-Setup script for Polymarket Terminal Backend
-Enhanced with selective loading and deletion capabilities
+Polymarket Terminal Setup and Data Management
+Main entry point for database setup and data loading operations
 """
 
 import sys
-import argparse
-from pathlib import Path
 import time
-import logging
+import argparse
+import subprocess
+from pathlib import Path
+from datetime import datetime
 
 # Add backend to path
 sys.path.insert(0, str(Path(__file__).parent))
 
+from backend.database.database_manager import DatabaseManager
 from backend.database.data_fetcher import PolymarketDataFetcher
-from backend.database.database_schema import create_complete_schema
 
-
-def setup_environment():
-    """Setup environment variables if .env file doesn't exist"""
-    env_file = Path('.env')
-
-    if not env_file.exists():
-        print("Creating .env file with default configuration...")
-
-        default_env = """# Polymarket Terminal Configuration
-
-# Database
-DATABASE_PATH=polymarket_terminal.db
-
-# API URLs
-GAMMA_API_URL=https://gamma-api.polymarket.com
-DATA_API_URL=https://data-api.polymarket.com
-CLOB_API_URL=https://clob.polymarket.com
-
-# WebSocket (for future use)
-WS_URL=wss://ws.polymarket.com
-
-# Logging
-LOG_LEVEL=INFO
-LOG_FILE=polymarket_fetcher.log
-
-# Daily Scan Settings
-ENABLE_DAILY_SCAN=true
-DAILY_SCAN_TIME=02:00
-
-# Feature Flags
-FETCH_CLOSED_EVENTS=false
-FETCH_ARCHIVED=false
-FETCH_LIVE_VOLUME=true
-FETCH_OPEN_INTEREST=true
-FETCH_SERIES=true
-FETCH_TAGS=true
-
-# Limits
-MAX_EVENTS_PER_RUN=1000
-MAX_MARKETS_PER_EVENT=100
-"""
-
-        with open(env_file, 'w') as f:
-            f.write(default_env)
-
-        print("✅ .env file created with default settings")
-        print("   Please edit .env file to customize your configuration")
-        print("")
-
-
-def initialize_database():
-    """Initialize database with complete schema"""
-    print("Initializing database schema...")
+def run_command(command: str, description: str):
+    """Run a shell command and display the result"""
+    print(f"\n📌 {description}...")
     try:
-        create_complete_schema()
-        print("✅ Database schema initialized successfully")
+        result = subprocess.run(command, shell=True, capture_output=True, text=True)
+        if result.returncode == 0:
+            print(f"✅ {description} completed successfully")
+        else:
+            print(f"❌ Error in {description}: {result.stderr}")
+            return False
+    except Exception as e:
+        print(f"❌ Failed to run {description}: {e}")
+        return False
+    return True
+
+def setup_database():
+    """Initialize the database schema"""
+    print("\n" + "=" * 60)
+    print("🔧 SETTING UP DATABASE")
+    print("=" * 60)
+    
+    try:
+        db = DatabaseManager()
+        # Initialize schema is already called in __init__
+        print("✅ Database initialized successfully")
+        
+        # Show initial stats
+        print("\n📊 Database Tables Created:")
+        tables = db.fetch_all("""
+            SELECT name FROM sqlite_master 
+            WHERE type='table' 
+            ORDER BY name
+        """)
+        for table in tables:
+            print(f"   • {table['name']}")
+        
         return True
     except Exception as e:
-        print(f"❌ Error initializing database: {e}")
+        print(f"❌ Database setup failed: {e}")
         return False
 
+def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
+    """Load a specific data section"""
+    print("\n" + "=" * 60)
+    print(f"📥 LOADING {section.upper()}")
+    print("=" * 60)
+    
+    start_time = time.time()
+    
+    try:
+        if section == "events":
+            result = fetcher.load_events_only(closed=kwargs.get('closed', False))
+        elif section == "markets":
+            result = fetcher.load_markets_only(event_ids=kwargs.get('event_ids'))
+        elif section == "series":
+            result = fetcher.load_series_only()
+        elif section == "tags":
+            result = fetcher.load_tags_only()
+        elif section == "users":
+            result = fetcher.load_users_only(whales_only=kwargs.get('whales_only', True))
+        elif section == "comments":
+            result = fetcher.load_comments_only(limit_per_event=kwargs.get('limit_per_event', 15))
+        elif section == "positions":
+            result = fetcher.load_positions_only(whale_users_only=kwargs.get('whale_users_only', True))
+        elif section == "transactions":
+            result = fetcher.load_transactions_only(comprehensive=kwargs.get('comprehensive', True))
+        else:
+            print(f"❌ Unknown section: {section}")
+            return False
+        
+        elapsed = time.time() - start_time
+        
+        if result.get('success', False):
+            print(f"✅ {section.upper()} loaded successfully in {elapsed:.2f} seconds")
+            return True
+        else:
+            print(f"❌ Failed to load {section}: {result.get('error', 'Unknown error')}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error loading {section}: {e}")
+        return False
 
-def print_selective_help():
-    """Print help for selective operations"""
-    print("\n" + "=" * 70)
-    print("SELECTIVE OPERATIONS GUIDE")
-    print("=" * 70)
-    print("\nYou can now load or delete specific data types individually:")
-    print("\n📊 Available Data Types:")
-    print("  • tags     - Market and event categorization tags")
-    print("  • series   - Grouped collections of related events")
-    print("  • events   - Prediction markets events")
-    print("  • markets  - Individual prediction markets")
-    print("  • users    - User profiles (primarily whales)")
-    print("  • transactions - COMPREHENSIVE whale trading data:")
-    print("                   - Whale transactions")
-    print("                   - Current positions")
-    print("                   - User activity")
-    print("                   - Portfolio values")
-    print("                   - Closed positions (>$500)")
-    print("                   - User trades")
-    print("  • comments - Event comments and reactions")
-    print("\n💡 Example Commands:")
-    print("  python setup.py --load-tags        # Load only tags")
-    print("  python setup.py --delete-markets   # Delete only markets")
-    print("  python setup.py --load-users       # Load only whale users")
-    print("  python setup.py --load-transactions # Load comprehensive whale data")
-    print("  python setup.py --load-transactions --basic-transactions # Basic mode")
-    print("\n⚠️  Note: Some data types depend on others:")
-    print("  • Markets require Events")
-    print("  • Users require Markets")
-    print("  • Transactions work best with Users and Markets loaded")
-    print("  • Comments require Events")
-    print("=" * 70)
+def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
+    """Delete a specific data section"""
+    print("\n" + "=" * 60)
+    print(f"🗑️ DELETING {section.upper()}")
+    print("=" * 60)
+    
+    # Confirm deletion
+    response = input(f"⚠️  Are you sure you want to delete all {section} data? (yes/no): ")
+    if response.lower() != 'yes':
+        print("❌ Deletion cancelled")
+        return False
+    
+    try:
+        if section == "events":
+            result = fetcher.delete_events_only(keep_active=kwargs.get('keep_active', True))
+        elif section == "markets":
+            result = fetcher.delete_markets_only()
+        elif section == "series":
+            result = fetcher.delete_series_only()
+        elif section == "tags":
+            result = fetcher.delete_tags_only()
+        elif section == "users":
+            result = fetcher.delete_users_only()
+        elif section == "comments":
+            result = fetcher.delete_comments_only()
+        elif section == "positions":
+            result = fetcher.delete_positions_only()
+        elif section == "transactions":
+            result = fetcher.delete_transactions_only()
+        else:
+            print(f"❌ Unknown section: {section}")
+            return False
+        
+        if result.get('success', False):
+            print(f"✅ {section.upper()} deleted successfully")
+            return True
+        else:
+            print(f"❌ Failed to delete {section}: {result.get('error', 'Unknown error')}")
+            return False
+            
+    except Exception as e:
+        print(f"❌ Error deleting {section}: {e}")
+        return False
 
+def initial_load():
+    """Perform complete initial data load in correct sequence"""
+    print("\n" + "=" * 80)
+    print("🚀 INITIAL DATA LOAD - COMPLETE SEQUENTIAL LOAD")
+    print("=" * 80)
+    print("\nThis will load all data in the following order:")
+    print("1. Events (active only)")
+    print("2. Markets")
+    print("3. Clean closed events")
+    print("4. Series")
+    print("5. Tags")
+    print("6. Clean closed events again")
+    print("7. Users (whales)")
+    print("8. Comments")
+    print("9. Positions (whales)")
+    print("10. Transactions (comprehensive)")
+    print("11. Analyze data")
+    
+    response = input("\n⚠️  This will take considerable time. Continue? (yes/no): ")
+    if response.lower() != 'yes':
+        print("❌ Initial load cancelled")
+        return False
+    
+    fetcher = PolymarketDataFetcher()
+    start_time = time.time()
+    
+    steps = [
+        ("events", lambda: load_section(fetcher, "events", closed=False)),
+        ("markets", lambda: load_section(fetcher, "markets")),
+        ("cleanup1", lambda: run_command("python cleanup_closed_events.py", "Cleaning closed events (pass 1)")),
+        ("series", lambda: load_section(fetcher, "series")),
+        ("tags", lambda: load_section(fetcher, "tags")),
+        ("cleanup2", lambda: run_command("python cleanup_closed_events.py", "Cleaning closed events (pass 2)")),
+        ("users", lambda: load_section(fetcher, "users", whales_only=True)),
+        ("comments", lambda: load_section(fetcher, "comments", limit_per_event=15)),
+        ("positions", lambda: load_section(fetcher, "positions", whale_users_only=True)),
+        ("transactions", lambda: load_section(fetcher, "transactions", comprehensive=True)),
+        ("analyze", lambda: run_command(
+            "python analyze_data.py --db polymarket_terminal.db --output report.json",
+            "Analyzing data and generating report"
+        ))
+    ]
+    
+    completed = 0
+    failed = []
+    
+    for step_name, step_func in steps:
+        print(f"\n{'=' * 60}")
+        print(f"Step {completed + 1}/{len(steps)}: {step_name.upper()}")
+        print('=' * 60)
+        
+        if step_func():
+            completed += 1
+            print(f"✅ {step_name} completed ({completed}/{len(steps)})")
+        else:
+            failed.append(step_name)
+            print(f"⚠️ {step_name} failed but continuing...")
+            completed += 1
+    
+    elapsed = time.time() - start_time
+    
+    print("\n" + "=" * 80)
+    print("📊 INITIAL LOAD SUMMARY")
+    print("=" * 80)
+    print(f"✅ Completed: {completed}/{len(steps)} steps")
+    if failed:
+        print(f"⚠️  Failed steps: {', '.join(failed)}")
+    print(f"⏱️  Total time: {elapsed/60:.2f} minutes")
+    
+    if not failed:
+        print("\n🎉 Initial load completed successfully!")
+    else:
+        print(f"\n⚠️ Initial load completed with {len(failed)} failures")
+    
+    return len(failed) == 0
 
 def main():
-    """Main setup and run script with selective operations"""
-
-    parser = argparse.ArgumentParser(
-        description='Polymarket Terminal Backend - Enhanced Setup and Management',
-        formatter_class=argparse.RawDescriptionHelpFormatter,
-        epilog="""
-BASIC OPERATIONS:
-  # First time setup
-  python setup.py --setup
-
-  # Fetch all data (initial load)
-  python setup.py --initial-load
-
-  # Run daily update
-  python setup.py --daily-update
-
-  # Start scheduler for automatic daily updates
-  python setup.py --scheduler
-
-  # Reset and reload everything
-  python setup.py --reset --initial-load
-
-SELECTIVE LOADING:
-  # Load specific data types
-  python setup.py --load-tags
-  python setup.py --load-series
-  python setup.py --load-events
-  python setup.py --load-markets
-  python setup.py --load-users
-  python setup.py --load-transactions
-  python setup.py --load-comments
-
-  # Load multiple data types
-  python setup.py --load-events --load-markets --load-users
-
-SELECTIVE DELETION:
-  # Delete specific data types
-  python setup.py --delete-tags
-  python setup.py --delete-series
-  python setup.py --delete-events
-  python setup.py --delete-markets
-  python setup.py --delete-users
-  python setup.py --delete-transactions
-  python setup.py --delete-comments
-
-  # Delete multiple data types
-  python setup.py --delete-users --delete-transactions
-
-UTILITIES:
-  # Show database statistics
-  python setup.py --stats
-
-  # Show help for selective operations
-  python setup.py --help-selective
-        """
-    )
-
-    # Basic operations
-    parser.add_argument('--setup', action='store_true',
-                        help='Initialize database schema and environment')
-    parser.add_argument('--initial-load', action='store_true',
-                        help='Perform initial data load from Polymarket (all data)')
-    parser.add_argument('--daily-update', action='store_true',
-                        help='Run daily update scan')
-    parser.add_argument('--scheduler', action='store_true',
-                        help='Start scheduler for automatic daily updates')
-    parser.add_argument('--reset', action='store_true',
-                        help='Reset database (clear all data)')
-    parser.add_argument('--stats', action='store_true',
-                        help='Show database statistics')
+    """Main entry point"""
+    parser = argparse.ArgumentParser(description='Polymarket Terminal Setup and Data Management')
     
-    # Selective loading operations
-    load_group = parser.add_argument_group('selective loading')
-    load_group.add_argument('--load-tags', action='store_true',
-                           help='Load only tags data')
-    load_group.add_argument('--load-series', action='store_true',
-                           help='Load only series data')
-    load_group.add_argument('--load-events', action='store_true',
-                           help='Load only events data')
-    load_group.add_argument('--load-markets', action='store_true',
-                           help='Load only markets data')
-    load_group.add_argument('--load-users', action='store_true',
-                           help='Load only users data (whales)')
-    load_group.add_argument('--load-transactions', action='store_true',
-                           help='Load comprehensive whale transaction data (positions, activity, values, trades)')
-    load_group.add_argument('--load-comments', action='store_true',
-                           help='Load only comments data')
+    # Setup command
+    parser.add_argument('--setup', action='store_true', help='Initialize database schema')
     
-    # Selective deletion operations
-    delete_group = parser.add_argument_group('selective deletion')
-    delete_group.add_argument('--delete-tags', action='store_true',
-                             help='Delete only tags data')
-    delete_group.add_argument('--delete-series', action='store_true',
-                             help='Delete only series data')
-    delete_group.add_argument('--delete-events', action='store_true',
-                             help='Delete only events data')
-    delete_group.add_argument('--delete-markets', action='store_true',
-                             help='Delete only markets data')
-    delete_group.add_argument('--delete-users', action='store_true',
-                             help='Delete only users data')
-    delete_group.add_argument('--delete-transactions', action='store_true',
-                             help='Delete all transaction and trading data')
-    delete_group.add_argument('--delete-comments', action='store_true',
-                             help='Delete only comments data')
+    # Load commands
+    parser.add_argument('--initial-load', action='store_true', help='Perform complete initial data load')
+    parser.add_argument('--load-events', action='store_true', help='Load events data')
+    parser.add_argument('--load-markets', action='store_true', help='Load markets data')
+    parser.add_argument('--load-series', action='store_true', help='Load series data')
+    parser.add_argument('--load-tags', action='store_true', help='Load tags data')
+    parser.add_argument('--load-users', action='store_true', help='Load users data')
+    parser.add_argument('--load-comments', action='store_true', help='Load comments data')
+    parser.add_argument('--load-positions', action='store_true', help='Load positions data')
+    parser.add_argument('--load-transactions', action='store_true', help='Load transactions data')
+    
+    # Delete commands
+    parser.add_argument('--delete-events', action='store_true', help='Delete events data')
+    parser.add_argument('--delete-markets', action='store_true', help='Delete markets data')
+    parser.add_argument('--delete-series', action='store_true', help='Delete series data')
+    parser.add_argument('--delete-tags', action='store_true', help='Delete tags data')
+    parser.add_argument('--delete-users', action='store_true', help='Delete users data')
+    parser.add_argument('--delete-comments', action='store_true', help='Delete comments data')
+    parser.add_argument('--delete-positions', action='store_true', help='Delete positions data')
+    parser.add_argument('--delete-transactions', action='store_true', help='Delete transactions data')
     
     # Options
-    parser.add_argument('--verbose', action='store_true',
-                        help='Enable verbose logging')
-    parser.add_argument('--help-selective', action='store_true',
-                        help='Show detailed help for selective operations')
-    parser.add_argument('--closed-events', action='store_true',
-                        help='Include closed events when loading events')
-    parser.add_argument('--comprehensive', action='store_true', default=True,
-                        help='Use comprehensive whale data fetching for transactions (default: True)')
-    parser.add_argument('--basic-transactions', action='store_true',
-                        help='Use basic transaction fetching instead of comprehensive')
-
+    parser.add_argument('--closed', action='store_true', help='Include closed events when loading')
+    parser.add_argument('--all-users', action='store_true', help='Load all users, not just whales')
+    parser.add_argument('--quick', action='store_true', help='Quick mode for transactions (not comprehensive)')
+    
     args = parser.parse_args()
-
-    # Show selective help if requested
-    if args.help_selective:
-        print_selective_help()
-        return
-
-    # Setup environment if needed
-    setup_environment()
-
-    # Configure logging
-    if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
-
-    # No action specified
-    if not any(vars(args).values()):
+    
+    # Check if any argument was provided
+    if len(sys.argv) == 1:
         parser.print_help()
         return
-
-    # Handle setup
+    
+    print("\n" + "=" * 80)
+    print("🚀 POLYMARKET TERMINAL - DATA MANAGEMENT")
+    print("=" * 80)
+    print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+    
+    # Handle commands
     if args.setup:
-        print("\n🚀 Setting up Polymarket Terminal Backend...")
-        print("=" * 60)
-
-        if not initialize_database():
-            print("❌ Setup failed")
-            sys.exit(1)
-
-        print("\n✅ Setup complete! You can now:")
-        print("  1. Run 'python setup.py --initial-load' to fetch all data")
-        print("  2. Run 'python setup.py --load-events' to load only events")
-        print("  3. Run 'python setup.py --help-selective' for selective operations guide")
-        print("  4. Run 'python setup.py --scheduler' to start automatic updates")
-        print("  5. Run 'python app.py' to start the Flask API server")
-        return
-
-    # Create fetcher instance for other operations
-    fetcher = PolymarketDataFetcher()
-
-    # Handle statistics
-    if args.stats:
-        stats = fetcher.get_statistics()
-        print("\n📊 Database Statistics:")
-        print("=" * 40)
-        for table, count in stats.items():
-            print(f"  {table:<25} {count:>10,} records")
-        print("=" * 40)
-        
-        # Add whale-specific stats
-        whale_count = fetcher.db_manager.fetch_one("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
-        if whale_count:
-            print(f"\n🐋 Whale Users: {whale_count['count']:,}")
-        
-        return
-
-    # Handle reset
-    if args.reset:
-        response = input("\n⚠️  WARNING: This will delete all data. Continue? (yes/no): ")
-        if response.lower() != 'yes':
-            print("Operation cancelled")
-            return
-        fetcher.reset_database()
-
-        # If not doing initial load after reset, exit
-        if not args.initial_load:
-            return
-
-    # Handle initial load (all data at once)
-    if args.initial_load:
-        print("\n📄 Starting initial data load...")
-        print("This may take 10-30 minutes depending on the amount of data")
-        print("=" * 60)
-
-        success = fetcher.initial_data_load(reset_database=False)
-        if success:
-            print("\n✅ Initial data load successful!")
-        else:
-            print("\n❌ Initial data load failed!")
-            sys.exit(1)
-        return
-
-    # Handle selective loading operations
-    selective_loads = []
+        setup_database()
     
-    if args.load_tags:
-        selective_loads.append(('tags', fetcher.load_tags_only))
-    if args.load_series:
-        selective_loads.append(('series', fetcher.load_series_only))
-    if args.load_events:
-        selective_loads.append(('events', lambda: fetcher.load_events_only(closed=args.closed_events)))
-    if args.load_markets:
-        selective_loads.append(('markets', fetcher.load_markets_only))
-    if args.load_users:
-        selective_loads.append(('users', fetcher.load_users_only))
-    if args.load_transactions:
-        # Use comprehensive fetching by default, unless --basic-transactions is specified
-        use_comprehensive = not args.basic_transactions
-        selective_loads.append(('transactions', lambda: fetcher.load_transactions_only(comprehensive=use_comprehensive)))
-    if args.load_comments:
-        selective_loads.append(('comments', fetcher.load_comments_only))
+    elif args.initial_load:
+        initial_load()
     
-    if selective_loads:
-        print("\n🔄 Starting selective data loading...")
-        print("=" * 60)
+    else:
+        # Individual operations
+        fetcher = PolymarketDataFetcher()
         
-        results = {}
-        for name, load_func in selective_loads:
-            print(f"\nLoading {name}...")
-            result = load_func()
-            results[name] = result
-            
-            if not result['success']:
-                print(f"⚠️  Warning: Failed to load {name}")
-                if result.get('error'):
-                    print(f"   Error: {result['error']}")
+        # Load operations
+        if args.load_events:
+            load_section(fetcher, "events", closed=args.closed)
+        if args.load_markets:
+            load_section(fetcher, "markets")
+        if args.load_series:
+            load_section(fetcher, "series")
+        if args.load_tags:
+            load_section(fetcher, "tags")
+        if args.load_users:
+            load_section(fetcher, "users", whales_only=not args.all_users)
+        if args.load_comments:
+            load_section(fetcher, "comments")
+        if args.load_positions:
+            load_section(fetcher, "positions", whale_users_only=not args.all_users)
+        if args.load_transactions:
+            load_section(fetcher, "transactions", comprehensive=not args.quick)
         
-        # Print summary
-        print("\n" + "=" * 60)
-        print("SELECTIVE LOAD SUMMARY:")
-        print("=" * 60)
-        
-        for name, result in results.items():
-            if result['success']:
-                if 'count' in result:
-                    print(f"  ✅ {name}: {result['count']} loaded")
-                elif 'whales_found' in result:
-                    print(f"  ✅ {name}: {result['whales_found']} whales, {result['enriched']} enriched")
-                elif 'comments' in result:
-                    print(f"  ✅ {name}: {result['comments']} comments, {result['reactions']} reactions")
-                elif 'whale_users' in result:
-                    # Comprehensive transaction data results
-                    print(f"  ✅ {name}: Comprehensive whale data loaded")
-                    print(f"     Whale users: {result.get('whale_users', 0):,}")
-                    print(f"     Positions: {result.get('current_positions', 0):,}")
-                    print(f"     Closed positions: {result.get('closed_positions', 0):,}")
-                    print(f"     Activities: {result.get('user_activities', 0):,}")
-                    print(f"     Portfolio values: {result.get('portfolio_values', 0):,}")
-                    print(f"     Trades: {result.get('trades', 0):,}")
-                    print(f"     Transactions: {result.get('transactions', 0):,}")
-                elif 'transactions' in result:
-                    # Basic transaction results (legacy)
-                    print(f"  ✅ {name}: {result['transactions']} transactions loaded")
-            else:
-                print(f"  ❌ {name}: Failed")
-        
-        print("=" * 60)
-
-    # Handle selective deletion operations
-    selective_deletes = []
+        # Delete operations
+        if args.delete_events:
+            delete_section(fetcher, "events")
+        if args.delete_markets:
+            delete_section(fetcher, "markets")
+        if args.delete_series:
+            delete_section(fetcher, "series")
+        if args.delete_tags:
+            delete_section(fetcher, "tags")
+        if args.delete_users:
+            delete_section(fetcher, "users")
+        if args.delete_comments:
+            delete_section(fetcher, "comments")
+        if args.delete_positions:
+            delete_section(fetcher, "positions")
+        if args.delete_transactions:
+            delete_section(fetcher, "transactions")
     
-    if args.delete_tags:
-        selective_deletes.append(('tags', fetcher.delete_tags_only))
-    if args.delete_series:
-        selective_deletes.append(('series', fetcher.delete_series_only))
-    if args.delete_events:
-        selective_deletes.append(('events', fetcher.delete_events_only))
-    if args.delete_markets:
-        selective_deletes.append(('markets', fetcher.delete_markets_only))
-    if args.delete_users:
-        selective_deletes.append(('users', fetcher.delete_users_only))
-    if args.delete_transactions:
-        selective_deletes.append(('transactions', fetcher.delete_transactions_only))
-    if args.delete_comments:
-        selective_deletes.append(('comments', fetcher.delete_comments_only))
-    
-    if selective_deletes:
-        response = input(f"\n⚠️  WARNING: This will delete {len(selective_deletes)} data type(s). Continue? (yes/no): ")
-        if response.lower() != 'yes':
-            print("Operation cancelled")
-            return
-        
-        print("\n🗑️ Starting selective data deletion...")
-        print("=" * 60)
-        
-        results = {}
-        for name, delete_func in selective_deletes:
-            print(f"\nDeleting {name}...")
-            result = delete_func()
-            results[name] = result
-            
-            if not result['success']:
-                print(f"⚠️  Warning: Failed to delete {name}")
-                if result.get('error'):
-                    print(f"   Error: {result['error']}")
-        
-        # Print summary
-        print("\n" + "=" * 60)
-        print("SELECTIVE DELETE SUMMARY:")
-        print("=" * 60)
-        
-        for name, result in results.items():
-            if result['success']:
-                print(f"  ✅ {name}: {result['deleted']} deleted")
-            else:
-                print(f"  ❌ {name}: Failed")
-        
-        print("=" * 60)
-
-    # Handle daily update
-    if args.daily_update:
-        print("\n📄 Running daily update...")
-        results = fetcher.daily_update()
-        if results:
-            print("\n✅ Daily update successful!")
-        else:
-            print("\n❌ Daily update failed!")
-            sys.exit(1)
-        return
-
-    # Handle scheduler
-    if args.scheduler:
-        print("\n⏰ Starting scheduler for automatic daily updates...")
-        print("Press Ctrl+C to stop")
-        print("=" * 60)
-
-        fetcher.start_scheduler()
-
-        try:
-            while True:
-                time.sleep(60)
-        except KeyboardInterrupt:
-            print("\n\nScheduler stopped")
-        return
-
+    print("\n✨ Done!")
 
 if __name__ == "__main__":
     main()

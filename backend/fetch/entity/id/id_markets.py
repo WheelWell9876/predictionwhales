@@ -3,33 +3,32 @@ ID markets
 Handles individual fetching for the markets
 """
 
-from typing import Optional, Dict
+from typing import Optional, Dict, List
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-from ....database.database_manager import DatabaseManager
-from ....config import Config
+from backend.database.database_manager import DatabaseManager
+from backend.config import Config
+from backend.database.entity.store_markets import StoreMarketsManager
 
 class IdMarketsManager(DatabaseManager):
-    """Manager for market-related operations with multithreading support"""
+    """Manager for individual market fetching"""
     
-    def __init__(self, max_workers: int = None):
+    def __init__(self):
         super().__init__()
-        from ....config import Config
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
         self.data_api_url = Config.DATA_API_URL
-        
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
-        
-        # Thread-safe lock for database operations
-        self._db_lock = Lock()
+        self._lock = Lock()  # Thread-safe database operations
+        self.store_manager = StoreMarketsManager()
         
         # Thread-safe counters
         self._progress_lock = Lock()
         self._progress_counter = 0
         self._error_counter = 0
+        
+        # Set max workers
+        self.max_workers = min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
 
     def fetch_market_by_id(self, market_id: str) -> Optional[Dict]:
         """
@@ -50,7 +49,7 @@ class IdMarketsManager(DatabaseManager):
             market = response.json()
 
             # Store the detailed market
-            self._store_market_detailed(market)
+            self.store_manager._store_market_detailed(market)
 
             # Fetch and store tags
             if 'tags' in market:
@@ -91,7 +90,7 @@ class IdMarketsManager(DatabaseManager):
                 futures = []
 
                 # Store market details
-                futures.append(executor.submit(self._store_market_detailed, market))
+                futures.append(executor.submit(self.store_manager._store_market_detailed, market))
 
                 # Fetch tags if present
                 if 'tags' in market:
@@ -118,6 +117,37 @@ class IdMarketsManager(DatabaseManager):
             self.logger.error(f"Error fetching market {market_id}: {e}")
             return None
 
+    def _store_market_tags(self, market_id: str, tags: List):
+        """
+        Store tags for a market
+        """
+        if not tags:
+            return
+        
+        tag_records = []
+        for tag in tags:
+            if isinstance(tag, dict):
+                tag_id = tag.get('id')
+                tag_slug = tag.get('slug')
+            else:
+                # If tag is just a string
+                tag_id = tag
+                tag_slug = tag
+            
+            if tag_id:
+                tag_records.append({
+                    'market_id': market_id,
+                    'tag_id': tag_id,
+                    'tag_slug': tag_slug
+                })
+        
+        if tag_records:
+            with self._lock:
+                self.bulk_insert_or_ignore('market_tags', tag_records)
 
-
-
+    def fetch_market_open_interest(self, market_id: str, condition_id: str):
+        """
+        Fetch open interest data for a market (placeholder for future implementation)
+        """
+        # This would be implemented based on your open interest API endpoint
+        pass

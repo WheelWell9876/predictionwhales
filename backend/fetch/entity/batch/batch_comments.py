@@ -1,6 +1,6 @@
 """
 Batch comments
-Handles batch fetching for the comments of markets events
+Handles batch fetching for the comments of markets and events
 """
 
 import requests
@@ -9,23 +9,22 @@ from datetime import datetime
 from typing import Dict, List, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-from ....database.database_manager import DatabaseManager
-from ....config import Config
+from backend.database.database_manager import DatabaseManager
+from backend.config import Config
+from backend.database.entity.store_comments import StoreCommentsManager
 
 class BatchCommentsManager(DatabaseManager):
-    """Manager for comments and reactions operations with multithreading support"""
+    """Manager for batch comment fetching with multithreading support"""
 
-    def __init__(self, max_workers: int = None):
+    def __init__(self):
         super().__init__()
-        from ....config import Config
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
+        self._lock = Lock()  # Thread-safe database operations
+        self.store_manager = StoreCommentsManager()
         
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
-        
-        # Thread-safe lock for database operations
-        self._db_lock = Lock()
+        # Set max workers
+        self.max_workers = min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
         
         # Thread-safe counters
         self._progress_lock = Lock()
@@ -33,7 +32,6 @@ class BatchCommentsManager(DatabaseManager):
         self._error_counter = 0
         self._comments_counter = 0
         self._reactions_counter = 0
-
 
     def fetch_comments_for_all_events(self, limit_per_event: int = 15) -> Dict[str, int]:
         """
@@ -145,3 +143,135 @@ class BatchCommentsManager(DatabaseManager):
             'errors': self._error_counter
         }
 
+    def _fetch_and_store_event_comments(self, event: Dict, limit: int, total_events: int):
+        """
+        Thread-safe wrapper for fetching and storing event comments
+        """
+        try:
+            comments = self._fetch_comments(
+                parent_entity_type='Event',
+                parent_entity_id=event['id'],
+                limit=limit
+            )
+
+            if comments:
+                # Store comments
+                with self._lock:
+                    self.store_manager._store_comments(comments, event_id=event['id'])
+
+                with self._progress_lock:
+                    self._comments_counter += len(comments)
+
+                # Fetch reactions for each comment
+                for comment in comments:
+                    reactions = self._fetch_comment_reactions(comment['id'])
+                    if reactions:
+                        with self._lock:
+                            self.store_manager._store_comment_reactions(comment['id'], reactions)
+                        with self._progress_lock:
+                            self._reactions_counter += len(reactions)
+
+            with self._progress_lock:
+                self._progress_counter += 1
+                if self._progress_counter % 50 == 0 or self._progress_counter == total_events:
+                    self.logger.info(
+                        f"  Progress: {self._progress_counter}/{total_events} events, {self._comments_counter} comments")
+
+            # Rate limiting
+            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
+
+        except Exception as e:
+            with self._progress_lock:
+                self._error_counter += 1
+            raise e
+
+    def _fetch_and_store_market_comments(self, market: Dict, limit: int, total_markets: int):
+        """
+        Thread-safe wrapper for fetching and storing market comments
+        """
+        try:
+            comments = self._fetch_comments(
+                parent_entity_type='market',
+                parent_entity_id=market['id'],
+                limit=limit
+            )
+
+            if comments:
+                # Store comments
+                with self._lock:
+                    self.store_manager._store_comments(comments, market_id=market['id'])
+
+                with self._progress_lock:
+                    self._comments_counter += len(comments)
+
+                # Fetch reactions for each comment
+                for comment in comments:
+                    reactions = self._fetch_comment_reactions(comment['id'])
+                    if reactions:
+                        with self._lock:
+                            self.store_manager._store_comment_reactions(comment['id'], reactions)
+                        with self._progress_lock:
+                            self._reactions_counter += len(reactions)
+
+            with self._progress_lock:
+                self._progress_counter += 1
+                if self._progress_counter % 100 == 0 or self._progress_counter == total_markets:
+                    self.logger.info(
+                        f"  Progress: {self._progress_counter}/{total_markets} markets, {self._comments_counter} comments")
+
+            # Rate limiting
+            time.sleep(self.config.RATE_LIMIT_DELAY / self.max_workers)
+
+        except Exception as e:
+            with self._progress_lock:
+                self._error_counter += 1
+            raise e
+
+    def _fetch_comments(self, parent_entity_type: str, parent_entity_id: str, limit: int) -> List[Dict]:
+        """
+        Fetch comments for a specific entity (event or market)
+        """
+        try:
+            url = f"{self.base_url}/comments"
+            params = {
+                "parentEntityType": parent_entity_type,
+                "parentEntityId": parent_entity_id,
+                "limit": limit,
+                "order": "newest"
+            }
+            
+            response = requests.get(
+                url,
+                params=params,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            
+            if response.status_code == 200:
+                return response.json() or []
+            return []
+            
+        except Exception as e:
+            self.logger.error(f"Error fetching comments for {parent_entity_type} {parent_entity_id}: {e}")
+            return []
+
+    def _fetch_comment_reactions(self, comment_id: str) -> List[Dict]:
+        """
+        Fetch reactions for a specific comment
+        """
+        try:
+            url = f"{self.base_url}/comments/{comment_id}/reactions"
+            
+            response = requests.get(
+                url,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            
+            if response.status_code == 200:
+                return response.json() or []
+            return []
+            
+        except Exception as e:
+            self.logger.error(f"Error fetching reactions for comment {comment_id}: {e}")
+            return []

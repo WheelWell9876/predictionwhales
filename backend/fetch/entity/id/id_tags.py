@@ -7,23 +7,22 @@ from typing import Dict, List, Optional
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-from ....database.database_manager import DatabaseManager
-from ....config import Config
+from backend.database.database_manager import DatabaseManager
+from backend.config import Config
+from backend.database.entity.store_tags import StoreTagsManager
 
 class IdTagsManager(DatabaseManager):
-    """Manager for tag-related operations with multithreading support"""
+    """Manager for individual tag fetching"""
 
-    def __init__(self, max_workers: int = None):
+    def __init__(self):
         super().__init__()
-        from ....config import Config
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
+        self._lock = Lock()  # Thread-safe database operations
+        self.store_manager = StoreTagsManager()
         
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
-        
-        # Thread-safe lock for database operations
-        self._db_lock = Lock()
+        # Set max workers
+        self.max_workers = min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
         
         # Thread-safe counters
         self._progress_lock = Lock()
@@ -50,7 +49,7 @@ class IdTagsManager(DatabaseManager):
             tag = response.json()
 
             # Store detailed tag
-            self._store_tag_detailed(tag)
+            self.store_manager._store_tag_detailed(tag)
 
             return tag
 
@@ -82,9 +81,9 @@ class IdTagsManager(DatabaseManager):
                 futures = []
 
                 # Store tag details
-                futures.append(executor.submit(self._store_tag_detailed, tag))
+                futures.append(executor.submit(self.store_manager._store_tag_detailed, tag))
 
-                # Fetch relationships
+                # Fetch relationships (using batch manager's method)
                 futures.append(executor.submit(self.fetch_tag_relationships, tag_id))
 
                 # Fetch related tags details
@@ -110,9 +109,33 @@ class IdTagsManager(DatabaseManager):
         except requests.exceptions.RequestException as e:
             self.logger.error(f"Error fetching tag {tag_id}: {e}")
             return None
-        
 
+    def fetch_tag_relationships(self, tag_id: str) -> List[Dict]:
+        """
+        Fetch relationships for a specific tag
+        """
+        try:
+            url = f"{self.base_url}/tags/{tag_id}/related-tags"
+            params = {"status": "all", "omit_empty": "true"}
 
+            response = requests.get(
+                url,
+                params=params,
+                headers=self.config.get_api_headers(),
+                timeout=self.config.REQUEST_TIMEOUT
+            )
+            response.raise_for_status()
+
+            relationships = response.json()
+
+            if relationships:
+                self.store_manager._store_tag_relationships(relationships)
+
+            return relationships
+
+        except requests.exceptions.RequestException as e:
+            self.logger.error(f"Error fetching relationships for tag {tag_id}: {e}")
+            return []
 
     def fetch_related_tags_details(self, tag_id: str) -> List[Dict]:
         """
@@ -133,7 +156,7 @@ class IdTagsManager(DatabaseManager):
             related_tags = response.json()
 
             if related_tags:
-                self._store_tags(related_tags, detailed=True)
+                self.store_manager._store_tags(related_tags, detailed=True)
 
             return related_tags
 

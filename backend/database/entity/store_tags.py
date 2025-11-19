@@ -1,184 +1,241 @@
+"""
+Store Tags
+Handles storage functionality for tags data
+"""
+
 from datetime import datetime
 import json
 from threading import Lock
 from typing import Dict, List
 from backend.database.database_manager import DatabaseManager
 
-class StoreTags(DatabaseManager):
-    """Manager for storing tags with multithreading support"""
+class StoreTagsManager(DatabaseManager):
+    """Manager for storing tag data with thread-safe operations"""
 
-    def __init__(self, max_workers: int = None):
+    def __init__(self):
         super().__init__()
-        from ...config import Config
+        from backend.config import Config
         self.config = Config
-        self.base_url = Config.GAMMA_API_URL
-        
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
         
         # Thread-safe lock for database operations
         self._db_lock = Lock()
-        
-        # Thread-safe counters
-        self._progress_lock = Lock()
-        self._progress_counter = 0
-        self._error_counter = 0
-        self._comments_counter = 0
-        self._reactions_counter = 0
-
 
     def _store_tags(self, tags: List[Dict], detailed: bool = False):
-            """
-            Store multiple tags in the database
-            Thread-safe when called with _db_lock
-            """
-            tag_records = []
-
-            for tag in tags:
-                record = self._prepare_tag_record(tag, detailed)
-                tag_records.append(record)
-
-            # Bulk insert tags with lock
-            if tag_records:
-                with self._db_lock:
-                    self.bulk_insert_or_replace('tags', tag_records)
-                self.logger.debug(f"Stored {len(tag_records)} tags")
-
-    def _store_tag_detailed(self, tag: Dict):
         """
-        Store detailed tag information
-        Thread-safe when called with _db_lock
+        Store multiple tags in the database (thread-safe)
         """
-        record = self._prepare_tag_record(tag, detailed=True)
-        with self._db_lock:
-            self.insert_or_replace('tags', record)
-        self.logger.debug(f"Stored detailed tag: {tag.get('id')}")
-
-    def _prepare_tag_record(self, tag: Dict, detailed: bool = False) -> Dict:
-        """
-        Prepare a tag record for database insertion
-        """
-        record = {
-            'id': tag.get('id'),
-            'label': tag.get('label'),
-            'slug': tag.get('slug'),
-            'force_show': tag.get('forceShow', False),
-            'fetched_at': datetime.now().isoformat()
-        }
-
-        if detailed:
-            record.update({
+        tag_records = []
+        
+        for tag in tags:
+            record = {
+                'id': tag.get('id'),
+                'label': tag.get('label'),
+                'slug': tag.get('slug'),
+                'force_show': tag.get('forceShow', False),
                 'force_hide': tag.get('forceHide', False),
                 'is_carousel': tag.get('isCarousel', False),
                 'published_at': tag.get('publishedAt'),
                 'created_by': tag.get('createdBy'),
                 'updated_by': tag.get('updatedBy'),
                 'created_at': tag.get('createdAt'),
-                'updated_at': tag.get('updatedAt')
-            })
+                'updated_at': tag.get('updatedAt'),
+                'fetched_at': datetime.now().isoformat()
+            }
+            tag_records.append(record)
+        
+        if tag_records:
+            with self._db_lock:
+                self.bulk_insert_or_replace('tags', tag_records)
+                self.logger.debug(f"Stored {len(tag_records)} tags")
 
-        return record
+    def _store_tag_detailed(self, tag: Dict):
+        """
+        Store detailed tag information (thread-safe)
+        """
+        record = {
+            'id': tag.get('id'),
+            'label': tag.get('label'),
+            'slug': tag.get('slug'),
+            'force_show': tag.get('forceShow', False),
+            'force_hide': tag.get('forceHide', False),
+            'is_carousel': tag.get('isCarousel', False),
+            'published_at': tag.get('publishedAt'),
+            'created_by': tag.get('createdBy'),
+            'updated_by': tag.get('updatedBy'),
+            'created_at': tag.get('createdAt'),
+            'updated_at': tag.get('updatedAt'),
+            'fetched_at': datetime.now().isoformat()
+        }
+        
+        with self._db_lock:
+            self.insert_or_replace('tags', record)
+            self.logger.debug(f"Stored detailed tag: {tag.get('id')}")
 
     def _store_tag_relationships(self, relationships: List[Dict]):
         """
-        Store tag relationships in the database
-        Thread-safe when called with _db_lock
+        Store tag relationships (thread-safe)
         """
+        if not relationships:
+            return
+        
         relationship_records = []
-
-        for rel in relationships:
+        
+        for relationship in relationships:
             record = {
-                'id': rel.get('id'),
-                'tag_id': rel.get('tagID'),
-                'related_tag_id': rel.get('relatedTagID'),
-                'rank': rel.get('rank'),
+                'tag_id': relationship.get('tagId'),
+                'related_tag_id': relationship.get('relatedTagId'),
+                'relationship_type': relationship.get('relationshipType'),
+                'strength': relationship.get('strength', 1.0),
                 'created_at': datetime.now().isoformat()
             }
             relationship_records.append(record)
-
-        # Bulk insert relationships with lock
+        
         if relationship_records:
             with self._db_lock:
                 self.bulk_insert_or_replace('tag_relationships', relationship_records)
-            self.logger.debug(f"Stored {len(relationship_records)} tag relationships")
+                self.logger.debug(f"Stored {len(relationship_records)} tag relationships")
 
-
-    def _store_event_tags(self, event_id: str, tags: List[Dict]):
+    def _store_event_tags_basic(self, event_id: str, tags: List):
         """
-        Store tags for an event in a series
-        Thread-safe when called with _db_lock
+        Store basic tag information from event response
         """
+        if not tags:
+            return
+        
         tag_records = []
+        event_tag_records = []
+        
+        for tag in tags:
+            if isinstance(tag, dict):
+                tag_id = tag.get('id')
+                tag_slug = tag.get('slug')
+                tag_label = tag.get('label')
+            else:
+                # If tag is just a string
+                tag_id = tag
+                tag_slug = tag
+                tag_label = tag
+            
+            if tag_id:
+                # Store tag
+                tag_record = {
+                    'id': tag_id,
+                    'label': tag_label,
+                    'slug': tag_slug,
+                    'force_show': tag.get('forceShow', False) if isinstance(tag, dict) else False,
+                    'is_carousel': tag.get('isCarousel', False) if isinstance(tag, dict) else False,
+                    'published_at': tag.get('publishedAt') if isinstance(tag, dict) else None,
+                    'created_at': tag.get('createdAt') if isinstance(tag, dict) else datetime.now().isoformat(),
+                    'updated_at': tag.get('updatedAt') if isinstance(tag, dict) else datetime.now().isoformat()
+                }
+                tag_records.append(tag_record)
+                
+                # Store event-tag relationship
+                event_tag_records.append({
+                    'event_id': event_id,
+                    'tag_id': tag_id,
+                    'tag_slug': tag_slug
+                })
+        
+        if tag_records:
+            with self._db_lock:
+                self.bulk_insert_or_ignore('tags', tag_records)
+        
+        if event_tag_records:
+            with self._db_lock:
+                self.bulk_insert_or_ignore('event_tags', event_tag_records)
 
+    def _fetch_and_store_event_tags(self, event_id: str, tags: List[Dict]):
+        """
+        Store detailed tag information and relationships
+        """
+        if not tags:
+            return
+        
+        tag_records = []
+        event_tag_records = []
+        
         for tag in tags:
             tag_record = {
                 'id': tag.get('id'),
                 'label': tag.get('label'),
                 'slug': tag.get('slug'),
                 'force_show': tag.get('forceShow', False),
+                'force_hide': tag.get('forceHide', False),
                 'is_carousel': tag.get('isCarousel', False),
+                'published_at': tag.get('publishedAt'),
+                'created_by': tag.get('createdBy'),
+                'updated_by': tag.get('updatedBy'),
                 'created_at': tag.get('createdAt'),
-                'updated_at': tag.get('updatedAt')
+                'updated_at': tag.get('updatedAt'),
+                'fetched_at': datetime.now().isoformat()
             }
             tag_records.append(tag_record)
-
+            
+            # Store event-tag relationship
+            event_tag_records.append({
+                'event_id': event_id,
+                'tag_id': tag.get('id'),
+                'tag_slug': tag.get('slug')
+            })
+        
+        # Bulk insert tags
         if tag_records:
             with self._db_lock:
                 self.bulk_insert_or_replace('tags', tag_records)
-
+        
         # Store event-tag relationships
-        with self._db_lock:
-            for tag in tags:
-                tag_id = tag.get('id')
+        if event_tag_records:
+            with self._db_lock:
+                self.bulk_insert_or_replace('event_tags', event_tag_records)
+        
+        self.logger.debug(f"Stored {len(tags)} tags for event {event_id}")
 
-                conn = self.get_persistent_connection()
-                cursor = conn.cursor()
-
-                cursor.execute("SELECT event_ids FROM event_tags WHERE tag_id = ?", (tag_id,))
-                result = cursor.fetchone()
-
-                if result:
-                    event_ids = json.loads(result[0])
-                    if event_id not in event_ids:
-                        event_ids.append(event_id)
-                        cursor.execute(
-                            "UPDATE event_tags SET event_ids = ? WHERE tag_id = ?",
-                            (json.dumps(event_ids), tag_id)
-                        )
-                else:
-                    cursor.execute(
-                        "INSERT INTO event_tags (tag_id, event_ids) VALUES (?, ?)",
-                        (tag_id, json.dumps([event_id]))
-                    )
-
-                conn.commit()
-    
-    def _store_collection_tags(self, collection_id: str, tags: List[Dict]):
+    def _store_market_tags(self, market_id: str, tags: List[Dict]):
         """
-        Store tags for a collection
-        Thread-safe when called with _db_lock
+        Store market tags and relationships (thread-safe)
         """
-        relationships = []
+        if not tags:
+            return
+        
+        tag_records = []
+        market_tag_records = []
         
         for tag in tags:
-            # Store tag if it has complete data
-            if isinstance(tag, dict) and 'id' in tag:
+            if isinstance(tag, dict):
+                tag_id = tag.get('id')
+                tag_slug = tag.get('slug')
+                tag_label = tag.get('label')
+            else:
+                # If tag is just a string
+                tag_id = tag
+                tag_slug = tag
+                tag_label = tag
+            
+            if tag_id:
+                # Store tag
                 tag_record = {
-                    'id': tag.get('id'),
-                    'label': tag.get('label'),
-                    'slug': tag.get('slug'),
-                    'created_at': tag.get('createdAt'),
-                    'updated_at': tag.get('updatedAt')
+                    'id': tag_id,
+                    'label': tag_label,
+                    'slug': tag_slug,
+                    'created_at': datetime.now().isoformat(),
+                    'updated_at': datetime.now().isoformat()
                 }
-                with self._db_lock:
-                    self.insert_or_ignore('tags', tag_record)
+                tag_records.append(tag_record)
                 
-                relationship = {
-                    'collection_id': collection_id,
-                    'tag_id': tag.get('id')
-                }
-                relationships.append(relationship)
+                # Store market-tag relationship
+                market_tag_records.append({
+                    'market_id': market_id,
+                    'tag_id': tag_id,
+                    'tag_slug': tag_slug
+                })
         
-        if relationships:
+        if tag_records:
             with self._db_lock:
-                self.bulk_insert_or_replace('collection_tags', relationships)
+                self.bulk_insert_or_ignore('tags', tag_records)
+        
+        if market_tag_records:
+            with self._db_lock:
+                self.bulk_insert_or_ignore('market_tags', market_tag_records)
+        
+        self.logger.debug(f"Stored {len(tags)} tags for market {market_id}")

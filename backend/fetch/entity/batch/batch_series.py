@@ -4,34 +4,30 @@ Handles batch fetching for the series
 """
 
 import time
-from typing import Dict, List
-
 import requests
+from typing import Dict, List
 from threading import Lock
-from ....database.database_manager import DatabaseManager
-from ....config import Config
+from backend.database.database_manager import DatabaseManager
+from backend.config import Config
+from backend.database.entity.store_series import StoreSeriesManager
 
 class BatchSeriesManager(DatabaseManager):
-    """Manager for series-related operations with multithreading support"""
+    """Manager for batch series fetching"""
     
-    def __init__(self, max_workers: int = None):
+    def __init__(self):
         super().__init__()
-        from ....config import Config
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
-        
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
-        
-        # Thread-safe lock for database operations
-        self._db_lock = Lock()
+        self._lock = Lock()  # Thread-safe database operations
+        self.store_manager = StoreSeriesManager()
         
         # Thread-safe counters
         self._progress_lock = Lock()
         self._progress_counter = 0
         self._error_counter = 0
-    
-
+        
+        # Set max workers
+        self.max_workers = min(20, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 20))
 
     def fetch_all_series(self, limit: int = 100) -> List[Dict]:
         """
@@ -70,7 +66,7 @@ class BatchSeriesManager(DatabaseManager):
                 all_series.extend(series_list)
 
                 # Store series
-                self._store_series_list(series_list)
+                self.store_manager._store_series_list(series_list)
 
                 self.logger.info(f"Fetched {len(series_list)} series (offset: {offset})")
 

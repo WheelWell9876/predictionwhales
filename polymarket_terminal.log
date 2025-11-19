@@ -1,0 +1,7 @@
+2025-11-18 22:56:22,879 - EventsManager - INFO - 
+============================================================
+2025-11-18 22:56:22,879 - EventsManager - INFO - 📅 Loading ACTIVE EVENTS Only
+2025-11-18 22:56:22,879 - EventsManager - INFO - ============================================================
+2025-11-18 22:56:22,879 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-18 22:56:25,660 - DatabaseManager - ERROR - Bulk insert ignore failed: no such table: event_tags
+2025-11-18 22:56:25,660 - EventsManager - ERROR - ❌ Error loading events: no such table: event_tags

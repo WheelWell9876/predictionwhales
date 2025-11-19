@@ -1,553 +1,390 @@
+#!/usr/bin/env python3
 """
-Database Analysis Utility for Polymarket Terminal
-Provides insights, statistics, and analysis of the database
+Polymarket Data Analyzer
+Comprehensive analysis of the Polymarket terminal database
 """
 
-import sqlite3
+import sys
 import json
-import os
-from datetime import datetime, timedelta
+import sqlite3
+import argparse
 from pathlib import Path
-from typing import Dict, List, Optional
-import pandas as pd
+from datetime import datetime
+from typing import Dict, Any
 
+def connect_db(db_path: str) -> sqlite3.Connection:
+    """Connect to the database"""
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row
+    return conn
 
-class DataAnalyzer:
-    """Analyze database contents and provide insights"""
+def analyze_events(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze events data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Total events
+    cursor.execute("SELECT COUNT(*) as count FROM events")
+    analysis['total'] = cursor.fetchone()['count']
+    
+    # Active vs Closed
+    cursor.execute("SELECT COUNT(*) as count FROM events WHERE closed = 0")
+    analysis['active'] = cursor.fetchone()['count']
+    
+    cursor.execute("SELECT COUNT(*) as count FROM events WHERE closed = 1")
+    analysis['closed'] = cursor.fetchone()['count']
+    
+    # Top events by volume
+    cursor.execute("""
+        SELECT title, volume, liquidity, market_count
+        FROM events
+        WHERE closed = 0
+        ORDER BY volume DESC
+        LIMIT 10
+    """)
+    analysis['top_by_volume'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Recent events
+    cursor.execute("""
+        SELECT title, created_at, volume
+        FROM events
+        ORDER BY created_at DESC
+        LIMIT 10
+    """)
+    analysis['recent'] = [dict(row) for row in cursor.fetchall()]
+    
+    return analysis
 
-    def __init__(self, db_path: str = 'polymarket_terminal.db'):
-        self.db_path = db_path
-        self.conn = None
+def analyze_markets(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze markets data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Total markets
+    cursor.execute("SELECT COUNT(*) as count FROM markets")
+    analysis['total'] = cursor.fetchone()['count']
+    
+    # Active markets
+    cursor.execute("SELECT COUNT(*) as count FROM markets WHERE active = 1")
+    analysis['active'] = cursor.fetchone()['count']
+    
+    # Markets by outcome
+    cursor.execute("""
+        SELECT 
+            SUM(CASE WHEN outcome_prices LIKE '%"outcome":"Yes"%' THEN 1 ELSE 0 END) as binary,
+            SUM(CASE WHEN outcome_prices NOT LIKE '%"outcome":"Yes"%' THEN 1 ELSE 0 END) as multiple
+        FROM markets
+    """)
+    row = cursor.fetchone()
+    analysis['binary_markets'] = row['binary']
+    analysis['multiple_outcome_markets'] = row['multiple']
+    
+    # Top markets by volume
+    cursor.execute("""
+        SELECT question, volume, liquidity, outcome_prices
+        FROM markets
+        WHERE active = 1
+        ORDER BY volume DESC
+        LIMIT 10
+    """)
+    analysis['top_by_volume'] = [dict(row) for row in cursor.fetchall()]
+    
+    return analysis
 
-    def connect(self):
-        """Connect to the database"""
-        self.conn = sqlite3.connect(self.db_path)
-        self.conn.row_factory = sqlite3.Row
-        return self.conn
+def analyze_users(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze users data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Total users
+    cursor.execute("SELECT COUNT(*) as count FROM users")
+    analysis['total'] = cursor.fetchone()['count']
+    
+    # Whale users
+    cursor.execute("SELECT COUNT(*) as count FROM users WHERE is_whale = 1")
+    analysis['whales'] = cursor.fetchone()['count']
+    
+    # Top users by value
+    cursor.execute("""
+        SELECT username, pseudonym, total_value
+        FROM users
+        WHERE is_whale = 1
+        ORDER BY total_value DESC
+        LIMIT 10
+    """)
+    analysis['top_whales'] = [dict(row) for row in cursor.fetchall()]
+    
+    # User activity stats
+    cursor.execute("SELECT COUNT(*) as count FROM user_activity")
+    analysis['total_activities'] = cursor.fetchone()['count']
+    
+    cursor.execute("SELECT COUNT(*) as count FROM user_trades")
+    analysis['total_trades'] = cursor.fetchone()['count']
+    
+    return analysis
 
-    def disconnect(self):
-        """Disconnect from the database"""
-        if self.conn:
-            self.conn.close()
+def analyze_positions(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze positions data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Current positions
+    cursor.execute("SELECT COUNT(*) as count FROM user_positions_current")
+    analysis['current_positions'] = cursor.fetchone()['count']
+    
+    # Closed positions
+    cursor.execute("SELECT COUNT(*) as count FROM user_positions_closed")
+    analysis['closed_positions'] = cursor.fetchone()['count']
+    
+    # Top current positions by value
+    cursor.execute("""
+        SELECT proxy_wallet, title, current_value, percent_pnl
+        FROM user_positions_current
+        WHERE current_value > 0
+        ORDER BY current_value DESC
+        LIMIT 10
+    """)
+    analysis['top_current_positions'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Top winning closed positions
+    cursor.execute("""
+        SELECT proxy_wallet, title, realized_pnl
+        FROM user_positions_closed
+        WHERE realized_pnl > 0
+        ORDER BY realized_pnl DESC
+        LIMIT 10
+    """)
+    analysis['top_winners'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Top losing closed positions
+    cursor.execute("""
+        SELECT proxy_wallet, title, realized_pnl
+        FROM user_positions_closed
+        WHERE realized_pnl < 0
+        ORDER BY realized_pnl ASC
+        LIMIT 10
+    """)
+    analysis['top_losers'] = [dict(row) for row in cursor.fetchall()]
+    
+    return analysis
 
-    def get_database_overview(self) -> Dict:
-        """Get overall database statistics"""
-        cursor = self.conn.cursor()
+def analyze_transactions(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze transactions data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Total transactions
+    cursor.execute("SELECT COUNT(*) as count FROM transactions")
+    analysis['total_transactions'] = cursor.fetchone()['count']
+    
+    # Whale transactions
+    cursor.execute("SELECT COUNT(*) as count FROM transactions WHERE is_whale = 1")
+    analysis['whale_transactions'] = cursor.fetchone()['count']
+    
+    # Transaction volume
+    cursor.execute("""
+        SELECT 
+            SUM(usdc_size) as total_volume,
+            AVG(usdc_size) as avg_size,
+            MAX(usdc_size) as max_size
+        FROM transactions
+    """)
+    row = cursor.fetchone()
+    analysis['total_volume'] = row['total_volume'] or 0
+    analysis['average_size'] = row['avg_size'] or 0
+    analysis['max_size'] = row['max_size'] or 0
+    
+    # Top transactions
+    cursor.execute("""
+        SELECT proxy_wallet, usdc_size, side, timestamp
+        FROM transactions
+        ORDER BY usdc_size DESC
+        LIMIT 10
+    """)
+    analysis['top_transactions'] = [dict(row) for row in cursor.fetchall()]
+    
+    return analysis
 
-        overview = {
-            'database_size': os.path.getsize(self.db_path) / (1024 * 1024),  # MB
-            'tables': {}
+def analyze_comments(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze comments data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Total comments
+    cursor.execute("SELECT COUNT(*) as count FROM comments")
+    analysis['total'] = cursor.fetchone()['count']
+    
+    # Comments with reactions
+    cursor.execute("SELECT COUNT(DISTINCT comment_id) as count FROM comment_reactions")
+    analysis['comments_with_reactions'] = cursor.fetchone()['count']
+    
+    # Total reactions
+    cursor.execute("SELECT COUNT(*) as count FROM comment_reactions")
+    analysis['total_reactions'] = cursor.fetchone()['count']
+    
+    # Most commented events
+    cursor.execute("""
+        SELECT event_id, COUNT(*) as comment_count
+        FROM comments
+        GROUP BY event_id
+        ORDER BY comment_count DESC
+        LIMIT 10
+    """)
+    analysis['most_commented_events'] = [dict(row) for row in cursor.fetchall()]
+    
+    return analysis
+
+def analyze_series_and_tags(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze series and tags data"""
+    cursor = conn.cursor()
+    
+    analysis = {}
+    
+    # Series stats
+    cursor.execute("SELECT COUNT(*) as count FROM series")
+    analysis['total_series'] = cursor.fetchone()['count']
+    
+    cursor.execute("""
+        SELECT title, volume, liquidity
+        FROM series
+        ORDER BY volume DESC
+        LIMIT 5
+    """)
+    analysis['top_series'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Tags stats
+    cursor.execute("SELECT COUNT(*) as count FROM tags")
+    analysis['total_tags'] = cursor.fetchone()['count']
+    
+    cursor.execute("SELECT COUNT(*) as count FROM tag_relationships")
+    analysis['tag_relationships'] = cursor.fetchone()['count']
+    
+    return analysis
+
+def generate_summary(analysis: Dict[str, Any]) -> Dict[str, Any]:
+    """Generate overall summary statistics"""
+    summary = {
+        'generated_at': datetime.now().isoformat(),
+        'database_health': 'healthy',
+        'key_metrics': {
+            'total_events': analysis['events']['total'],
+            'active_events': analysis['events']['active'],
+            'total_markets': analysis['markets']['total'],
+            'total_users': analysis['users']['total'],
+            'whale_users': analysis['users']['whales'],
+            'current_positions': analysis['positions']['current_positions'],
+            'total_transactions': analysis['transactions']['total_transactions'],
+            'total_comments': analysis['comments']['total']
+        },
+        'data_quality': {
+            'events_with_markets': len([e for e in analysis['events']['top_by_volume'] if e.get('market_count', 0) > 0]),
+            'markets_active_ratio': analysis['markets']['active'] / max(analysis['markets']['total'], 1),
+            'whale_user_ratio': analysis['users']['whales'] / max(analysis['users']['total'], 1),
+            'whale_transaction_ratio': analysis['transactions']['whale_transactions'] / max(analysis['transactions']['total_transactions'], 1)
         }
-
-        # Get all tables
-        cursor.execute("""
-            SELECT name FROM sqlite_master 
-            WHERE type='table' 
-            ORDER BY name
-        """)
-        tables = [row[0] for row in cursor.fetchall()]
-
-        for table in tables:
-            cursor.execute(f"SELECT COUNT(*) FROM {table}")
-            count = cursor.fetchone()[0]
-            overview['tables'][table] = count
-
-        overview['total_tables'] = len(tables)
-        overview['total_records'] = sum(overview['tables'].values())
-
-        return overview
-
-    def analyze_events(self) -> Dict:
-        """Analyze events data"""
-        cursor = self.conn.cursor()
-
-        analysis = {}
-
-        # Total events
-        cursor.execute("SELECT COUNT(*) FROM events")
-        analysis['total_events'] = cursor.fetchone()[0]
-
-        # Active vs closed
-        cursor.execute("SELECT active, COUNT(*) as count FROM events GROUP BY active")
-        status = {bool(row[0]): row[1] for row in cursor.fetchall()}
-        analysis['active_events'] = status.get(True, 0)
-        analysis['inactive_events'] = status.get(False, 0)
-
-        # Closed vs open
-        cursor.execute("SELECT closed, COUNT(*) as count FROM events GROUP BY closed")
-        closed_status = {bool(row[0]): row[1] for row in cursor.fetchall()}
-        analysis['closed_events'] = closed_status.get(True, 0)
-        analysis['open_events'] = closed_status.get(False, 0)
-
-        # Combined status
-        cursor.execute("""
-            SELECT 
-                CASE WHEN active = 1 THEN 'Active' ELSE 'Inactive' END as active_status,
-                CASE WHEN closed = 1 THEN 'Closed' ELSE 'Open' END as closed_status,
-                COUNT(*) as count
-            FROM events
-            GROUP BY active, closed
-        """)
-        analysis['status_breakdown'] = {f"{row[0]}/{row[1]}": row[2] for row in cursor.fetchall()}
-
-        # Top events by volume
-        cursor.execute("""
-            SELECT title, volume, liquidity, comment_count
-            FROM events
-            WHERE volume > 0
-            ORDER BY volume DESC
-            LIMIT 10
-        """)
-        analysis['top_events_by_volume'] = [dict(row) for row in cursor.fetchall()]
-
-        # Events with most markets
-        cursor.execute("""
-            SELECT e.title, COUNT(m.id) as market_count, e.volume
-            FROM events e
-            LEFT JOIN markets m ON e.id = m.event_id
-            GROUP BY e.id
-            ORDER BY market_count DESC
-            LIMIT 10
-        """)
-        analysis['events_with_most_markets'] = [dict(row) for row in cursor.fetchall()]
-
-        # Events without markets
-        cursor.execute("""
-            SELECT COUNT(*)
-            FROM events e
-            WHERE NOT EXISTS (SELECT 1 FROM markets m WHERE m.event_id = e.id)
-        """)
-        analysis['events_without_markets'] = cursor.fetchone()[0]
-
-        return analysis
-
-    def analyze_markets(self) -> Dict:
-        """Analyze markets data"""
-        cursor = self.conn.cursor()
-
-        analysis = {}
-
-        # Total markets
-        cursor.execute("SELECT COUNT(*) FROM markets")
-        analysis['total_markets'] = cursor.fetchone()[0]
-
-        # Active vs closed
-        cursor.execute("SELECT active, COUNT(*) as count FROM markets GROUP BY active")
-        status = {bool(row[0]): row[1] for row in cursor.fetchall()}
-        analysis['active_markets'] = status.get(True, 0)
-        analysis['closed_markets'] = status.get(False, 0)
-
-        # Top markets by volume
-        cursor.execute("""
-            SELECT question, volume, liquidity, open_interest, last_trade_price
-            FROM markets
-            WHERE volume > 0
-            ORDER BY volume DESC
-            LIMIT 10
-        """)
-        analysis['top_markets_by_volume'] = [dict(row) for row in cursor.fetchall()]
-
-        # Markets by volume range
-        cursor.execute("""
-            SELECT 
-                CASE 
-                    WHEN volume < 1000 THEN '< $1K'
-                    WHEN volume < 10000 THEN '$1K - $10K'
-                    WHEN volume < 100000 THEN '$10K - $100K'
-                    WHEN volume < 1000000 THEN '$100K - $1M'
-                    ELSE '> $1M'
-                END as volume_range,
-                COUNT(*) as count
-            FROM markets
-            WHERE volume > 0
-            GROUP BY volume_range
-            ORDER BY MIN(volume)
-        """)
-        analysis['markets_by_volume_range'] = {row[0]: row[1] for row in cursor.fetchall()}
-
-        return analysis
-
-    def analyze_users(self) -> Dict:
-        """Analyze users data"""
-        cursor = self.conn.cursor()
-
-        analysis = {}
-
-        # Total users
-        cursor.execute("SELECT COUNT(*) FROM users")
-        analysis['total_users'] = cursor.fetchone()[0]
-
-        # Whale users
-        cursor.execute("SELECT COUNT(*) FROM users WHERE is_whale = 1")
-        analysis['whale_users'] = cursor.fetchone()[0]
-
-        # Users with usernames
-        cursor.execute("SELECT COUNT(*) FROM users WHERE username IS NOT NULL")
-        analysis['users_with_names'] = cursor.fetchone()[0]
-
-        # Top users by value
-        cursor.execute("""
-            SELECT proxy_wallet, username, total_value, markets_traded
-            FROM users
-            WHERE total_value > 0
-            ORDER BY total_value DESC
-            LIMIT 20
-        """)
-        analysis['top_users_by_value'] = []
-        for row in cursor.fetchall():
-            user = dict(row)
-            # Anonymize wallet addresses
-            if user['proxy_wallet']:
-                user['proxy_wallet'] = user['proxy_wallet'][:10] + '...'
-            analysis['top_users_by_value'].append(user)
-
-        # Users by portfolio size
-        cursor.execute("""
-            SELECT 
-                CASE 
-                    WHEN total_value < 1000 THEN '< $1K'
-                    WHEN total_value < 10000 THEN '$1K - $10K'
-                    WHEN total_value < 100000 THEN '$10K - $100K'
-                    WHEN total_value < 1000000 THEN '$100K - $1M'
-                    ELSE '> $1M'
-                END as portfolio_range,
-                COUNT(*) as count
-            FROM users
-            WHERE total_value > 0
-            GROUP BY portfolio_range
-            ORDER BY MIN(total_value)
-        """)
-        analysis['users_by_portfolio_size'] = {row[0]: row[1] for row in cursor.fetchall()}
-
-        # User enrichment data stats
-        cursor.execute("SELECT COUNT(*) FROM user_trades")
-        analysis['total_user_trades'] = cursor.fetchone()[0]
-
-        cursor.execute("SELECT COUNT(*) FROM user_activity")
-        analysis['total_user_activity'] = cursor.fetchone()[0]
-
-        cursor.execute("SELECT COUNT(*) FROM user_positions_current")
-        analysis['total_current_positions'] = cursor.fetchone()[0]
-
-        cursor.execute("SELECT COUNT(*) FROM user_positions_closed")
-        analysis['total_closed_positions'] = cursor.fetchone()[0]
-
-        # Users with enrichment data
-        cursor.execute("""
-            SELECT COUNT(DISTINCT proxy_wallet) 
-            FROM user_trades
-        """)
-        analysis['users_with_trades'] = cursor.fetchone()[0]
-
-        cursor.execute("""
-            SELECT COUNT(DISTINCT proxy_wallet) 
-            FROM user_positions_current
-        """)
-        analysis['users_with_positions'] = cursor.fetchone()[0]
-
-        # Top traders by trade count
-        cursor.execute("""
-            SELECT proxy_wallet, COUNT(*) as trade_count
-            FROM user_trades
-            GROUP BY proxy_wallet
-            ORDER BY trade_count DESC
-            LIMIT 10
-        """)
-        analysis['top_traders'] = []
-        for row in cursor.fetchall():
-            trader = dict(row)
-            if trader['proxy_wallet']:
-                trader['proxy_wallet'] = trader['proxy_wallet'][:10] + '...'
-            analysis['top_traders'].append(trader)
-
-        return analysis
-
-    def analyze_transactions(self) -> Dict:
-        """Analyze transactions data"""
-        cursor = self.conn.cursor()
-
-        analysis = {}
-
-        # Total transactions
-        cursor.execute("SELECT COUNT(*) FROM transactions")
-        analysis['total_transactions'] = cursor.fetchone()[0]
-
-        # Whale transactions
-        cursor.execute("SELECT COUNT(*) FROM transactions WHERE is_whale = 1")
-        analysis['whale_transactions'] = cursor.fetchone()[0]
-
-        # Total volume
-        cursor.execute("SELECT SUM(usdc_size) FROM transactions WHERE usdc_size > 0")
-        total_volume = cursor.fetchone()[0]
-        analysis['total_volume'] = total_volume if total_volume else 0
-
-        # Average transaction size
-        cursor.execute("SELECT AVG(usdc_size) FROM transactions WHERE usdc_size > 0")
-        avg_size = cursor.fetchone()[0]
-        analysis['average_transaction_size'] = avg_size if avg_size else 0
-
-        # Buy vs Sell
-        cursor.execute("""
-            SELECT side, COUNT(*) as count, SUM(usdc_size) as volume
-            FROM transactions
-            WHERE side IS NOT NULL
-            GROUP BY side
-        """)
-        analysis['buy_sell_breakdown'] = {}
-        for row in cursor.fetchall():
-            if row[0]:
-                analysis['buy_sell_breakdown'][row[0]] = {
-                    'count': row[1],
-                    'volume': row[2] if row[2] else 0
-                }
-
-        # Largest transactions
-        cursor.execute("""
-            SELECT proxy_wallet, usdc_size, side, time_created
-            FROM transactions
-            WHERE usdc_size > 0
-            ORDER BY usdc_size DESC
-            LIMIT 20
-        """)
-        analysis['largest_transactions'] = []
-        for row in cursor.fetchall():
-            tx = dict(row)
-            # Anonymize wallet
-            if tx.get('proxy_wallet'):
-                tx['proxy_wallet'] = tx['proxy_wallet'][:10] + '...'
-            analysis['largest_transactions'].append(tx)
-
-        # Transactions by size range
-        cursor.execute("""
-            SELECT 
-                CASE 
-                    WHEN usdc_size < 100 THEN '< $100'
-                    WHEN usdc_size < 500 THEN '$100 - $500'
-                    WHEN usdc_size < 1000 THEN '$500 - $1K'
-                    WHEN usdc_size < 10000 THEN '$1K - $10K'
-                    WHEN usdc_size < 100000 THEN '$10K - $100K'
-                    ELSE '> $100K'
-                END as size_range,
-                COUNT(*) as count
-            FROM transactions
-            WHERE usdc_size > 0
-            GROUP BY size_range
-            ORDER BY MIN(usdc_size)
-        """)
-        analysis['transactions_by_size'] = {row[0]: row[1] for row in cursor.fetchall()}
-
-        # Recent transactions (last 24 hours)
-        cursor.execute("""
-            SELECT COUNT(*) 
-            FROM transactions
-            WHERE time_created >= datetime('now', '-1 day')
-        """)
-        analysis['transactions_last_24h'] = cursor.fetchone()[0]
-
-        # Most active traders
-        cursor.execute("""
-            SELECT proxy_wallet, COUNT(*) as tx_count, SUM(usdc_size) as total_volume
-            FROM transactions
-            GROUP BY proxy_wallet
-            ORDER BY tx_count DESC
-            LIMIT 10
-        """)
-        analysis['most_active_traders'] = []
-        for row in cursor.fetchall():
-            trader = dict(row)
-            if trader.get('proxy_wallet'):
-                trader['proxy_wallet'] = trader['proxy_wallet'][:10] + '...'
-            analysis['most_active_traders'].append(trader)
-
-        return analysis
-
-    def analyze_market_holders(self) -> Dict:
-        """Analyze market holders data"""
-        cursor = self.conn.cursor()
-
-        analysis = {}
-
-        # Total holder records
-        cursor.execute("SELECT COUNT(*) FROM market_holders")
-        analysis['total_holder_records'] = cursor.fetchone()[0]
-
-        # Unique holders
-        cursor.execute("SELECT COUNT(DISTINCT proxy_wallet) FROM market_holders")
-        analysis['unique_holders'] = cursor.fetchone()[0]
-
-        # Markets with holders
-        cursor.execute("SELECT COUNT(DISTINCT market_id) FROM market_holders")
-        analysis['markets_with_holders'] = cursor.fetchone()[0]
-
-        # Top holders by total positions
-        cursor.execute("""
-            SELECT proxy_wallet, username, COUNT(*) as position_count, SUM(amount) as total_amount
-            FROM market_holders
-            GROUP BY proxy_wallet
-            ORDER BY total_amount DESC
-            LIMIT 20
-        """)
-        analysis['top_holders'] = []
-        for row in cursor.fetchall():
-            holder = dict(row)
-            # Anonymize wallet
-            if holder['proxy_wallet']:
-                holder['proxy_wallet'] = holder['proxy_wallet'][:10] + '...'
-            analysis['top_holders'].append(holder)
-
-        return analysis
-
-    def analyze_comments(self) -> Dict:
-        """Analyze comments and reactions data"""
-        cursor = self.conn.cursor()
-
-        analysis = {}
-
-        # Total comments
-        cursor.execute("SELECT COUNT(*) FROM comments")
-        analysis['total_comments'] = cursor.fetchone()[0]
-
-        # Comments with reactions
-        cursor.execute("""
-            SELECT COUNT(DISTINCT comment_id) 
-            FROM comment_reactions
-        """)
-        analysis['comments_with_reactions'] = cursor.fetchone()[0]
-
-        # Total reactions
-        cursor.execute("SELECT COUNT(*) FROM comment_reactions")
-        analysis['total_reactions'] = cursor.fetchone()[0]
-
-        # Users who commented
-        cursor.execute("""
-            SELECT COUNT(DISTINCT proxy_wallet) 
-            FROM comments
-        """)
-        analysis['users_who_commented'] = cursor.fetchone()[0]
-
-        # Top commenters
-        cursor.execute("""
-            SELECT proxy_wallet, username, COUNT(*) as comment_count
-            FROM comments
-            GROUP BY proxy_wallet
-            ORDER BY comment_count DESC
-            LIMIT 10
-        """)
-        analysis['top_commenters'] = []
-        for row in cursor.fetchall():
-            commenter = dict(row)
-            if commenter['proxy_wallet']:
-                commenter['proxy_wallet'] = commenter['proxy_wallet'][:10] + '...'
-            analysis['top_commenters'].append(commenter)
-
-        # Most liked comments
-        cursor.execute("""
-            SELECT content, likes_count, username
-            FROM comments
-            WHERE likes_count > 0
-            ORDER BY likes_count DESC
-            LIMIT 5
-        """)
-        analysis['most_liked_comments'] = [dict(row) for row in cursor.fetchall()]
-
-        return analysis
-
-    def generate_full_report(self, output_file: str = None) -> Dict:
-        """Generate a comprehensive analysis report"""
-        self.connect()
-
-        print("📊 Generating Database Analysis Report...")
-        print("=" * 60)
-
-        report = {
-            'generated_at': datetime.now().isoformat(),
-            'database_path': self.db_path,
-            'overview': self.get_database_overview(),
-            'events_analysis': self.analyze_events(),
-            'markets_analysis': self.analyze_markets(),
-            'users_analysis': self.analyze_users(),
-            'transactions_analysis': self.analyze_transactions(),
-            'holders_analysis': self.analyze_market_holders(),
-            'comments_analysis': self.analyze_comments()
-        }
-
-        self.disconnect()
-
-        # Print summary
-        print(f"📈 Database Overview:")
-        print(f"   Size: {report['overview']['database_size']:.2f} MB")
-        print(f"   Tables: {report['overview']['total_tables']}")
-        print(f"   Total Records: {report['overview']['total_records']:,}")
-
-        print(f"\n📊 Key Metrics:")
-        print(f"   Events: {report['events_analysis']['total_events']:,} ({report['events_analysis']['active_events']:,} active, {report['events_analysis']['closed_events']:,} closed)")
-        print(f"   Markets: {report['markets_analysis']['total_markets']:,} ({report['markets_analysis']['active_markets']:,} active)")
-        print(f"   Users: {report['users_analysis']['total_users']:,} ({report['users_analysis']['whale_users']:,} whales)")
-        print(f"   Transactions: {report['transactions_analysis']['total_transactions']:,} ({report['transactions_analysis']['whale_transactions']:,} whale)")
-        print(f"   Total Volume: ${report['transactions_analysis']['total_volume']:,.2f}")
-
-        # User enrichment stats
-        print(f"\n🔍 User Enrichment Data:")
-        print(f"   Trades: {report['users_analysis']['total_user_trades']:,}")
-        print(f"   Activity Records: {report['users_analysis']['total_user_activity']:,}")
-        print(f"   Current Positions: {report['users_analysis']['total_current_positions']:,}")
-        print(f"   Closed Positions: {report['users_analysis']['total_closed_positions']:,}")
-        print(f"   Users with Trades: {report['users_analysis']['users_with_trades']:,}")
-        print(f"   Users with Positions: {report['users_analysis']['users_with_positions']:,}")
-
-        # Comments stats
-        print(f"\n💬 Comments & Engagement:")
-        print(f"   Total Comments: {report['comments_analysis']['total_comments']:,}")
-        print(f"   Total Reactions: {report['comments_analysis']['total_reactions']:,}")
-        print(f"   Users Who Commented: {report['comments_analysis']['users_who_commented']:,}")
-        print(f"   Comments with Reactions: {report['comments_analysis']['comments_with_reactions']:,}")
-
-        # Add warnings if needed
-        events_analysis = report['events_analysis']
-        if events_analysis['closed_events'] > events_analysis['open_events']:
-            print(f"\n⚠️  WARNING: More closed events ({events_analysis['closed_events']:,}) than open events ({events_analysis['open_events']:,})")
-            print("   Check if FETCH_CLOSED_EVENTS is enabled in config")
-        
-        if events_analysis.get('events_without_markets', 0) > 0:
-            print(f"\n⚠️  INFO: {events_analysis['events_without_markets']:,} events have no markets")
-            print("   This may be normal for recently added events")
-
-        # Enrichment warnings
-        users_count = report['users_analysis']['total_users']
-        trades_count = report['users_analysis']['total_user_trades']
-        if users_count > 0 and trades_count == 0:
-            print(f"\n⚠️  WARNING: No user trade data found")
-            print("   Run whale enrichment: users_manager.enrich_all_whale_users()")
-
-        # Save to file if requested
-        if output_file:
-            from pathlib import Path
-            Path(os.path.dirname(output_file)).mkdir(parents=True, exist_ok=True)
-            with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(report, f, indent=2, ensure_ascii=False, default=str)
-            print(f"\n✅ Report saved to: {output_file}")
-
-        print("=" * 60)
-
-        return report
-
+    }
+    
+    # Check for data issues
+    issues = []
+    if analysis['events']['closed'] > 0:
+        issues.append(f"{analysis['events']['closed']} closed events in database")
+    if analysis['markets']['total'] == 0:
+        issues.append("No markets data")
+    if analysis['users']['whales'] == 0:
+        issues.append("No whale users identified")
+    
+    if issues:
+        summary['database_health'] = 'needs_attention'
+        summary['issues'] = issues
+    
+    return summary
 
 def main():
-    """Main function to run the analysis"""
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Analyze Polymarket database')
-    parser.add_argument('--db', default='polymarket_terminal.db', help='Database path')
-    parser.add_argument('--output', default='backend/data/analysis_report.json', help='Output file for report')
-
+    """Main entry point"""
+    parser = argparse.ArgumentParser(description='Analyze Polymarket Terminal Database')
+    parser.add_argument('--db', type=str, default='polymarket_terminal.db',
+                       help='Path to database file')
+    parser.add_argument('--output', type=str, default='report.json',
+                       help='Output file for analysis report')
+    parser.add_argument('--print', action='store_true',
+                       help='Print summary to console')
+    
     args = parser.parse_args()
-
-    # Create analyzer
-    analyzer = DataAnalyzer(db_path=args.db)
-
-    # Generate report
-    analyzer.generate_full_report(output_file=args.output)
-
+    
+    # Check if database exists
+    db_path = Path(args.db)
+    if not db_path.exists():
+        print(f"❌ Database not found: {args.db}")
+        sys.exit(1)
+    
+    print("\n" + "=" * 80)
+    print("📊 POLYMARKET DATABASE ANALYZER")
+    print("=" * 80)
+    print(f"📁 Database: {args.db}")
+    print(f"📄 Output: {args.output}")
+    
+    # Connect to database
+    conn = connect_db(args.db)
+    
+    # Perform analysis
+    print("\n🔍 Analyzing data...")
+    
+    analysis = {
+        'events': analyze_events(conn),
+        'markets': analyze_markets(conn),
+        'users': analyze_users(conn),
+        'positions': analyze_positions(conn),
+        'transactions': analyze_transactions(conn),
+        'comments': analyze_comments(conn),
+        'series_tags': analyze_series_and_tags(conn),
+        'summary': {}
+    }
+    
+    # Generate summary
+    analysis['summary'] = generate_summary(analysis)
+    
+    # Close connection
+    conn.close()
+    
+    # Save report
+    with open(args.output, 'w') as f:
+        json.dump(analysis, f, indent=2, default=str)
+    
+    print(f"✅ Analysis complete! Report saved to {args.output}")
+    
+    # Print summary if requested
+    if args.print:
+        print("\n" + "=" * 80)
+        print("📈 SUMMARY")
+        print("=" * 80)
+        
+        summary = analysis['summary']
+        
+        print("\n📊 Key Metrics:")
+        for key, value in summary['key_metrics'].items():
+            print(f"   {key.replace('_', ' ').title():<25} {value:>10,}")
+        
+        print("\n📈 Data Quality:")
+        for key, value in summary['data_quality'].items():
+            if isinstance(value, float):
+                print(f"   {key.replace('_', ' ').title():<25} {value:>10.2%}")
+            else:
+                print(f"   {key.replace('_', ' ').title():<25} {value:>10}")
+        
+        if 'issues' in summary:
+            print("\n⚠️ Issues Found:")
+            for issue in summary['issues']:
+                print(f"   • {issue}")
+        
+        print(f"\n💾 Database Health: {summary['database_health'].upper()}")
+    
+    print("\n✨ Done!")
 
 if __name__ == "__main__":
     main()

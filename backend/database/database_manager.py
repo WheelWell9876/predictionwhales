@@ -18,7 +18,7 @@ class DatabaseManager:
 
     def __init__(self, db_path: str = None):
         # Import Config here to avoid circular import
-        from ..config import Config
+        from backend.config import Config
 
         self.db_path = db_path or Config.DATABASE_PATH
         self.config = Config
@@ -209,24 +209,22 @@ class DatabaseManager:
         query = f"INSERT OR IGNORE INTO {table} ({columns}) VALUES ({placeholders})"
 
         with self._write_lock:
-            cursor = self.execute_query(query, tuple(data.values()), commit=commit)
-            return cursor.lastrowid if cursor else None
+            return self.execute_query(query, tuple(data.values()), commit=commit)
 
-    def bulk_insert_or_replace(self, table: str, data_list: List[Dict], batch_size: int = None):
-        """Bulk insert or replace records with batching"""
+    def bulk_insert_or_replace(self, table: str, data_list: List[Dict], batch_size: int = 1000):
+        """Bulk insert or replace multiple records with optimized batching"""
         if not data_list:
             return
-
-        batch_size = batch_size or self.config.BATCH_SIZE
+        
+        # Ensure all records have the same columns
         columns = list(data_list[0].keys())
         placeholders = ', '.join(['?' for _ in columns])
         query = f"INSERT OR REPLACE INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
-
+        
         conn = self.get_connection()
         
         with self._write_lock:
             try:
-                # Use a transaction for better performance
                 conn.execute("BEGIN TRANSACTION")
                 
                 for i in range(0, len(data_list), batch_size):
@@ -249,21 +247,20 @@ class DatabaseManager:
                 self.logger.error(f"Bulk insert failed: {e}")
                 raise
 
-    def bulk_insert_or_ignore(self, table: str, data_list: List[Dict], batch_size: int = None):
-        """Bulk insert or ignore records with batching"""
+    def bulk_insert_or_ignore(self, table: str, data_list: List[Dict], batch_size: int = 1000):
+        """Bulk insert or ignore multiple records with optimized batching"""
         if not data_list:
             return
-
-        batch_size = batch_size or self.config.BATCH_SIZE
+        
+        # Ensure all records have the same columns
         columns = list(data_list[0].keys())
         placeholders = ', '.join(['?' for _ in columns])
         query = f"INSERT OR IGNORE INTO {table} ({', '.join(columns)}) VALUES ({placeholders})"
-
+        
         conn = self.get_connection()
         
         with self._write_lock:
             try:
-                # Use a transaction for better performance
                 conn.execute("BEGIN TRANSACTION")
                 
                 for i in range(0, len(data_list), batch_size):
@@ -326,153 +323,148 @@ class DatabaseManager:
         result = self.fetch_one(query)
         return result['count'] if result else 0
 
-    def reset_table(self, table_name: str):
-        """Clear all records from a table"""
-        self.delete_records(table_name, commit=True)
-        self.logger.info(f"Reset table: {table_name}")
+    # def reset_database(self):
+    #     """Reset entire database (clear all data but keep schema)"""
+    #     tables = [
+    #         'events', 'markets', 'tags', 'series', 'collections',
+    #         'event_tags', 'market_tags', 'series_events', 'series_collections',
+    #         'series_tags', 'collection_tags', 'tag_relationships',
+    #         'event_live_volume', 'market_open_interest',
+    #         'users', 'user_positions_current', 'user_positions_closed',
+    #         'user_trades', 'user_values', 'market_holders',
+    #         'comments', 'comment_reactions', 'user_activity', 'transactions'
+    #     ]
 
-    def reset_database(self):
-        """Reset entire database (clear all data but keep schema)"""
-        tables = [
-            'events', 'markets', 'tags', 'series', 'collections',
-            'event_tags', 'market_tags', 'series_events', 'series_collections',
-            'series_tags', 'collection_tags', 'tag_relationships',
-            'event_live_volume', 'market_open_interest',
-            'users', 'user_positions_current', 'user_positions_closed',
-            'user_trades', 'user_values', 'market_holders',
-            'comments', 'comment_reactions', 'user_activity', 'transactions'
-        ]
-
-        conn = self.get_connection()
+    #     conn = self.get_connection()
         
-        with self._write_lock:
-            try:
-                conn.execute("BEGIN TRANSACTION")
+    #     with self._write_lock:
+    #         try:
+    #             conn.execute("BEGIN TRANSACTION")
                 
-                for table in tables:
-                    if self.table_exists(table):
-                        conn.execute(f"DELETE FROM {table}")
-                        self.logger.info(f"Cleared table: {table}")
+    #             for table in tables:
+    #                 if self.table_exists(table):
+    #                     conn.execute(f"DELETE FROM {table}")
+    #                     self.logger.info(f"Cleared table: {table}")
 
-                conn.commit()
-                conn.execute("VACUUM")  # Reclaim space
+    #             conn.commit()
+    #             conn.execute("VACUUM")  # Reclaim space
 
-                self.logger.info("Database reset complete")
+    #             self.logger.info("Database reset complete")
                 
-            except Exception as e:
-                conn.rollback()
-                self.logger.error(f"Database reset failed: {e}")
-                raise
+    #         except Exception as e:
+    #             conn.rollback()
+    #             self.logger.error(f"Database reset failed: {e}")
+    #             raise
 
-    def remove_closed_events(self):
-        """Remove all closed/inactive events and their associated data"""
-        self.logger.info("🧹 Removing closed/inactive events and associated data...")
+    # def remove_closed_events(self):
+    #     """Remove all closed/inactive events and their associated data"""
+    #     self.logger.info("🧹 Removing closed/inactive events and associated data...")
         
-        conn = self.get_connection()
+    #     conn = self.get_connection()
         
-        with self._write_lock:
-            try:
-                cursor = conn.cursor()
+    #     with self._write_lock:
+    #         try:
+    #             cursor = conn.cursor()
                 
-                # Get count before deletion
-                cursor.execute("SELECT COUNT(*) FROM events WHERE closed = 1 OR active = 0")
-                closed_count = cursor.fetchone()[0]
+    #             # Get count before deletion
+    #             cursor.execute("SELECT COUNT(*) FROM events WHERE closed = 1 OR active = 0")
+    #             closed_count = cursor.fetchone()[0]
                 
-                if closed_count == 0:
-                    self.logger.info("No closed events to remove")
-                    return 0
+    #             if closed_count == 0:
+    #                 self.logger.info("No closed events to remove")
+    #                 return 0
                 
-                self.logger.info(f"Found {closed_count} closed/inactive events to remove")
+    #             self.logger.info(f"Found {closed_count} closed/inactive events to remove")
                 
-                # Get IDs of closed events
-                cursor.execute("SELECT id FROM events WHERE closed = 1 OR active = 0")
-                closed_event_ids = [row[0] for row in cursor.fetchall()]
+    #             # Get IDs of closed events
+    #             cursor.execute("SELECT id FROM events WHERE closed = 1 OR active = 0")
+    #             closed_event_ids = [row[0] for row in cursor.fetchall()]
                 
-                if not closed_event_ids:
-                    return 0
+    #             if not closed_event_ids:
+    #                 return 0
                 
-                # Create placeholders for SQL IN clause
-                placeholders = ','.join('?' * len(closed_event_ids))
+    #             # Create placeholders for SQL IN clause
+    #             placeholders = ','.join('?' * len(closed_event_ids))
                 
-                conn.execute("BEGIN TRANSACTION")
+    #             conn.execute("BEGIN TRANSACTION")
                 
-                # Delete markets associated with closed events
-                cursor.execute(f"SELECT COUNT(*) FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
-                markets_count = cursor.fetchone()[0]
+    #             # Delete markets associated with closed events
+    #             cursor.execute(f"SELECT COUNT(*) FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
+    #             markets_count = cursor.fetchone()[0]
                 
-                cursor.execute(f"DELETE FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
-                self.logger.info(f"  Deleted {markets_count} markets associated with closed events")
+    #             cursor.execute(f"DELETE FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
+    #             self.logger.info(f"  Deleted {markets_count} markets associated with closed events")
                 
-                # Delete comments associated with closed events
-                cursor.execute(f"SELECT COUNT(*) FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
-                comments_count = cursor.fetchone()[0]
+    #             # Delete comments associated with closed events
+    #             cursor.execute(f"SELECT COUNT(*) FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
+    #             comments_count = cursor.fetchone()[0]
                 
-                cursor.execute(f"DELETE FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
-                self.logger.info(f"  Deleted {comments_count} comments associated with closed events")
+    #             cursor.execute(f"DELETE FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
+    #             self.logger.info(f"  Deleted {comments_count} comments associated with closed events")
                 
-                # Delete the closed events themselves
-                cursor.execute(f"DELETE FROM events WHERE id IN ({placeholders})", closed_event_ids)
+    #             # Delete the closed events themselves
+    #             cursor.execute(f"DELETE FROM events WHERE id IN ({placeholders})", closed_event_ids)
                 
-                conn.commit()
+    #             conn.commit()
                 
-                # Vacuum to reclaim space
-                self.logger.info("  Running VACUUM to reclaim space...")
-                conn.execute("VACUUM")
+    #             # Vacuum to reclaim space
+    #             self.logger.info("  Running VACUUM to reclaim space...")
+    #             conn.execute("VACUUM")
                 
-                self.logger.info(f"✅ Successfully removed {closed_count} closed events and associated data")
+    #             self.logger.info(f"✅ Successfully removed {closed_count} closed events and associated data")
                 
-                return closed_count
+    #             return closed_count
                 
-            except Exception as e:
-                conn.rollback()
-                self.logger.error(f"Remove closed events failed: {e}")
-                raise
+    #         except Exception as e:
+    #             conn.rollback()
+    #             self.logger.error(f"Remove closed events failed: {e}")
+    #             raise
 
-    def get_statistics(self) -> Dict[str, int]:
-        """Get database statistics"""
-        stats = {}
-        tables = [
-            'events', 'markets', 'tags', 'series', 'collections',
-            'event_tags', 'market_tags', 'users', 'transactions',
-            'user_positions_current', 'user_positions_closed',
-            'user_trades', 'user_activity', 'user_values'
-        ]
+    # def get_statistics(self) -> Dict[str, int]:
+    #     """Get database statistics"""
+    #     stats = {}
+    #     tables = [
+    #         'events', 'markets', 'tags', 'series', 'collections',
+    #         'event_tags', 'market_tags', 'users', 'transactions',
+    #         'user_positions_current', 'user_positions_closed',
+    #         'user_trades', 'user_activity', 'user_values'
+    #     ]
 
-        for table in tables:
-            if self.table_exists(table):
-                stats[table] = self.get_table_count(table)
+    #     for table in tables:
+    #         if self.table_exists(table):
+    #             stats[table] = self.get_table_count(table)
 
-        return stats
+    #     return stats
 
-    def backup_database(self, backup_path: str = None):
-        """Create a backup of the database"""
-        import shutil
-        from datetime import datetime
+    # def backup_database(self, backup_path: str = None):
+    #     """Create a backup of the database"""
+    #     import shutil
+    #     from datetime import datetime
 
-        if not backup_path:
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            backup_path = f"{self.db_path}.backup_{timestamp}"
+    #     if not backup_path:
+    #         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    #         backup_path = f"{self.db_path}.backup_{timestamp}"
 
-        # Close all connections before backup
-        self.close_connection()
+    #     # Close all connections before backup
+    #     self.close_connection()
 
-        try:
-            shutil.copy2(self.db_path, backup_path)
-            self.logger.info(f"Database backed up to: {backup_path}")
-        except Exception as e:
-            self.logger.error(f"Backup failed: {e}")
-            raise
+    #     try:
+    #         shutil.copy2(self.db_path, backup_path)
+    #         self.logger.info(f"Database backed up to: {backup_path}")
+    #     except Exception as e:
+    #         self.logger.error(f"Backup failed: {e}")
+    #         raise
 
-        return backup_path
+    #     return backup_path
 
-    def __del__(self):
-        """Cleanup connections on object destruction"""
-        self.close_connection()
+    # def __del__(self):
+    #     """Cleanup connections on object destruction"""
+    #     self.close_connection()
 
-    def __enter__(self):
-        """Context manager entry"""
-        return self
+    # def __enter__(self):
+    #     """Context manager entry"""
+    #     return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        """Context manager exit - ensure connection is closed"""
-        self.close_connection()
+    # def __exit__(self, exc_type, exc_val, exc_tb):
+    #     """Context manager exit - ensure connection is closed"""
+    #     self.close_connection()

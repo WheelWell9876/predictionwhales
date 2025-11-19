@@ -1,103 +1,223 @@
 """
-Comments Manager for Polymarket Terminal
-Handles fetching, processing, and storing comments and reactions for events and markets
+Comments Manager for Polymarket Terminal - MULTITHREADED
+Handles fetching, processing, and storing comment data with concurrent requests
 """
 
 import requests
 import time
+import sqlite3
+import gc
 from datetime import datetime
 from typing import Dict, List, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
-from .database.database_manager import DatabaseManager
-from .config import Config
+from backend.database.database_manager import DatabaseManager
+from backend.config import Config
+from backend.fetch.entity.batch.batch_comments import BatchCommentsManager
+from backend.fetch.entity.id.id_comments import IdCommentsManager
+from backend.database.entity.store_comments import StoreCommentsManager
 
-class CommentsManager(DatabaseManager):
-    """Manager for comments and reactions operations with multithreading support"""
-
-    def __init__(self, max_workers: int = None):
-        super().__init__()
-        from .config import Config
+class CommentsManager:
+    """Manager for comment-related operations with multithreading support"""
+    
+    def __init__(self):
+        # Core configuration
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
         
-        # Set max workers (defaults to 20 for aggressive parallelization)
-        self.max_workers = max_workers or min(10, (Config.MAX_WORKERS if hasattr(Config, 'MAX_WORKERS') else 10))
+        # Initialize managers
+        self.db_manager = DatabaseManager()
+        self.batch_manager = BatchCommentsManager()
+        self.id_manager = IdCommentsManager()
+        self.store_manager = StoreCommentsManager()
         
-        # Thread-safe lock for database operations
-        self._db_lock = Lock()
+        # Setup logging
+        self.logger = self.db_manager.logger
         
-        # Thread-safe counters
-        self._progress_lock = Lock()
-        self._progress_counter = 0
-        self._error_counter = 0
-        self._comments_counter = 0
-        self._reactions_counter = 0
+        # Thread safety
+        self._lock = Lock()
 
-
-    def _fetch_comments(self, parent_entity_type: str, parent_entity_id: str, limit: int = 15) -> List[Dict]:
+    def fetch_comments_for_all_events(self, limit_per_event: int = 15) -> Dict[str, int]:
         """
-        Fetch comments for a specific entity
+        Fetch top comments for all active events with multithreading
         
         Args:
-            parent_entity_type: 'Event', 'market', or 'Series'
-            parent_entity_id: ID of the parent entity
-            limit: Number of comments to fetch
-            
-        Returns:
-            List of comment dictionaries
+            limit_per_event: Number of comments to fetch per event
         """
-        try:
-            url = f"{self.base_url}/comments"
-            params = {
-                "parent_entity_type": parent_entity_type,
-                "parent_entity_id": parent_entity_id,
-                "limit": limit,
-                "offset": 0,
-                "order": "createdAt",
-                "ascending": "false",
-                "get_positions": "true"
-            }
-            
-            response = requests.get(
-                url,
-                params=params,
-                headers=self.config.get_api_headers(),
-                timeout=self.config.REQUEST_TIMEOUT
-            )
-            
-            if response.status_code == 200:
-                return response.json() or []
-            
-            return []
-            
-        except Exception as e:
-            self.logger.error(f"Error fetching comments for {parent_entity_type} {parent_entity_id}: {e}")
-            return []
+        return self.batch_manager.fetch_comments_for_all_events(limit_per_event)
 
-    def _fetch_comment_reactions(self, comment_id: str) -> List[Dict]:
+    def fetch_comments_for_all_markets(self, limit_per_market: int = 15) -> Dict[str, int]:
         """
-        Fetch reactions for a specific comment
+        Fetch top comments for all active markets with multithreading
         
         Args:
-            comment_id: ID of the comment
-            
-        Returns:
-            List of reaction dictionaries
+            limit_per_market: Number of comments to fetch per market
         """
+        return self.batch_manager.fetch_comments_for_all_markets(limit_per_market)
+
+    def fetch_comments_for_specific_entities(self, events: List[str] = None, markets: List[str] = None, limit: int = 15) -> Dict[str, int]:
+        """
+        Fetch comments for specific events and/or markets
+        
+        Args:
+            events: List of event IDs
+            markets: List of market IDs
+            limit: Number of comments per entity
+        """
+        return self.id_manager.fetch_comments_for_specific_entities(events, markets, limit)
+
+    def fetch_user_comments(self, proxy_wallet: str) -> List[Dict]:
+        """
+        Fetch comments for a specific user
+        
+        Args:
+            proxy_wallet: User's proxy wallet address
+        """
+        return self.id_manager.fetch_user_comments(proxy_wallet)
+
+    def _close_all_connections(self):
+        """Close all database connections from managers"""
+        self.logger.info("Closing all comment manager database connections...")
+        
+        # Close connections from all sub-managers
+        managers = [
+            self.db_manager,
+            self.batch_manager,
+            self.id_manager,
+            self.store_manager
+        ]
+        
+        for manager in managers:
+            try:
+                if hasattr(manager, 'close_connection'):
+                    manager.close_connection()
+            except:
+                pass
+        
+        # Force garbage collection
+        gc.collect()
+        
+        # Small delay to ensure connections are closed
+        time.sleep(0.5)
+
+    def delete_comments_only(self) -> Dict:
+        """
+        Delete comments data
+        
+        Returns:
+            Dict with success status, number deleted, and any error
+        """
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("🗑️  Deleting COMMENTS Data")
+        self.logger.info("=" * 60)
+        
+        result = {'success': False, 'deleted': 0, 'error': None}
+        
         try:
-            url = f"{self.base_url}/comments/{comment_id}/reactions"
+            # Close all connections first
+            self._close_all_connections()
             
-            response = requests.get(
-                url,
-                headers=self.config.get_api_headers(),
-                timeout=self.config.REQUEST_TIMEOUT
+            # Create a fresh database connection for deletion
+            conn = sqlite3.connect(
+                self.db_manager.db_path,
+                timeout=30.0,
+                isolation_level='EXCLUSIVE'
             )
             
-            if response.status_code == 200:
-                return response.json() or []
+            try:
+                cursor = conn.cursor()
+                
+                # Enable WAL mode
+                cursor.execute("PRAGMA journal_mode=WAL")
+                cursor.execute("PRAGMA synchronous=NORMAL")
+                
+                # Get current count
+                cursor.execute("SELECT COUNT(*) FROM comments")
+                before_count = cursor.fetchone()[0]
+                
+                # Begin exclusive transaction
+                cursor.execute("BEGIN EXCLUSIVE")
+                
+                # Delete all related data
+                tables_to_clear = [
+                    'comment_reactions',
+                    'comments'
+                ]
+                
+                for table in tables_to_clear:
+                    cursor.execute(f"DELETE FROM {table}")
+                    self.logger.info(f"  Cleared table: {table}")
+                
+                # Commit the transaction
+                conn.commit()
+                
+                result['deleted'] = before_count
+                
+            finally:
+                conn.close()
             
-            return []
+            result['success'] = True
+            self.logger.info(f"✅ Deleted {result['deleted']} comments and related data")
             
         except Exception as e:
-            return []
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error deleting comments: {e}")
+        
+        finally:
+            # Reinitialize connections for future operations
+            self.db_manager = DatabaseManager()
+            
+        return result
+
+    def load_comments_only(self, limit_per_event: int = 15, events_only: bool = True) -> Dict:
+        """
+        Load only comments data
+        
+        Args:
+            limit_per_event: Number of comments to fetch per entity
+            events_only: If True, only fetch comments for events. If False, fetch for markets too.
+        
+        Returns:
+            Dict with success status, count of comments loaded, and any error
+        """
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info(f"💬 Loading COMMENTS Only")
+        self.logger.info("=" * 60)
+        
+        start_time = time.time()
+        result = {'success': False, 'comments': 0, 'reactions': 0, 'error': None}
+        
+        try:
+            # Check if events exist
+            event_count = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM events WHERE active = 1")
+            
+            if not event_count or event_count['count'] == 0:
+                self.logger.warning("⚠️  No active events found. Please load events first.")
+                result['error'] = "No events available"
+                return result
+            
+            if events_only:
+                comments_result = self.fetch_comments_for_all_events(limit_per_event)
+            else:
+                # Fetch for both events and markets
+                events_result = self.fetch_comments_for_all_events(limit_per_event)
+                markets_result = self.fetch_comments_for_all_markets(limit_per_event)
+                comments_result = {
+                    'comments_fetched': events_result['comments_fetched'] + markets_result.get('comments_fetched', 0),
+                    'reactions_fetched': events_result['reactions_fetched'] + markets_result.get('reactions_fetched', 0)
+                }
+            
+            result['comments'] = comments_result['comments_fetched']
+            result['reactions'] = comments_result['reactions_fetched']
+            result['success'] = True
+            
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"✅ Comments loaded: {result['comments']}")
+            self.logger.info(f"✅ Reactions loaded: {result['reactions']}")
+            self.logger.info(f"⏱️  Time taken: {elapsed_time:.2f} seconds")
+            
+        except Exception as e:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error loading comments: {e}")
+            
+        return result
