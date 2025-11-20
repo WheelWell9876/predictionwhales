@@ -55,7 +55,7 @@ class Config:
     # Data Fetching Configuration
     FETCH_CLOSED_EVENTS = os.getenv('FETCH_CLOSED_EVENTS', 'false').lower() == 'true'
     FETCH_ARCHIVED = os.getenv('FETCH_ARCHIVED', 'false').lower() == 'true'
-    MAX_EVENTS_PER_RUN = int(os.getenv('MAX_EVENTS_PER_RUN', '1000'))
+    MAX_EVENTS_PER_RUN = int(os.getenv('MAX_EVENTS_PER_RUN', '5000'))
     MAX_MARKETS_PER_EVENT = int(os.getenv('MAX_MARKETS_PER_EVENT', '100'))
     
     # Comments Configuration

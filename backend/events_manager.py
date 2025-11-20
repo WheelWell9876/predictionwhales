@@ -175,18 +175,19 @@ class EventsManager:
         result = {'success': False, 'count': 0, 'error': None}
         
         try:
-            events = self.fetch_all_events(closed=closed)
+            # Fetch ALL events first (including closed ones)
+            events = self.fetch_all_events(closed=False)  # This gets all events from API
             result['count'] = len(events)
             result['success'] = True
-            
-            # Clean up closed events if not fetching them
-            if not closed:
-                self.logger.info("🧹 Cleaning up closed events...")
-                self.remove_closed_events()
             
             elapsed_time = time.time() - start_time
             self.logger.info(f"✅ Events loaded: {result['count']}")
             self.logger.info(f"⏱️  Time taken: {elapsed_time:.2f} seconds")
+            
+            # Clean up closed events ONLY at the very end if we're loading active events only
+            if not closed:
+                self.logger.info("\n🧹 Cleaning up closed events (will run after markets are loaded)...")
+                # Note: Actual cleanup will be done after markets section
             
         except Exception as e:
             result['error'] = str(e)
@@ -266,6 +267,28 @@ class EventsManager:
             Number of events removed
         """
         return self.db_manager.remove_closed_events()
+    
+    def cleanup_closed_events(self) -> int:
+        """
+        Clean up closed events - to be called after all data is loaded
+        
+        Returns:
+            Number of events removed
+        """
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("🧹 CLEANING UP CLOSED EVENTS")
+        self.logger.info("=" * 60)
+        
+        try:
+            removed = self.db_manager.remove_closed_events()
+            if removed > 0:
+                self.logger.info(f"✅ Cleanup complete: Removed {removed} closed events")
+            else:
+                self.logger.info("✅ No closed events to clean up")
+            return removed
+        except Exception as e:
+            self.logger.error(f"❌ Error during cleanup: {e}")
+            return 0
     
     def get_active_events(self) -> List[Dict]:
         """

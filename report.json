@@ -1,610 +1,3742 @@
 {
-  "generated_at": "2025-11-13T22:47:46.536086",
-  "database_path": "polymarket_terminal.db",
-  "overview": {
-    "database_size": 79.8359375,
-    "tables": {
-      "collection_tags": 0,
-      "collections": 0,
-      "comment_reactions": 0,
-      "comments": 9358,
-      "event_live_volume": 0,
-      "event_tags": 943,
-      "events": 4918,
-      "market_holders": 636,
-      "market_open_interest": 0,
-      "market_tags": 0,
-      "markets": 22550,
-      "series": 595,
-      "series_collections": 0,
-      "series_events": 511,
-      "series_tags": 0,
-      "sqlite_sequence": 4,
-      "tag_relationships": 0,
-      "tags": 1194,
-      "transactions": 0,
-      "user_activity": 11677,
-      "user_positions_closed": 0,
-      "user_positions_current": 7519,
-      "user_trades": 0,
-      "user_values": 248,
-      "users": 4926
+  "summary": {
+    "generated_at": "2025-11-19T22:37:59.051880",
+    "database_health": "needs_attention",
+    "tables_overview": {
+      "collection_tags": {
+        "row_count": 0,
+        "column_count": 3,
+        "has_data": false
+      },
+      "collections": {
+        "row_count": 0,
+        "column_count": 6,
+        "has_data": false
+      },
+      "comment_reactions": {
+        "row_count": 0,
+        "column_count": 5,
+        "has_data": false
+      },
+      "comments": {
+        "row_count": 0,
+        "column_count": 16,
+        "has_data": false
+      },
+      "event_live_volume": {
+        "row_count": 0,
+        "column_count": 4,
+        "has_data": false
+      },
+      "event_tags": {
+        "row_count": 19665,
+        "column_count": 3,
+        "has_data": true
+      },
+      "events": {
+        "row_count": 4200,
+        "column_count": 44,
+        "has_data": true
+      },
+      "market_holders": {
+        "row_count": 0,
+        "column_count": 10,
+        "has_data": false
+      },
+      "market_open_interest": {
+        "row_count": 0,
+        "column_count": 3,
+        "has_data": false
+      },
+      "market_tags": {
+        "row_count": 0,
+        "column_count": 3,
+        "has_data": false
+      },
+      "markets": {
+        "row_count": 0,
+        "column_count": 79,
+        "has_data": false
+      },
+      "series": {
+        "row_count": 0,
+        "column_count": 22,
+        "has_data": false
+      },
+      "series_collections": {
+        "row_count": 0,
+        "column_count": 5,
+        "has_data": false
+      },
+      "series_events": {
+        "row_count": 0,
+        "column_count": 4,
+        "has_data": false
+      },
+      "series_tags": {
+        "row_count": 0,
+        "column_count": 3,
+        "has_data": false
+      },
+      "tag_relationships": {
+        "row_count": 0,
+        "column_count": 5,
+        "has_data": false
+      },
+      "tags": {
+        "row_count": 724,
+        "column_count": 12,
+        "has_data": true
+      },
+      "transactions": {
+        "row_count": 0,
+        "column_count": 13,
+        "has_data": false
+      },
+      "user_activity": {
+        "row_count": 0,
+        "column_count": 19,
+        "has_data": false
+      },
+      "user_positions_closed": {
+        "row_count": 0,
+        "column_count": 17,
+        "has_data": false
+      },
+      "user_positions_current": {
+        "row_count": 0,
+        "column_count": 27,
+        "has_data": false
+      },
+      "user_trades": {
+        "row_count": 0,
+        "column_count": 19,
+        "has_data": false
+      },
+      "user_values": {
+        "row_count": 0,
+        "column_count": 3,
+        "has_data": false
+      },
+      "users": {
+        "row_count": 0,
+        "column_count": 10,
+        "has_data": false
+      }
     },
-    "total_tables": 25,
-    "total_records": 65079
-  },
-  "events_analysis": {
-    "total_events": 4918,
-    "active_events": 4371,
-    "inactive_events": 547,
-    "closed_events": 0,
-    "open_events": 4918,
-    "status_breakdown": {
-      "Inactive/Open": 547,
-      "Active/Open": 4371
+    "data_quality_metrics": {
+      "total_tables": 24,
+      "tables_with_data": 3,
+      "empty_tables": 21,
+      "data_coverage_percentage": 12.5
     },
-    "top_events_by_volume": [
-      {
-        "title": "Super Bowl Champion 2026",
-        "volume": 527833862.489394,
-        "liquidity": 30494429.87076,
-        "comment_count": 66
-      },
-      {
-        "title": "Democratic Presidential Nominee 2028",
-        "volume": 298744705.829845,
-        "liquidity": 15572384.99257,
-        "comment_count": 259
-      },
-      {
-        "title": "2025 National Heads-Up Poker Championship Winner",
-        "volume": 176621706.532755,
-        "liquidity": 1843533.52891,
-        "comment_count": 121
-      },
-      {
-        "title": "F1 Drivers Champion",
-        "volume": 146523646.433346,
-        "liquidity": 284165.62916,
-        "comment_count": 228
-      },
-      {
-        "title": "Presidential Election Winner 2028",
-        "volume": 119412576.249524,
-        "liquidity": 9915231.25982,
-        "comment_count": 384
-      },
-      {
-        "title": "English Premier League Winner ",
-        "volume": 98414045.827255,
-        "liquidity": 5957574.17245,
-        "comment_count": 11
-      },
-      {
-        "title": "Fed decision in December?",
-        "volume": 88194763.776838,
-        "liquidity": 5048001.79222,
-        "comment_count": null
-      },
-      {
-        "title": "Republican Presidential Nominee 2028",
-        "volume": 87639174.777777,
-        "liquidity": 6278033.54715,
-        "comment_count": 122
-      },
-      {
-        "title": "UEFA Champions League Winner ",
-        "volume": 73621879.558887,
-        "liquidity": 9664271.76526,
-        "comment_count": 51
-      },
-      {
-        "title": "Highest grossing movie in 2025?",
-        "volume": 68829324.580168,
-        "liquidity": 3593252.0664,
-        "comment_count": 880
-      }
-    ],
-    "events_with_most_markets": [
-      {
-        "title": "NHL Hart Memorial Trophy Winner",
-        "market_count": 139,
-        "volume": 22346.716748
-      },
-      {
-        "title": "Democratic Presidential Nominee 2028",
-        "market_count": 128,
-        "volume": 298744705.829845
-      },
-      {
-        "title": "Presidential Election Winner 2028",
-        "market_count": 128,
-        "volume": 119412576.249524
-      },
-      {
-        "title": "Republican Presidential Nominee 2028",
-        "market_count": 128,
-        "volume": 87639174.777777
-      },
-      {
-        "title": "Next French Presidential Election",
-        "market_count": 128,
-        "volume": 1805.0
-      },
-      {
-        "title": "NHL Art Ross Trophy Winner",
-        "market_count": 122,
-        "volume": 26996.427516
-      },
-      {
-        "title": "2025 National Heads-Up Poker Championship Winner",
-        "market_count": 104,
-        "volume": 176621706.532755
-      },
-      {
-        "title": "The Masters - Winner ",
-        "market_count": 102,
-        "volume": 20800.339841
-      },
-      {
-        "title": "NHL Calder Memorial Trophy Winner",
-        "market_count": 102,
-        "volume": 14993.289694
-      },
-      {
-        "title": "NHL Maurice 'Rocket' Richard Trophy Winner",
-        "market_count": 102,
-        "volume": 23065.783504
-      }
-    ],
-    "events_without_markets": 822
+    "issues": [
+      "Markets table is empty",
+      "Users table is empty"
+    ]
   },
-  "markets_analysis": {
-    "total_markets": 22550,
-    "active_markets": 16133,
-    "closed_markets": 6417,
-    "top_markets_by_volume": [
-      {
-        "question": "Will the Tennessee Titans win Super Bowl 2026?",
-        "volume": 67507808.675639,
-        "liquidity": 2598210.29382,
-        "open_interest": null,
-        "last_trade_price": 0.004
+  "tables": {
+    "collection_tags": {
+      "table_name": "collection_tags",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "collection_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "tag_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "tag_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "collections": {
+      "table_name": "collections",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "comment_reactions": {
+      "table_name": "comment_reactions",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "comment_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "user_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "reaction_type",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "comments": {
+      "table_name": "comments",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "parent_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "content",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "user_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pseudonym",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "user_profile_image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "likes_count",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "dislikes_count",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "replies_count",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "is_pinned",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "is_edited",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "fetched_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "event_live_volume": {
+      "table_name": "event_live_volume",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "timestamp",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "volume",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "volume_24hr",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "event_tags": {
+      "table_name": "event_tags",
+      "row_count": 19665,
+      "columns": [
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "tag_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "tag_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": [
+        {
+          "event_id": "23656",
+          "tag_id": "1",
+          "tag_slug": "sports"
+        },
+        {
+          "event_id": "23656",
+          "tag_id": "450",
+          "tag_slug": "nfl"
+        },
+        {
+          "event_id": "23656",
+          "tag_id": "102549",
+          "tag_slug": "cowboys-vs-eagles"
+        },
+        {
+          "event_id": "30829",
+          "tag_id": "101206",
+          "tag_slug": "world-elections"
+        },
+        {
+          "event_id": "30829",
+          "tag_id": "1597",
+          "tag_slug": "global-elections"
+        }
+      ]
+    },
+    "events": {
+      "table_name": "events",
+      "row_count": 4200,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "ticker",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "resolution_source",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "start_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "creation_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "end_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "icon",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "active",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "1",
+          "primary_key": false
+        },
+        {
+          "name": "closed",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "archived",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "new",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "featured",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "restricted",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "liquidity",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "liquidity_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_24hr",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_24hr_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1wk",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1wk_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1mo",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1mo_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1yr",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1yr_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "open_interest",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "competitive",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "comment_count",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "enable_order_book",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "cyom",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "show_all_outcomes",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "show_market_images",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "enable_neg_risk",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "automatically_active",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "neg_risk_augmented",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "pending_deployment",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "deploying",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "fetched_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "column_analysis": {
+        "id": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": true,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4200,
+          "sample_values": [
+            "16084",
+            "16085",
+            "16086",
+            "16087",
+            "16092"
+          ]
+        },
+        "ticker": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4200,
+          "sample_values": [
+            "super-bowl-champion-2026-731",
+            "democratic-presidential-nominee-2028",
+            "2025-national-heads-up-poker-championship-winner-845",
+            "f1-drivers-champion",
+            "presidential-election-winner-2028"
+          ]
+        },
+        "slug": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4200,
+          "sample_values": [
+            "1-album-on-rolling-stones-100-best-albums-of-2025-list",
+            "1-free-app-in-the-us-apple-app-store-on-november-21",
+            "1-paid-app-in-the-us-apple-app-store-on-november-21",
+            "1-searched-actor-on-google-this-year",
+            "1-searched-athlete-on-google-this-year"
+          ]
+        },
+        "title": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4191,
+          "sample_values": [
+            "Super Bowl Champion 2026",
+            "Democratic Presidential Nominee 2028",
+            "2025 National Heads-Up Poker Championship Winner",
+            "F1 Drivers Champion",
+            "Presidential Election Winner 2028"
+          ]
+        },
+        "description": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 3593,
+          "sample_values": [
+            "This is a market on predicting the winner of the NFL Super Bowl for the 2025/26 season. ",
+            "This market will resolve to \u201cYes\u201d if the named individual wins and accepts the 2028 nomination of the Democratic Party for U.S. president. Otherwise, this market will resolve to \u201cNo\u201d.\n\nThe resolution source for this market will be a consensus of official Democratic Party sources.\n\nAny replacement of the democratic nominee before election day will not change the resolution of the market.",
+            "The 2025 National Heads-Up Poker Championship will premiere on Peacock this fall (https://www.pokernews.com/news/2025/07/national-heads-up-poker-championship-return-49301.htm). This market predicts which player will win the 2025 National Heads-Up Poker Championship.\n\nThis market will resolve to \"Yes\" if the listed player wins the 2025 National Heads-Up Poker Championship. Otherwise, it will resolve to \"No\".\n\nIf the 2025 National Heads-Up Poker Championship is canceled or not completed by December 31, 2025, 11:59 pm ET, this market will resolve to \"Other\".\n\nIf the final players agree to a prize\u2011money chop, this market will resolve based on the player who is awarded the official tournament trophy.\n\nThe primary resolution source for this market will be Peacock, along with streaming coverage on PokerGO and PokerStars. However, a consensus of credible reporting may also be used.",
+            "This market will resolve according to the driver that finishes 1st in the driver standings for the 2025 F1 season. Otherwise, this market will resolve to \"No\".\n\nAs soon as the results for the final scheduled race of the 2025 F1 season are known this market will resolve.\n\nIf at any point it becomes impossible for a listed driver to win the 2025 F1 Drivers Championship based on the rules of F1 (e.g., they are mathematically eliminated from contention), this market will resolve to \u201cNo\u201d.\n\nIf the F1 season has not been completed by February 28, 2025, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source for this market will be official information from Formula 1. \n",
+            "The 2028 US Presidential Election is scheduled to take place on November 7, 2028.\n\nThis market will resolve to the person who wins the 2028 US Presidential Election. Otherwise, this market will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate by the inauguration date (January 20, 2029) this market will resolve based on who is inaugurated."
+          ]
+        },
+        "resolution_source": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 0,
+          "null_count": 4200,
+          "null_percentage": 100.0,
+          "unique_values": 0,
+          "sample_values": []
+        },
+        "start_date": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4189,
+          "sample_values": [
+            "2025-05-01T20:30:33.749654Z",
+            "2025-07-11T18:41:17.827458Z",
+            "2025-08-03T17:03:49.805032Z",
+            "2025-02-26T19:41:23.172081Z",
+            "2025-07-11T19:11:35.945569Z"
+          ]
+        },
+        "creation_date": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 3495,
+          "sample_values": [
+            "2025-05-01T20:30:33.749649Z",
+            "2025-07-11T18:41:17.827389Z",
+            "2025-08-03T17:03:49.804983Z",
+            "2025-02-26T19:41:23.172075Z",
+            "2025-07-11T19:11:35.945462Z"
+          ]
+        },
+        "end_date": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4189,
+          "null_count": 11,
+          "null_percentage": 0.2619047619047619,
+          "unique_values": 768,
+          "sample_values": [
+            "2026-02-08T12:00:00Z",
+            "2028-11-07T00:00:00Z",
+            "2025-12-31T22:00:00Z",
+            "2025-12-07T12:00:00Z",
+            "2025-12-10T00:00:00Z"
+          ]
+        },
+        "image": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 1307,
+          "sample_values": [
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/democrats+2028+donkey.png",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/2025-national-heads-up-poker-championship-winner-4Mcph8sO9IpY.jpg",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/f1-drivers-champion-Idl_xeTwgeVI.jpg",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/presidential-election-winner-2024-afdda358-219d-448a-abb5-ba4d14118d71.png"
+          ]
+        },
+        "icon": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 1307,
+          "sample_values": [
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/democrats+2028+donkey.png",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/2025-national-heads-up-poker-championship-winner-4Mcph8sO9IpY.jpg",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/f1-drivers-champion-Idl_xeTwgeVI.jpg",
+            "https://polymarket-upload.s3.us-east-2.amazonaws.com/presidential-election-winner-2024-afdda358-219d-448a-abb5-ba4d14118d71.png"
+          ]
+        },
+        "active": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 1,
+          "max": 1,
+          "avg": 1.0,
+          "sum": 4200
+        },
+        "closed": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 0,
+          "avg": 0.0,
+          "sum": 0
+        },
+        "archived": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 0,
+          "avg": 0.0,
+          "sum": 0
+        },
+        "new": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 0,
+          "avg": 0.0,
+          "sum": 0
+        },
+        "featured": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.004523809523809524,
+          "sum": 19
+        },
+        "restricted": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 1,
+          "max": 1,
+          "avg": 1.0,
+          "sum": 4200
+        },
+        "liquidity": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4196,
+          "null_count": 4,
+          "null_percentage": 0.09523809523809523,
+          "min": 0.2,
+          "max": 33810366.42463,
+          "avg": 71204.01723498093,
+          "sum": 298772056.31798
+        },
+        "liquidity_clob": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4196,
+          "null_count": 4,
+          "null_percentage": 0.09523809523809523,
+          "min": 0.2,
+          "max": 33810366.42463,
+          "avg": 71204.01723498093,
+          "sum": 298772056.31798
+        },
+        "volume": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 2833,
+          "null_count": 1367,
+          "null_percentage": 32.54761904761905,
+          "min": 1.0101,
+          "max": 552720701.759142,
+          "avg": 1121316.242936015,
+          "sum": 3176688916.23773
+        },
+        "volume_clob": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 0,
+          "null_count": 4200,
+          "null_percentage": 100.0,
+          "min": null,
+          "max": null,
+          "avg": null,
+          "sum": null
+        },
+        "volume_24hr": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 2062,
+          "null_count": 2138,
+          "null_percentage": 50.904761904761905,
+          "min": 0.56,
+          "max": 8974427.797352994,
+          "avg": 42411.99286185693,
+          "sum": 87453529.281149
+        },
+        "volume_24hr_clob": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 0,
+          "null_count": 4200,
+          "null_percentage": 100.0,
+          "min": null,
+          "max": null,
+          "avg": null,
+          "sum": null
+        },
+        "volume_1wk": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 2612,
+          "null_count": 1588,
+          "null_percentage": 37.80952380952381,
+          "min": 1.01,
+          "max": 43036786.66616084,
+          "avg": 179126.27281183953,
+          "sum": 467877824.58452487
+        },
+        "volume_1wk_clob": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 0,
+          "null_count": 4200,
+          "null_percentage": 100.0,
+          "min": null,
+          "max": null,
+          "avg": null,
+          "sum": null
+        },
+        "volume_1mo": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 2755,
+          "null_count": 1445,
+          "null_percentage": 34.404761904761905,
+          "min": 1.0101,
+          "max": 176021240.219717,
+          "avg": 558122.5206568361,
+          "sum": 1537627544.4095833
+        },
+        "volume_1mo_clob": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 0,
+          "null_count": 4200,
+          "null_percentage": 100.0,
+          "min": null,
+          "max": null,
+          "avg": null,
+          "sum": null
+        },
+        "volume_1yr": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 2759,
+          "null_count": 1441,
+          "null_percentage": 34.30952380952381,
+          "min": 1.0101,
+          "max": 552326268.7985481,
+          "avg": 1143140.7503201324,
+          "sum": 3153925330.1332455
+        },
+        "volume_1yr_clob": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 0,
+          "null_count": 4200,
+          "null_percentage": 100.0,
+          "min": null,
+          "max": null,
+          "avg": null,
+          "sum": null
+        },
+        "open_interest": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0.0,
+          "max": 0.0,
+          "avg": 0.0,
+          "sum": 0.0
+        },
+        "competitive": {
+          "type": "REAL",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4196,
+          "null_count": 4,
+          "null_percentage": 0.09523809523809523,
+          "min": 0.0029999992500001874,
+          "max": 1.0,
+          "avg": 0.7289216614645141,
+          "sum": 3058.555291505101
+        },
+        "comment_count": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4191,
+          "null_count": 9,
+          "null_percentage": 0.2142857142857143,
+          "min": -4,
+          "max": 20361,
+          "avg": 34.05750417561441,
+          "sum": 142735
+        },
+        "enable_order_book": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 1,
+          "max": 1,
+          "avg": 1.0,
+          "sum": 4200
+        },
+        "cyom": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.01119047619047619,
+          "sum": 47
+        },
+        "show_all_outcomes": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.9966666666666667,
+          "sum": 4186
+        },
+        "show_market_images": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.3457142857142857,
+          "sum": 1452
+        },
+        "enable_neg_risk": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.2804761904761905,
+          "sum": 1178
+        },
+        "automatically_active": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4199,
+          "null_count": 1,
+          "null_percentage": 0.023809523809523808,
+          "min": 1,
+          "max": 1,
+          "avg": 1.0,
+          "sum": 4199
+        },
+        "neg_risk_augmented": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.09404761904761905,
+          "sum": 395
+        },
+        "pending_deployment": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 1,
+          "avg": 0.0009523809523809524,
+          "sum": 4
+        },
+        "deploying": {
+          "type": "INTEGER",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "min": 0,
+          "max": 0,
+          "avg": 0.0,
+          "sum": 0
+        },
+        "created_at": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4200,
+          "sample_values": [
+            "2025-04-30T10:43:09.376079Z",
+            "2025-07-03T20:36:57.824243Z",
+            "2025-08-03T16:20:44.357147Z",
+            "2025-02-26T18:26:25.379138Z",
+            "2025-07-08T19:05:57.129881Z"
+          ]
+        },
+        "updated_at": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4200,
+          "sample_values": [
+            "2025-11-20T03:52:09.947378Z",
+            "2025-11-20T03:52:09.945288Z",
+            "2025-11-20T03:52:09.942234Z",
+            "2025-11-20T03:52:09.940023Z",
+            "2025-11-20T03:52:09.937273Z"
+          ]
+        },
+        "fetched_at": {
+          "type": "TEXT",
+          "nullable": true,
+          "primary_key": false,
+          "total_rows": 4200,
+          "non_null_count": 4200,
+          "null_count": 0,
+          "null_percentage": 0.0,
+          "unique_values": 4200,
+          "sample_values": [
+            "2025-11-19T21:56:16.036302",
+            "2025-11-19T21:56:16.036326",
+            "2025-11-19T21:56:16.036337",
+            "2025-11-19T21:56:16.036350",
+            "2025-11-19T21:56:16.036362"
+          ]
+        }
       },
-      {
-        "question": "Will the Miami Dolphins win Super Bowl 2026?",
-        "volume": 57444579.850853,
-        "liquidity": 2328263.48008,
-        "open_interest": null,
-        "last_trade_price": 0.003
-      },
-      {
-        "question": "Xi Jinping out in 2025?",
-        "volume": 54820835.881348,
-        "liquidity": 792161.90844,
-        "open_interest": null,
-        "last_trade_price": 0.023
-      },
-      {
-        "question": "Fed increases interest rates by 25+ bps after December 2025 meeting?",
-        "volume": 53380168.341363,
-        "liquidity": 3226094.79357,
-        "open_interest": null,
-        "last_trade_price": 0.006
-      },
-      {
-        "question": "Will the New York Jets win Super Bowl 2026?",
-        "volume": 52424677.12823,
-        "liquidity": 1839299.63507,
-        "open_interest": null,
-        "last_trade_price": 0.004
-      },
-      {
-        "question": "Will the Cleveland Browns win Super Bowl 2026?",
-        "volume": 48488031.842415,
-        "liquidity": 1403822.67311,
-        "open_interest": null,
-        "last_trade_price": 0.005
-      },
-      {
-        "question": "Will the Las Vegas Raiders win Super Bowl 2026?",
-        "volume": 47372921.93527,
-        "liquidity": 2502509.50932,
-        "open_interest": null,
-        "last_trade_price": 0.004
-      },
-      {
-        "question": "Will the New Orleans Saints win Super Bowl 2026?",
-        "volume": 44989900.364602,
-        "liquidity": 1947424.77994,
-        "open_interest": null,
-        "last_trade_price": 0.004
-      },
-      {
-        "question": "Will the Carolina Panthers win Super Bowl 2026?",
-        "volume": 40458164.604798,
-        "liquidity": 2158102.85664,
-        "open_interest": null,
-        "last_trade_price": 0.003
-      },
-      {
-        "question": "Will the Arizona Cardinals win Super Bowl 2026?",
-        "volume": 38220199.097823,
-        "liquidity": 2068063.53545,
-        "open_interest": null,
-        "last_trade_price": 0.004
+      "sample_data": [
+        {
+          "id": "23656",
+          "ticker": "super-bowl-champion-2026-731",
+          "slug": "super-bowl-champion-2026-731",
+          "title": "Super Bowl Champion 2026",
+          "description": "This is a market on predicting the winner of the NFL Super Bowl for the 2025/26 season. ",
+          "resolution_source": null,
+          "start_date": "2025-05-01T20:30:33.749654Z",
+          "creation_date": "2025-05-01T20:30:33.749649Z",
+          "end_date": "2026-02-08T12:00:00Z",
+          "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+          "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
+          "active": 1,
+          "closed": 0,
+          "archived": 0,
+          "new": 0,
+          "featured": 1,
+          "restricted": 1,
+          "liquidity": 33810366.42463,
+          "liquidity_clob": 33810366.42463,
+          "volume": 552720701.759142,
+          "volume_clob": null,
+          "volume_24hr": 2810830.302244,
+          "volume_24hr_clob": null,
+          "volume_1wk": 27052155.244075004,
+          "volume_1wk_clob": null,
+          "volume_1mo": 176021240.219717,
+          "volume_1mo_clob": null,
+          "volume_1yr": 552326268.7985481,
+          "volume_1yr_clob": null,
+          "open_interest": 0.0,
+          "competitive": 0.8880797495615106,
+          "comment_count": 116,
+          "enable_order_book": 1,
+          "cyom": 0,
+          "show_all_outcomes": 1,
+          "show_market_images": 1,
+          "enable_neg_risk": 1,
+          "automatically_active": null,
+          "neg_risk_augmented": 1,
+          "pending_deployment": 0,
+          "deploying": 0,
+          "created_at": "2025-04-30T10:43:09.376079Z",
+          "updated_at": "2025-11-20T03:52:09.945288Z",
+          "fetched_at": "2025-11-19T21:56:16.036302"
+        },
+        {
+          "id": "30829",
+          "ticker": "democratic-presidential-nominee-2028",
+          "slug": "democratic-presidential-nominee-2028",
+          "title": "Democratic Presidential Nominee 2028",
+          "description": "This market will resolve to \u201cYes\u201d if the named individual wins and accepts the 2028 nomination of the Democratic Party for U.S. president. Otherwise, this market will resolve to \u201cNo\u201d.\n\nThe resolution source for this market will be a consensus of official Democratic Party sources.\n\nAny replacement of the democratic nominee before election day will not change the resolution of the market.",
+          "resolution_source": null,
+          "start_date": "2025-07-11T18:41:17.827458Z",
+          "creation_date": "2025-07-11T18:41:17.827389Z",
+          "end_date": "2028-11-07T00:00:00Z",
+          "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/democrats+2028+donkey.png",
+          "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/democrats+2028+donkey.png",
+          "active": 1,
+          "closed": 0,
+          "archived": 0,
+          "new": 0,
+          "featured": 0,
+          "restricted": 1,
+          "liquidity": 14583725.20605,
+          "liquidity_clob": 14583725.20605,
+          "volume": 312322890.512476,
+          "volume_clob": null,
+          "volume_24hr": 1338605.181076,
+          "volume_24hr_clob": null,
+          "volume_1wk": 16640950.792422,
+          "volume_1wk_clob": null,
+          "volume_1mo": 114664254.04195604,
+          "volume_1mo_clob": null,
+          "volume_1yr": 311915469.43836147,
+          "volume_1yr_clob": null,
+          "open_interest": 0.0,
+          "competitive": 0.9846153846153846,
+          "comment_count": 282,
+          "enable_order_book": 1,
+          "cyom": 0,
+          "show_all_outcomes": 1,
+          "show_market_images": 1,
+          "enable_neg_risk": 1,
+          "automatically_active": 1,
+          "neg_risk_augmented": 1,
+          "pending_deployment": 0,
+          "deploying": 0,
+          "created_at": "2025-07-03T20:36:57.824243Z",
+          "updated_at": "2025-11-20T03:52:03.072515Z",
+          "fetched_at": "2025-11-19T21:56:16.036326"
+        },
+        {
+          "id": "35532",
+          "ticker": "2025-national-heads-up-poker-championship-winner-845",
+          "slug": "2025-national-heads-up-poker-championship-winner-845",
+          "title": "2025 National Heads-Up Poker Championship Winner",
+          "description": "The 2025 National Heads-Up Poker Championship will premiere on Peacock this fall (https://www.pokernews.com/news/2025/07/national-heads-up-poker-championship-return-49301.htm). This market predicts which player will win the 2025 National Heads-Up Poker Championship.\n\nThis market will resolve to \"Yes\" if the listed player wins the 2025 National Heads-Up Poker Championship. Otherwise, it will resolve to \"No\".\n\nIf the 2025 National Heads-Up Poker Championship is canceled or not completed by December 31, 2025, 11:59 pm ET, this market will resolve to \"Other\".\n\nIf the final players agree to a prize\u2011money chop, this market will resolve based on the player who is awarded the official tournament trophy.\n\nThe primary resolution source for this market will be Peacock, along with streaming coverage on PokerGO and PokerStars. However, a consensus of credible reporting may also be used.",
+          "resolution_source": null,
+          "start_date": "2025-08-03T17:03:49.805032Z",
+          "creation_date": "2025-08-03T17:03:49.804983Z",
+          "end_date": "2025-12-31T22:00:00Z",
+          "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/2025-national-heads-up-poker-championship-winner-4Mcph8sO9IpY.jpg",
+          "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/2025-national-heads-up-poker-championship-winner-4Mcph8sO9IpY.jpg",
+          "active": 1,
+          "closed": 0,
+          "archived": 0,
+          "new": 0,
+          "featured": 0,
+          "restricted": 1,
+          "liquidity": 1587641.56494,
+          "liquidity_clob": 1587641.56494,
+          "volume": 177749630.891851,
+          "volume_clob": null,
+          "volume_24hr": 286374.574776,
+          "volume_24hr_clob": null,
+          "volume_1wk": 1317533.8205,
+          "volume_1wk_clob": null,
+          "volume_1mo": 50082727.902344026,
+          "volume_1mo_clob": null,
+          "volume_1yr": 177713270.82517272,
+          "volume_1yr_clob": null,
+          "open_interest": 0.0,
+          "competitive": 0.9815767853163966,
+          "comment_count": 161,
+          "enable_order_book": 1,
+          "cyom": 0,
+          "show_all_outcomes": 1,
+          "show_market_images": 1,
+          "enable_neg_risk": 1,
+          "automatically_active": 1,
+          "neg_risk_augmented": 1,
+          "pending_deployment": 0,
+          "deploying": 0,
+          "created_at": "2025-08-03T16:20:44.357147Z",
+          "updated_at": "2025-11-20T03:52:02.346689Z",
+          "fetched_at": "2025-11-19T21:56:16.036337"
+        },
+        {
+          "id": "19696",
+          "ticker": "f1-drivers-champion",
+          "slug": "f1-drivers-champion",
+          "title": "F1 Drivers Champion",
+          "description": "This market will resolve according to the driver that finishes 1st in the driver standings for the 2025 F1 season. Otherwise, this market will resolve to \"No\".\n\nAs soon as the results for the final scheduled race of the 2025 F1 season are known this market will resolve.\n\nIf at any point it becomes impossible for a listed driver to win the 2025 F1 Drivers Championship based on the rules of F1 (e.g., they are mathematically eliminated from contention), this market will resolve to \u201cNo\u201d.\n\nIf the F1 season has not been completed by February 28, 2025, 11:59 PM this market will resolve to \u201cOther\u201d.\n\nThe primary resolution source for this market will be official information from Formula 1. \n",
+          "resolution_source": null,
+          "start_date": "2025-02-26T19:41:23.172081Z",
+          "creation_date": "2025-02-26T19:41:23.172075Z",
+          "end_date": "2025-12-07T12:00:00Z",
+          "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/f1-drivers-champion-Idl_xeTwgeVI.jpg",
+          "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/f1-drivers-champion-Idl_xeTwgeVI.jpg",
+          "active": 1,
+          "closed": 0,
+          "archived": 0,
+          "new": 0,
+          "featured": 0,
+          "restricted": 1,
+          "liquidity": 262494.36772,
+          "liquidity_clob": 262494.36772,
+          "volume": 146827827.761002,
+          "volume_clob": null,
+          "volume_24hr": 46406.146618,
+          "volume_24hr_clob": null,
+          "volume_1wk": 8707697.706690995,
+          "volume_1wk_clob": null,
+          "volume_1mo": 37797840.614958964,
+          "volume_1mo_clob": null,
+          "volume_1yr": 146826662.65418687,
+          "volume_1yr_clob": null,
+          "open_interest": 0.0,
+          "competitive": 0.9044657998869418,
+          "comment_count": 233,
+          "enable_order_book": 1,
+          "cyom": 0,
+          "show_all_outcomes": 1,
+          "show_market_images": 0,
+          "enable_neg_risk": 1,
+          "automatically_active": 1,
+          "neg_risk_augmented": 1,
+          "pending_deployment": 0,
+          "deploying": 0,
+          "created_at": "2025-02-26T18:26:25.379138Z",
+          "updated_at": "2025-11-20T03:52:02.598627Z",
+          "fetched_at": "2025-11-19T21:56:16.036350"
+        },
+        {
+          "id": "31552",
+          "ticker": "presidential-election-winner-2028",
+          "slug": "presidential-election-winner-2028",
+          "title": "Presidential Election Winner 2028",
+          "description": "The 2028 US Presidential Election is scheduled to take place on November 7, 2028.\n\nThis market will resolve to the person who wins the 2028 US Presidential Election. Otherwise, this market will resolve to \u201cNo.\u201d\n\nThe resolution source for this market is the Associated Press, Fox News, and NBC. This market will resolve once all three sources call the race for the same candidate. If all three sources haven\u2019t called the race for the same candidate by the inauguration date (January 20, 2029) this market will resolve based on who is inaugurated.",
+          "resolution_source": null,
+          "start_date": "2025-07-11T19:11:35.945569Z",
+          "creation_date": "2025-07-11T19:11:35.945462Z",
+          "end_date": "2028-11-07T00:00:00Z",
+          "image": "https://polymarket-upload.s3.us-east-2.amazonaws.com/presidential-election-winner-2024-afdda358-219d-448a-abb5-ba4d14118d71.png",
+          "icon": "https://polymarket-upload.s3.us-east-2.amazonaws.com/presidential-election-winner-2024-afdda358-219d-448a-abb5-ba4d14118d71.png",
+          "active": 1,
+          "closed": 0,
+          "archived": 0,
+          "new": 0,
+          "featured": 0,
+          "restricted": 1,
+          "liquidity": 10380834.56415,
+          "liquidity_clob": 10380834.56415,
+          "volume": 126169870.664052,
+          "volume_clob": null,
+          "volume_24hr": 1202578.2742700002,
+          "volume_24hr_clob": null,
+          "volume_1wk": 7761495.62552,
+          "volume_1wk_clob": null,
+          "volume_1mo": 47626907.04881594,
+          "volume_1mo_clob": null,
+          "volume_1yr": 126041007.24901903,
+          "volume_1yr_clob": null,
+          "open_interest": 0.0,
+          "competitive": 0.9558173433056943,
+          "comment_count": 406,
+          "enable_order_book": 1,
+          "cyom": 0,
+          "show_all_outcomes": 1,
+          "show_market_images": 1,
+          "enable_neg_risk": 1,
+          "automatically_active": 1,
+          "neg_risk_augmented": 1,
+          "pending_deployment": 0,
+          "deploying": 0,
+          "created_at": "2025-07-08T19:05:57.129881Z",
+          "updated_at": "2025-11-20T03:52:03.34328Z",
+          "fetched_at": "2025-11-19T21:56:16.036362"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_events_updated",
+          "unique": false
+        },
+        {
+          "name": "idx_events_volume",
+          "unique": false
+        },
+        {
+          "name": "idx_events_closed",
+          "unique": false
+        },
+        {
+          "name": "sqlite_autoindex_events_2",
+          "unique": true
+        },
+        {
+          "name": "sqlite_autoindex_events_1",
+          "unique": true
+        }
+      ],
+      "event_specific_analysis": {
+        "status_breakdown": {
+          "active_count": 4200,
+          "closed_count": 0,
+          "archived_count": 0,
+          "featured_count": 19,
+          "restricted_count": 4200
+        },
+        "volume_stats": {
+          "total_volume": 3176688916.23773,
+          "avg_volume": 1121316.242936015,
+          "max_volume": 552720701.759142,
+          "min_volume": 1.0101,
+          "total_volume_24hr": 87453529.281149,
+          "avg_liquidity": 71204.01723498093
+        },
+        "top_by_volume": [
+          {
+            "id": "23656",
+            "ticker": "super-bowl-champion-2026-731",
+            "slug": "super-bowl-champion-2026-731",
+            "title": "Super Bowl Champion 2026",
+            "volume": 552720701.759142,
+            "liquidity": 33810366.42463,
+            "competitive": 0.8880797495615106
+          },
+          {
+            "id": "30829",
+            "ticker": "democratic-presidential-nominee-2028",
+            "slug": "democratic-presidential-nominee-2028",
+            "title": "Democratic Presidential Nominee 2028",
+            "volume": 312322890.512476,
+            "liquidity": 14583725.20605,
+            "competitive": 0.9846153846153846
+          },
+          {
+            "id": "35532",
+            "ticker": "2025-national-heads-up-poker-championship-winner-845",
+            "slug": "2025-national-heads-up-poker-championship-winner-845",
+            "title": "2025 National Heads-Up Poker Championship Winner",
+            "volume": 177749630.891851,
+            "liquidity": 1587641.56494,
+            "competitive": 0.9815767853163966
+          },
+          {
+            "id": "19696",
+            "ticker": "f1-drivers-champion",
+            "slug": "f1-drivers-champion",
+            "title": "F1 Drivers Champion",
+            "volume": 146827827.761002,
+            "liquidity": 262494.36772,
+            "competitive": 0.9044657998869418
+          },
+          {
+            "id": "31552",
+            "ticker": "presidential-election-winner-2028",
+            "slug": "presidential-election-winner-2028",
+            "title": "Presidential Election Winner 2028",
+            "volume": 126169870.664052,
+            "liquidity": 10380834.56415,
+            "competitive": 0.9558173433056943
+          },
+          {
+            "id": "35090",
+            "ticker": "fed-decision-in-december",
+            "slug": "fed-decision-in-december",
+            "title": "Fed decision in December?",
+            "volume": 122973085.53606,
+            "liquidity": 4948987.58291,
+            "competitive": 0.9734965562559322
+          },
+          {
+            "id": "33507",
+            "ticker": "english-premier-league-winner",
+            "slug": "english-premier-league-winner",
+            "title": "English Premier League Winner ",
+            "volume": 105591429.039436,
+            "liquidity": 6068147.07051,
+            "competitive": 0.9987764987889834
+          },
+          {
+            "id": "31875",
+            "ticker": "republican-presidential-nominee-2028",
+            "slug": "republican-presidential-nominee-2028",
+            "title": "Republican Presidential Nominee 2028",
+            "volume": 94214225.89174,
+            "liquidity": 6289476.96598,
+            "competitive": 0.9975062344139651
+          },
+          {
+            "id": "33506",
+            "ticker": "uefa-champions-league-winner",
+            "slug": "uefa-champions-league-winner",
+            "title": "UEFA Champions League Winner ",
+            "volume": 78804019.875236,
+            "liquidity": 9957043.46782,
+            "competitive": 0.9044657998869418
+          },
+          {
+            "id": "16100",
+            "ticker": "highest-grossing-movie-in-2025",
+            "slug": "highest-grossing-movie-in-2025",
+            "title": "Highest grossing movie in 2025?",
+            "volume": 74323241.741287,
+            "liquidity": 4109255.83622,
+            "competitive": 0.9921412491653612
+          }
+        ],
+        "date_range": {
+          "earliest_created": "2024-12-29T17:37:59.684632Z",
+          "latest_created": "2025-11-20T03:47:23.651603Z",
+          "earliest_start": "2024-12-29T22:40:14.244347Z",
+          "latest_end": "2028-11-07T00:00:00Z"
+        }
       }
-    ],
-    "markets_by_volume_range": {
-      "< $1K": 5425,
-      "$1K - $10K": 2971,
-      "$10K - $100K": 2377,
-      "$100K - $1M": 1182,
-      "> $1M": 435
+    },
+    "market_holders": {
+      "table_name": "market_holders",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "market_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "token_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pseudonym",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "amount",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "outcome_index",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "bio",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "profile_image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "market_open_interest": {
+      "table_name": "market_open_interest",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "market_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "timestamp",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "open_interest",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "market_tags": {
+      "table_name": "market_tags",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "market_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "tag_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "tag_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "markets": {
+      "table_name": "markets",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "question",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "resolution_source",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "end_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "start_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "icon",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcomes",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome_prices",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "volume",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_num",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_24hr",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_24hr_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1wk",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1wk_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1mo",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1mo_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1yr",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1yr_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "liquidity",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "liquidity_num",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "liquidity_clob",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "active",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "1",
+          "primary_key": false
+        },
+        {
+          "name": "closed",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "new",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "featured",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "archived",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "restricted",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "submitted_by",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "resolved_by",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "market_maker_address",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "group_item_title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "group_item_threshold",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "question_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "enable_order_book",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "order_price_min_tick_size",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "order_min_size",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "end_date_iso",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "start_date_iso",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "has_reviewed_dates",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "clob_token_ids",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "uma_bond",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "uma_reward",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "accepting_orders",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "accepting_orders_timestamp",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "neg_risk",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "neg_risk_other",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "ready",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "funded",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "cyom",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "competitive",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "pager_duty_notification_enabled",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "approved",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "rewards_min_size",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "rewards_max_spread",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "spread",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "one_day_price_change",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "one_week_price_change",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "one_month_price_change",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "last_trade_price",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "best_bid",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "best_ask",
+          "type": "REAL",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "automatically_active",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "clear_book_on_start",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "manual_activation",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "uma_resolution_statuses",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pending_deployment",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "deploying",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "rfq_enabled",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "holding_rewards_enabled",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "fees_enabled",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "fetched_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "series": {
+      "table_name": "series",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "description",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "creator",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "liquidity",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_24hr",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1wk",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1mo",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "volume_1yr",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "open_interest",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "avg_price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "active",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "1",
+          "primary_key": false
+        },
+        {
+          "name": "closed",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "archived",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "new",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "featured",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "restricted",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "fetched_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "series_collections": {
+      "table_name": "series_collections",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "series_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "collection_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "collection_title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "series_events": {
+      "table_name": "series_events",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "series_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "position",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "series_tags": {
+      "table_name": "series_tags",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "series_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "tag_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "tag_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "tag_relationships": {
+      "table_name": "tag_relationships",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "tag_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "related_tag_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "relationship_type",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "strength",
+          "type": "REAL",
+          "nullable": true,
+          "default": "1.0",
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "tags": {
+      "table_name": "tags",
+      "row_count": 724,
+      "columns": [
+        {
+          "name": "id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "label",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "force_show",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "force_hide",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "is_carousel",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "published_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_by",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_by",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "fetched_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": [
+        {
+          "id": "1",
+          "label": "Sports",
+          "slug": "sports",
+          "force_show": 0,
+          "force_hide": 0,
+          "is_carousel": 0,
+          "published_at": "2023-10-24 22:37:50.296+00",
+          "created_by": null,
+          "updated_by": null,
+          "created_at": "2023-10-24T22:37:50.31Z",
+          "updated_at": "2024-07-05T21:07:21.800664Z",
+          "fetched_at": "2025-11-19T21:56:16.148359"
+        },
+        {
+          "id": "450",
+          "label": "NFL",
+          "slug": "nfl",
+          "force_show": 0,
+          "force_hide": 0,
+          "is_carousel": 0,
+          "published_at": "2023-11-02 23:11:18.762+00",
+          "created_by": null,
+          "updated_by": null,
+          "created_at": "2023-11-02T23:11:18.767Z",
+          "updated_at": "2024-05-30T22:36:02.484573Z",
+          "fetched_at": "2025-11-19T21:56:16.148366"
+        },
+        {
+          "id": "102549",
+          "label": "Cowboys vs Eagles",
+          "slug": "cowboys-vs-eagles",
+          "force_show": 0,
+          "force_hide": 0,
+          "is_carousel": 0,
+          "published_at": null,
+          "created_by": null,
+          "updated_by": null,
+          "created_at": "2025-09-04T16:28:02.986793Z",
+          "updated_at": null,
+          "fetched_at": "2025-11-19T21:56:16.148369"
+        },
+        {
+          "id": "101206",
+          "label": "World Elections",
+          "slug": "world-elections",
+          "force_show": 0,
+          "force_hide": 0,
+          "is_carousel": 0,
+          "published_at": null,
+          "created_by": null,
+          "updated_by": null,
+          "created_at": "2024-11-07T23:07:25.512144Z",
+          "updated_at": null,
+          "fetched_at": "2025-11-19T21:56:16.153254"
+        },
+        {
+          "id": "1597",
+          "label": "Global Elections",
+          "slug": "global-elections",
+          "force_show": 1,
+          "force_hide": 0,
+          "is_carousel": 0,
+          "published_at": "2024-03-07 20:44:01.258+00",
+          "created_by": null,
+          "updated_by": null,
+          "created_at": "2024-03-07T20:41:56.773Z",
+          "updated_at": "2024-03-11T22:44:54.535Z",
+          "fetched_at": "2025-11-19T21:56:16.153260"
+        }
+      ]
+    },
+    "transactions": {
+      "table_name": "transactions",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "transaction_hash",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "timestamp",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "market_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "side",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "size",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "usdc_size",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "type",
+          "type": "TEXT",
+          "nullable": true,
+          "default": "'trade'",
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pseudonym",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "is_whale",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "user_activity": {
+      "table_name": "user_activity",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "timestamp",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "transaction_hash",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "type",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "side",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "size",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "usdc_size",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "asset",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome_index",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "event_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pseudonym",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "bio",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "profile_image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "user_positions_closed": {
+      "table_name": "user_positions_closed",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "asset",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "avg_price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "total_bought",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "realized_pnl",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "cur_price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "icon",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "event_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome_index",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "opposite_outcome",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "opposite_asset",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "end_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "closed_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "user_positions_current": {
+      "table_name": "user_positions_current",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "asset",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "size",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "avg_price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "initial_value",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "current_value",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "cash_pnl",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "percent_pnl",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "total_bought",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "realized_pnl",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "percent_realized_pnl",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "cur_price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "redeemable",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "mergeable",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "negative_risk",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "icon",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "event_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "event_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome_index",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "opposite_outcome",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "opposite_asset",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "end_date",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "updated_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "user_trades": {
+      "table_name": "user_trades",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "side",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "asset",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "size",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "price",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "timestamp",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "transaction_hash",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "title",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "icon",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "event_slug",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "outcome_index",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pseudonym",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "bio",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "profile_image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "profile_image_optimized",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "user_values": {
+      "table_name": "user_values",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "market_condition_id",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "value",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
+    },
+    "users": {
+      "table_name": "users",
+      "row_count": 0,
+      "columns": [
+        {
+          "name": "proxy_wallet",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": true
+        },
+        {
+          "name": "username",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "pseudonym",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "bio",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "profile_image",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "profile_image_optimized",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "total_value",
+          "type": "REAL",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "is_whale",
+          "type": "INTEGER",
+          "nullable": true,
+          "default": "0",
+          "primary_key": false
+        },
+        {
+          "name": "last_updated",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        },
+        {
+          "name": "created_at",
+          "type": "TEXT",
+          "nullable": true,
+          "default": null,
+          "primary_key": false
+        }
+      ],
+      "sample_data": []
     }
-  },
-  "users_analysis": {
-    "total_users": 4926,
-    "whale_users": 496,
-    "users_with_names": 4926,
-    "top_users_by_value": [
-      {
-        "proxy_wallet": "0x4e09ac04...",
-        "username": "scottxia1988",
-        "total_value": 1927833.6258382231,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x090a0d3f...",
-        "username": "slight-",
-        "total_value": 1824592.582310717,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x847b8fda...",
-        "username": "Schizoaffective.On.Acid",
-        "total_value": 1580346.8971490478,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x184e98eb...",
-        "username": "Mr-Anderson",
-        "total_value": 1545074.6027199375,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0xc6587b11...",
-        "username": "Erasmus",
-        "total_value": 1490584.664555668,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x4bbe10ba...",
-        "username": "How.Dare.You",
-        "total_value": 1187433.4672931023,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0xdfe3fedc...",
-        "username": "cqs",
-        "total_value": 828191.7558792675,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x5e9176d5...",
-        "username": "baga09",
-        "total_value": 802736.8427978251,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x24c8cf69...",
-        "username": "debased",
-        "total_value": 664910.8380961331,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x74416687...",
-        "username": "Yeahssd",
-        "total_value": 637685.9668420331,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0xcd71fd53...",
-        "username": "Kevindoto",
-        "total_value": 620651.493853802,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x71edffd0...",
-        "username": "pako",
-        "total_value": 612182.104576293,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x4e25605f...",
-        "username": "",
-        "total_value": 582463.9860909425,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0xc4d1a863...",
-        "username": "rdba",
-        "total_value": 550404.4062052921,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x78c66755...",
-        "username": "expectless",
-        "total_value": 541189.355934418,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x0c0e270c...",
-        "username": "The Spirit of Ukraine>UMA",
-        "total_value": 521819.32014051167,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x1310abee...",
-        "username": "7d74",
-        "total_value": 508639.43637500005,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x0aae5c4e...",
-        "username": "uncleroger",
-        "total_value": 503420.83365877304,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x45b39e1f...",
-        "username": "onekey09",
-        "total_value": 489269.51842853904,
-        "markets_traded": 0
-      },
-      {
-        "proxy_wallet": "0x3c8ac6a9...",
-        "username": "momom",
-        "total_value": 470912.9639816329,
-        "markets_traded": 0
-      }
-    ],
-    "users_by_portfolio_size": {
-      "< $1K": 146,
-      "$1K - $10K": 125,
-      "$10K - $100K": 59,
-      "$100K - $1M": 57,
-      "> $1M": 6
-    },
-    "total_user_trades": 0,
-    "total_user_activity": 11677,
-    "total_current_positions": 7519,
-    "total_closed_positions": 0,
-    "users_with_trades": 0,
-    "users_with_positions": 304,
-    "top_traders": []
-  },
-  "transactions_analysis": {
-    "total_transactions": 0,
-    "whale_transactions": 0,
-    "total_volume": 0,
-    "average_transaction_size": 0,
-    "buy_sell_breakdown": {},
-    "largest_transactions": [],
-    "transactions_by_size": {},
-    "transactions_last_24h": 0,
-    "most_active_traders": []
-  },
-  "holders_analysis": {
-    "total_holder_records": 636,
-    "unique_holders": 496,
-    "markets_with_holders": 28,
-    "top_holders": [
-      {
-        "proxy_wallet": "0x9c667a1d...",
-        "username": "InfiniteCrypt0",
-        "position_count": 5,
-        "total_amount": 8594821.2245
-      },
-      {
-        "proxy_wallet": "0xd4f584f5...",
-        "username": "MountCuni4Ever",
-        "position_count": 4,
-        "total_amount": 5393113.208551
-      },
-      {
-        "proxy_wallet": "0xa61ef877...",
-        "username": "risk-manager",
-        "position_count": 6,
-        "total_amount": 4115999.554213
-      },
-      {
-        "proxy_wallet": "0x60073655...",
-        "username": "AnonHorse",
-        "position_count": 1,
-        "total_amount": 3505684.631457
-      },
-      {
-        "proxy_wallet": "0xf811ef07...",
-        "username": "krikcrok",
-        "position_count": 1,
-        "total_amount": 2537381.721354
-      },
-      {
-        "proxy_wallet": "0xe438c99a...",
-        "username": "thanksforwinning",
-        "position_count": 1,
-        "total_amount": 2077997.458745
-      },
-      {
-        "proxy_wallet": "0x4e09ac04...",
-        "username": "scottxia1988",
-        "position_count": 1,
-        "total_amount": 1959571.641161
-      },
-      {
-        "proxy_wallet": "0x2e3ea056...",
-        "username": "HDGB",
-        "position_count": 2,
-        "total_amount": 1850953.3657499999
-      },
-      {
-        "proxy_wallet": "0x8b5a7da2...",
-        "username": "Joe-Biden",
-        "position_count": 1,
-        "total_amount": 1446463.421859
-      },
-      {
-        "proxy_wallet": "0xaf7ffa4e...",
-        "username": "whatupworld",
-        "position_count": 1,
-        "total_amount": 1276561.69769
-      },
-      {
-        "proxy_wallet": "0x184e98eb...",
-        "username": "Mr-Anderson",
-        "position_count": 1,
-        "total_amount": 1067180.239372
-      },
-      {
-        "proxy_wallet": "0xefdcf6e7...",
-        "username": "0xefdCf6E79317d7DC3E3EC7B61f93081baE75cF10-1760451983970",
-        "position_count": 1,
-        "total_amount": 920608.767005
-      },
-      {
-        "proxy_wallet": "0x5e9176d5...",
-        "username": "baga09",
-        "position_count": 1,
-        "total_amount": 821214.16143
-      },
-      {
-        "proxy_wallet": "0xc6587b11...",
-        "username": "Erasmus",
-        "position_count": 1,
-        "total_amount": 745824.699231
-      },
-      {
-        "proxy_wallet": "0xd281aea9...",
-        "username": "Solapump",
-        "position_count": 1,
-        "total_amount": 711999.941394
-      },
-      {
-        "proxy_wallet": "0xa9679eed...",
-        "username": "vitalikxbt2",
-        "position_count": 3,
-        "total_amount": 649999.42
-      },
-      {
-        "proxy_wallet": "0x66afc16f...",
-        "username": "whts",
-        "position_count": 1,
-        "total_amount": 586209.459854
-      },
-      {
-        "proxy_wallet": "0x27aed7b4...",
-        "username": "SuperApe",
-        "position_count": 1,
-        "total_amount": 583508.26175
-      },
-      {
-        "proxy_wallet": "0xdbade4c8...",
-        "username": "SwissMiss",
-        "position_count": 1,
-        "total_amount": 580161.292965
-      },
-      {
-        "proxy_wallet": "0xc507c1e3...",
-        "username": "jishu11a",
-        "position_count": 1,
-        "total_amount": 545061.655592
-      }
-    ]
-  },
-  "comments_analysis": {
-    "total_comments": 9358,
-    "comments_with_reactions": 0,
-    "total_reactions": 0,
-    "users_who_commented": 4456,
-    "top_commenters": [
-      {
-        "proxy_wallet": "0x5ce43a3e...",
-        "username": "lmtfalone",
-        "comment_count": 175
-      },
-      {
-        "proxy_wallet": "0x2a27ea41...",
-        "username": "pink.impala",
-        "comment_count": 80
-      },
-      {
-        "proxy_wallet": "0x6d1c71f7...",
-        "username": "masnjr",
-        "comment_count": 63
-      },
-      {
-        "proxy_wallet": "0x791c6888...",
-        "username": "continue9",
-        "comment_count": 39
-      },
-      {
-        "proxy_wallet": "0x0b587a2d...",
-        "username": "PMTraderAdam",
-        "comment_count": 39
-      },
-      {
-        "proxy_wallet": "0xfbba7a06...",
-        "username": "BigRabbit",
-        "comment_count": 37
-      },
-      {
-        "proxy_wallet": "0x915dbe52...",
-        "username": "Porx",
-        "comment_count": 36
-      },
-      {
-        "proxy_wallet": "0xbd4dff35...",
-        "username": "rontro28",
-        "comment_count": 34
-      },
-      {
-        "proxy_wallet": "0x30ab4092...",
-        "username": "NoSteinNoGate",
-        "comment_count": 31
-      },
-      {
-        "proxy_wallet": "0x10de3ad3...",
-        "username": "0x34a232EFC4d0E1cc099aeC8e5291bde780deEc67-1762964795913",
-        "comment_count": 30
-      }
-    ],
-    "most_liked_comments": [
-      {
-        "content": "You may even get tired of winning! And you'll say, 'Please, please. It's too much winning. We can't take it anymore. Mr. President, it's too much winning!'",
-        "likes_count": 28,
-        "username": "masnjr"
-      },
-      {
-        "content": "can we get a market for if gretas boat gets hit with a 2000LBS JDAM id love to put 10 bucks on that",
-        "likes_count": 25,
-        "username": "CyberPunk"
-      },
-      {
-        "content": "\"Trump says the Moon Landing was faked\". Ok, Barron, I am not betting on this one.",
-        "likes_count": 24,
-        "username": "McBet"
-      },
-      {
-        "content": "I need a parlay on flat earth, jesus returning, and aliens existing!",
-        "likes_count": 23,
-        "username": "MomoAyase"
-      },
-      {
-        "content": "Black privilege vs p*ssy pass, rumble in the jungle",
-        "likes_count": 19,
-        "username": "p01ym33rk4t"
-      }
-    ]
   }
 }

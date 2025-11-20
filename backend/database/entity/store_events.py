@@ -26,19 +26,24 @@ class StoreEvents:
             return
             
         event_records = []
+        events_with_tags = []  # Track which events have tags to process later
         
         for event in events:
             record = self._prepare_event_record(event)
             event_records.append(record)
             
-            # Store basic tags if present
+            # Store the tags for later processing (AFTER events are inserted)
             if 'tags' in event and event['tags']:
-                self.store_event_tags(event['id'], event['tags'])
+                events_with_tags.append((event['id'], event['tags']))
         
-        # Bulk insert events
+        # FIRST: Bulk insert all events
         if event_records:
             self.db_manager.bulk_insert_or_replace('events', event_records)
             self.logger.info(f"Stored {len(event_records)} events in database")
+        
+        # SECOND: Now that events exist, store their tags
+        for event_id, tags in events_with_tags:
+            self.store_event_tags(event_id, tags)
 
     def store_event_detailed(self, event: Dict):
         """
@@ -60,7 +65,7 @@ class StoreEvents:
 
     def store_event_tags(self, event_id: str, tags: List):
         """
-        Store tags for an event
+        Store tags for an event with detailed debugging
         
         Args:
             event_id: The event ID
@@ -68,32 +73,72 @@ class StoreEvents:
         """
         if not tags or not self.config.FETCH_TAGS:
             return
-            
-        tag_records = []
         
-        for tag in tags:
+        self.logger.debug(f"=== STORE EVENT TAGS DEBUG ===")
+        self.logger.debug(f"Event ID: {event_id}")
+        self.logger.debug(f"Raw tags received (first 3): {tags[:3]}")
+        
+        tag_records = []
+        event_tag_records = []
+        
+        for idx, tag in enumerate(tags):
+            self.logger.debug(f"Processing tag {idx+1}: Type={type(tag)}, Value={tag}")
+            
             # Handle both string tags and tag objects
             if isinstance(tag, str):
                 tag_id = tag
+                tag_slug = tag
                 tag_label = tag
             elif isinstance(tag, dict):
-                tag_id = tag.get('id', tag.get('slug', ''))
-                tag_label = tag.get('label', tag.get('name', ''))
+                tag_id = tag.get('id', '')
+                tag_slug = tag.get('slug', '')
+                tag_label = tag.get('label', '')
+                
+                self.logger.debug(f"  Extracted - ID: {tag_id}, Slug: {tag_slug}, Label: {tag_label}")
             else:
+                self.logger.warning(f"  Skipping unknown tag type: {type(tag)}")
                 continue
                 
             if tag_id:
+                # First, insert/update the tag itself into the tags table
                 tag_record = {
-                    'event_id': event_id,
-                    'tag_id': tag_id,
-                    'tag_label': tag_label,
-                    'created_at': datetime.now().isoformat()
+                    'id': tag_id,
+                    'slug': tag_slug,
+                    'label': tag_label,
+                    'force_show': int(tag.get('forceShow', False)) if isinstance(tag, dict) else 0,
+                    'force_hide': 0,  # Not provided in API
+                    'is_carousel': int(tag.get('isCarousel', False)) if isinstance(tag, dict) else 0,
+                    'published_at': tag.get('publishedAt') if isinstance(tag, dict) else None,
+                    'created_by': None,  # Not provided in API
+                    'updated_by': None,  # Not provided in API
+                    'created_at': tag.get('createdAt') if isinstance(tag, dict) else None,
+                    'updated_at': tag.get('updatedAt') if isinstance(tag, dict) else None,
+                    'fetched_at': datetime.now().isoformat()
                 }
                 tag_records.append(tag_record)
+                
+                # Prepare the event-tag relationship record
+                event_tag_record = {
+                    'event_id': event_id,
+                    'tag_id': tag_id,
+                    'tag_slug': tag_slug
+                }
+                event_tag_records.append(event_tag_record)
         
+        self.logger.debug(f"Prepared {len(tag_records)} tag records and {len(event_tag_records)} event_tag records")
+        
+        # First insert the tags themselves (ignore if they already exist)
         if tag_records:
-            self.db_manager.bulk_insert_or_ignore('event_tags', tag_records)
-            self.logger.debug(f"Stored {len(tag_records)} tags for event {event_id}")
+            self.logger.debug("Inserting tags into tags table...")
+            self.db_manager.bulk_insert_or_ignore('tags', tag_records)
+            self.logger.debug(f"Tags insert complete")
+        
+        # Then insert the event-tag relationships
+        if event_tag_records:
+            self.logger.debug("Inserting relationships into event_tags table...")
+            self.logger.debug(f"First event_tag record: {event_tag_records[0]}")
+            self.db_manager.bulk_insert_or_ignore('event_tags', event_tag_records)
+            self.logger.debug(f"Event_tags insert complete")
 
     def store_event_live_volume(self, event_id: str, volume_data: Dict):
         """
