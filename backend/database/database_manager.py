@@ -277,6 +277,54 @@ class DatabaseManager:
         finally:
             conn.close()
     
+    def insert_or_replace(self, table: str, data: Dict) -> int:
+        """Insert or replace a single record"""
+        if not data:
+            return 0
+        
+        columns = list(data.keys())
+        placeholders = ','.join(['?' for _ in columns])
+        query = f"INSERT OR REPLACE INTO {table} ({','.join(columns)}) VALUES ({placeholders})"
+        values = tuple(data.get(col) for col in columns)
+        
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute(query, values)
+            conn.commit()
+            return cursor.rowcount
+        except sqlite3.Error as e:
+            self.logger.error(f"Insert or replace error in {table}: {e}")
+            self.logger.error(f"Data: {data}")
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+    
+    def insert_or_ignore(self, table: str, data: Dict) -> int:
+        """Insert or ignore a single record"""
+        if not data:
+            return 0
+        
+        columns = list(data.keys())
+        placeholders = ','.join(['?' for _ in columns])
+        query = f"INSERT OR IGNORE INTO {table} ({','.join(columns)}) VALUES ({placeholders})"
+        values = tuple(data.get(col) for col in columns)
+        
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            cursor.execute(query, values)
+            conn.commit()
+            return cursor.rowcount
+        except sqlite3.Error as e:
+            self.logger.error(f"Insert or ignore error in {table}: {e}")
+            self.logger.error(f"Data: {data}")
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+    
     def bulk_insert_or_replace(self, table: str, data: List[Dict], batch_size: int = 100) -> int:
         """Bulk insert or replace data with reduced logging"""
         if not data:
@@ -376,6 +424,49 @@ class DatabaseManager:
             raise
         finally:
             conn.close()
+    
+    def delete_records(self, table: str, where_clause: str = None, params: tuple = None, commit: bool = True) -> int:
+        """
+        Delete records from a table
+        
+        Args:
+            table: Table name
+            where_clause: Optional WHERE clause (without the WHERE keyword)
+            params: Optional parameters for the where clause
+            commit: Whether to commit immediately
+            
+        Returns:
+            Number of deleted records
+        """
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            
+            if where_clause:
+                query = f"DELETE FROM {table} WHERE {where_clause}"
+                if params:
+                    cursor.execute(query, params)
+                else:
+                    cursor.execute(query)
+            else:
+                query = f"DELETE FROM {table}"
+                cursor.execute(query)
+            
+            deleted = cursor.rowcount
+            
+            if commit:
+                conn.commit()
+                self.logger.info(f"Deleted {deleted} records from {table}")
+            
+            return deleted
+            
+        except sqlite3.Error as e:
+            self.logger.error(f"Delete error in {table}: {e}")
+            conn.rollback()
+            raise
+        finally:
+            if commit:
+                conn.close()
     
     def get_table_count(self, table: str) -> int:
         """Get count of records in a table"""

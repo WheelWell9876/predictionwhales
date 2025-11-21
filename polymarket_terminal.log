@@ -8,3 +8,1003 @@
 2025-11-19 21:56:23,756 - EventsManager - INFO - ⏱️  Time taken: 15.54 seconds
 2025-11-19 21:56:23,756 - EventsManager - INFO - 
 🧹 Cleaning up closed events (will run after markets are loaded)...
+2025-11-20 21:27:50,158 - MarketsManager - INFO - 
+============================================================
+2025-11-20 21:27:50,158 - MarketsManager - INFO - 📊 Loading MARKETS Only
+2025-11-20 21:27:50,158 - MarketsManager - INFO - ============================================================
+2025-11-20 21:27:50,174 - MarketsManager - INFO - Starting market fetch from 4200 events (threads=20)...
+2025-11-20 21:59:58,742 - EventsManager - INFO - 
+============================================================
+2025-11-20 21:59:58,742 - EventsManager - INFO - 📅 Loading EVENTS + MARKETS (detailed)
+2025-11-20 21:59:58,742 - EventsManager - INFO - ============================================================
+2025-11-20 21:59:58,742 - EventsManager - INFO - Step 1: Fetching basic event info...
+2025-11-20 21:59:58,742 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-20 22:00:11,578 - EventsManager - INFO - Successfully fetched and stored 4300 events (basic info)
+2025-11-20 22:00:11,578 - EventsManager - INFO - Step 2: Fetching detailed info + markets for 4300 events...
+2025-11-20 22:00:11,583 - EventsManager - INFO - Processing 5072 events for detailed information + markets (10 threads)...
+2025-11-20 22:00:11,957 - EventsManager - ERROR - Error processing event 19696: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:11,957 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,609 - EventsManager - ERROR - Error processing event 35090: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,610 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,641 - EventsManager - ERROR - Error processing event 33507: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,642 - EventsManager - ERROR - Error processing event 23947: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,642 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,643 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,674 - EventsManager - ERROR - Error processing event 23656: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,674 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,758 - EventsManager - ERROR - Error processing event 16100: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,758 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,775 - EventsManager - ERROR - Error processing event 33506: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,775 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,865 - EventsManager - ERROR - Error processing event 26857: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,865 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,892 - EventsManager - ERROR - Error processing event 31552: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,893 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,910 - EventsManager - ERROR - Error processing event 27830: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,910 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,933 - EventsManager - ERROR - Error processing event 35532: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,933 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,943 - EventsManager - ERROR - Error processing event 16087: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,943 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:12,980 - EventsManager - ERROR - Error processing event 16097: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:12,980 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,007 - EventsManager - ERROR - Error processing event 70054: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,008 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,012 - EventsManager - ERROR - Error processing event 16096: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,012 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,021 - EventsManager - ERROR - Error processing event 30829: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,021 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,119 - EventsManager - ERROR - Error processing event 16108: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,119 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,182 - EventsManager - ERROR - Error processing event 31875: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,182 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,197 - EventsManager - ERROR - Error processing event 33509: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,197 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,215 - EventsManager - ERROR - Error processing event 16085: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,215 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,234 - EventsManager - ERROR - Error processing event 38884: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,235 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,289 - EventsManager - ERROR - Error processing event 35754: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,290 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,293 - EventsManager - ERROR - Error processing event 17819: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,293 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,320 - EventsManager - ERROR - Error processing event 29007: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,321 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,406 - EventsManager - ERROR - Error processing event 24895: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,407 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,456 - EventsManager - ERROR - Error processing event 57718: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,456 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,466 - EventsManager - ERROR - Error processing event 59404: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,466 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,503 - EventsManager - ERROR - Error processing event 78602: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,503 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,513 - EventsManager - ERROR - Error processing event 70055: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,514 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,523 - EventsManager - ERROR - Error processing event 16739: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,524 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,533 - EventsManager - ERROR - Error processing event 59297: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,534 - EventsManager - ERROR - Error processing event 16180: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,534 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,534 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,555 - EventsManager - ERROR - Error processing event 48309: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,555 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,618 - EventsManager - ERROR - Error processing event 32426: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,618 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,692 - EventsManager - ERROR - Error processing event 17505: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,693 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,737 - EventsManager - ERROR - Error processing event 23784: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,737 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,738 - EventsManager - ERROR - Error processing event 16092: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,739 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,744 - EventsManager - ERROR - Error processing event 17821: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,744 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,758 - EventsManager - ERROR - Error processing event 39671: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,758 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,770 - EventsManager - ERROR - Error processing event 67691: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,771 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,790 - EventsManager - ERROR - Error processing event 16105: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,790 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,819 - EventsManager - ERROR - Error processing event 83652: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,819 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,882 - EventsManager - ERROR - Error processing event 16095: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,882 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,900 - EventsManager - ERROR - Error processing event 22987: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,900 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,911 - EventsManager - ERROR - Error processing event 33526: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,912 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:13,988 - EventsManager - ERROR - Error processing event 17413: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:13,989 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,239 - EventsManager - ERROR - Error processing event 28997: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,239 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,243 - EventsManager - ERROR - Error processing event 26004: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,243 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,254 - EventsManager - ERROR - Error processing event 35908: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,254 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,279 - EventsManager - ERROR - Error processing event 38374: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,279 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,290 - EventsManager - ERROR - Error processing event 29001: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,290 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,323 - EventsManager - ERROR - Error processing event 38010: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,323 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,339 - EventsManager - ERROR - Error processing event 16817: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,339 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,355 - EventsManager - ERROR - Error processing event 23270: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,355 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,376 - EventsManager - ERROR - Error processing event 82571: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,377 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,413 - EventsManager - ERROR - Error processing event 50251: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,414 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,491 - EventsManager - ERROR - Error processing event 43172: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,491 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,551 - EventsManager - ERROR - Error processing event 28833: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,551 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,554 - EventsManager - ERROR - Error processing event 57463: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,554 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,571 - EventsManager - ERROR - Error processing event 30386: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,571 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,580 - EventsManager - ERROR - Error processing event 16166: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,581 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,586 - EventsManager - ERROR - Error processing event 62671: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,586 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,599 - EventsManager - ERROR - Error processing event 23085: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,599 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,625 - EventsManager - ERROR - Error processing event 19057: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,626 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,643 - EventsManager - ERROR - Error processing event 16475: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,643 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,716 - EventsManager - ERROR - Error processing event 16170: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,716 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,791 - EventsManager - ERROR - Error processing event 30615: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,791 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,813 - EventsManager - ERROR - Error processing event 22976: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,814 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,888 - EventsManager - ERROR - Error processing event 19720: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,889 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,898 - EventsManager - ERROR - Error processing event 46724: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,898 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,927 - EventsManager - ERROR - Error processing event 70056: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,927 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,929 - EventsManager - ERROR - Error processing event 27546: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,929 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,931 - EventsManager - ERROR - Error processing event 22509: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,933 - EventsManager - ERROR - Error processing event 16282: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,933 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,934 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:14,945 - EventsManager - ERROR - Error processing event 64626: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:14,946 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,035 - EventsManager - ERROR - Error processing event 62580: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,035 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,048 - EventsManager - ERROR - Error processing event 31867: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,048 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,056 - EventsManager - ERROR - Error processing event 80515: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,057 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,163 - EventsManager - ERROR - Error processing event 29011: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,163 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,201 - EventsManager - ERROR - Error processing event 81328: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,202 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,279 - EventsManager - ERROR - Error processing event 28999: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,279 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,304 - EventsManager - ERROR - Error processing event 16168: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,305 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,307 - EventsManager - ERROR - Error processing event 17105: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,308 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,309 - EventsManager - ERROR - Error processing event 41137: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,310 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,320 - EventsManager - ERROR - Error processing event 57057: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,320 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,334 - EventsManager - ERROR - Error processing event 17405: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,334 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,394 - EventsManager - ERROR - Error processing event 81827: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,394 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,459 - EventsManager - ERROR - Error processing event 45915: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,459 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,460 - EventsManager - ERROR - Error processing event 57724: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,461 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,498 - EventsManager - ERROR - Error processing event 16489: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,499 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,515 - EventsManager - ERROR - Error processing event 67423: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,515 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,549 - EventsManager - ERROR - Error processing event 30828: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,549 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,561 - EventsManager - ERROR - Error processing event 80518: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,561 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,588 - EventsManager - ERROR - Error processing event 28628: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,588 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,656 - EventsManager - ERROR - Error processing event 30611: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,657 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,713 - EventsManager - ERROR - Error processing event 25036: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,713 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,726 - EventsManager - ERROR - Error processing event 43346: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,726 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,729 - EventsManager - ERROR - Error processing event 62583: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,730 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,758 - EventsManager - ERROR - Error processing event 67422: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,759 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,766 - EventsManager - ERROR - Error processing event 17809: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,766 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,833 - EventsManager - ERROR - Error processing event 24819: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,834 - EventsManager - ERROR - Error processing event 84896: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,834 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,834 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,890 - EventsManager - ERROR - Error processing event 39639: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,890 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,897 - EventsManager - ERROR - Error processing event 21683: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,897 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,924 - EventsManager - ERROR - Error processing event 53297: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,924 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,947 - EventsManager - ERROR - Error processing event 34050: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,947 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,994 - EventsManager - ERROR - Error processing event 81331: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,995 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:15,998 - EventsManager - ERROR - Error processing event 83260: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:15,998 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,022 - EventsManager - ERROR - Error processing event 79034: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,022 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,023 - EventsManager - ERROR - Error processing event 80541: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,023 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,095 - EventsManager - ERROR - Error processing event 70057: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,095 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,136 - EventsManager - ERROR - Error processing event 81502: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,136 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,190 - EventsManager - ERROR - Error processing event 80520: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,191 - EventsManager - ERROR - Error processing event 17823: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,191 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,191 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,226 - EventsManager - ERROR - Error processing event 35683: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,227 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,231 - EventsManager - ERROR - Error processing event 16106: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,232 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,258 - EventsManager - ERROR - Error processing event 23091: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,258 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,282 - EventsManager - ERROR - Error processing event 80691: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,282 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,287 - EventsManager - ERROR - Error processing event 50386: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,287 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,338 - EventsManager - ERROR - Error processing event 44955: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,339 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,357 - EventsManager - ERROR - Error processing event 81323: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,358 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,490 - EventsManager - ERROR - Error processing event 32754: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,490 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,495 - EventsManager - ERROR - Error processing event 25930: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,495 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,496 - EventsManager - ERROR - Error processing event 38900: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,497 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,504 - EventsManager - ERROR - Error processing event 59787: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,505 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,512 - EventsManager - ERROR - Error processing event 16181: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,512 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,514 - EventsManager - ERROR - Error processing event 36173: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,514 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,535 - EventsManager - ERROR - Error processing event 34038: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,536 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,577 - EventsManager - ERROR - Error processing event 20803: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,578 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,583 - EventsManager - ERROR - Error processing event 31759: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,583 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:00:16,677 - EventsManager - ERROR - Error processing event 59790: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:00:16,678 - EventsManager - INFO - Processed 0/5072 events
+2025-11-20 22:02:56,165 - EventsManager - INFO - 
+============================================================
+2025-11-20 22:02:56,165 - EventsManager - INFO - 🗑️  Deleting CLOSED EVENTS Data
+2025-11-20 22:02:56,165 - EventsManager - INFO - ============================================================
+2025-11-20 22:02:56,190 - EventsManager - INFO - ✅ Deleted 0 events and related data
+2025-11-20 22:03:15,200 - EventsManager - INFO - 
+============================================================
+2025-11-20 22:03:15,200 - EventsManager - INFO - 📅 Loading EVENTS + MARKETS (detailed)
+2025-11-20 22:03:15,200 - EventsManager - INFO - ============================================================
+2025-11-20 22:03:15,200 - EventsManager - INFO - Step 1: Fetching basic event info...
+2025-11-20 22:03:15,200 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-20 22:03:27,899 - EventsManager - INFO - Successfully fetched and stored 4400 events (basic info)
+2025-11-20 22:03:27,899 - EventsManager - INFO - Step 2: Fetching detailed info + markets for 4400 events...
+2025-11-20 22:03:27,905 - EventsManager - INFO - Processing 5121 events for detailed information + markets (10 threads)...
+2025-11-20 22:03:28,996 - EventsManager - ERROR - Error processing event 35090: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:28,997 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,096 - EventsManager - ERROR - Error processing event 19696: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,097 - EventsManager - ERROR - Error processing event 33507: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,098 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,098 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,100 - EventsManager - ERROR - Error processing event 23656: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,100 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,211 - EventsManager - ERROR - Error processing event 31875: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,211 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,215 - EventsManager - ERROR - Error processing event 31552: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,215 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,217 - EventsManager - ERROR - Error processing event 23947: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,218 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,220 - EventsManager - ERROR - Error processing event 30829: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,221 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,231 - EventsManager - ERROR - Error processing event 33506: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,231 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,311 - EventsManager - ERROR - Error processing event 16100: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,311 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,319 - EventsManager - ERROR - Error processing event 35532: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,320 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,353 - EventsManager - ERROR - Error processing event 26857: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,354 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,374 - EventsManager - ERROR - Error processing event 16096: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,374 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,445 - EventsManager - ERROR - Error processing event 27830: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,446 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,495 - EventsManager - ERROR - Error processing event 16087: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,496 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,505 - EventsManager - ERROR - Error processing event 16097: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,505 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,563 - EventsManager - ERROR - Error processing event 70054: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,563 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,568 - EventsManager - ERROR - Error processing event 16108: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,568 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,603 - EventsManager - ERROR - Error processing event 33509: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,603 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,609 - EventsManager - ERROR - Error processing event 16085: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,609 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,611 - EventsManager - ERROR - Error processing event 24895: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,611 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,614 - EventsManager - ERROR - Error processing event 38884: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,614 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,664 - EventsManager - ERROR - Error processing event 17819: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,664 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,675 - EventsManager - ERROR - Error processing event 35754: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,675 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,701 - EventsManager - ERROR - Error processing event 29007: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,701 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,719 - EventsManager - ERROR - Error processing event 57718: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,719 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,812 - EventsManager - ERROR - Error processing event 70055: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,812 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,823 - EventsManager - ERROR - Error processing event 59404: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,824 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,854 - EventsManager - ERROR - Error processing event 78602: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,854 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,858 - EventsManager - ERROR - Error processing event 16739: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,858 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,874 - EventsManager - ERROR - Error processing event 48309: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,874 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,891 - EventsManager - ERROR - Error processing event 16180: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,891 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,900 - EventsManager - ERROR - Error processing event 59297: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,901 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,940 - EventsManager - ERROR - Error processing event 32426: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,940 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,941 - EventsManager - ERROR - Error processing event 17821: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,942 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:29,946 - EventsManager - ERROR - Error processing event 67691: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:29,946 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,071 - EventsManager - ERROR - Error processing event 17505: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,072 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,076 - EventsManager - ERROR - Error processing event 23784: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,076 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,112 - EventsManager - ERROR - Error processing event 83652: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,112 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,126 - EventsManager - ERROR - Error processing event 39671: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,127 - EventsManager - ERROR - Error processing event 16092: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,128 - EventsManager - ERROR - Error processing event 16105: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,128 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,129 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,129 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,144 - EventsManager - ERROR - Error processing event 16095: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,144 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,191 - EventsManager - ERROR - Error processing event 33526: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,191 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,193 - EventsManager - ERROR - Error processing event 22987: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,193 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,202 - EventsManager - ERROR - Error processing event 17413: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,203 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,304 - EventsManager - ERROR - Error processing event 35908: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,304 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,307 - EventsManager - ERROR - Error processing event 38374: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,308 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,358 - EventsManager - ERROR - Error processing event 26004: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,358 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,396 - EventsManager - ERROR - Error processing event 28997: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,397 - EventsManager - ERROR - Error processing event 29001: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,397 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,397 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,400 - EventsManager - ERROR - Error processing event 16817: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,400 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,409 - EventsManager - ERROR - Error processing event 82571: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,409 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,429 - EventsManager - ERROR - Error processing event 38010: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,429 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,432 - EventsManager - ERROR - Error processing event 23270: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,432 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,437 - EventsManager - ERROR - Error processing event 50251: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,437 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,535 - EventsManager - ERROR - Error processing event 43172: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,535 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,539 - EventsManager - ERROR - Error processing event 30386: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,540 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,582 - EventsManager - ERROR - Error processing event 28833: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,582 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,721 - EventsManager - ERROR - Error processing event 30615: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,721 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,753 - EventsManager - ERROR - Error processing event 57463: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,754 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,773 - EventsManager - ERROR - Error processing event 19057: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,773 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,853 - EventsManager - ERROR - Error processing event 62671: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,853 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,935 - EventsManager - ERROR - Error processing event 16166: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,935 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,957 - EventsManager - ERROR - Error processing event 16475: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,957 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,961 - EventsManager - ERROR - Error processing event 23085: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,961 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,984 - EventsManager - ERROR - Error processing event 22976: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,984 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:30,992 - EventsManager - ERROR - Error processing event 16170: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:30,992 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,013 - EventsManager - ERROR - Error processing event 70056: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,013 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,015 - EventsManager - ERROR - Error processing event 46724: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,015 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,017 - EventsManager - ERROR - Error processing event 19720: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,017 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,064 - EventsManager - ERROR - Error processing event 27546: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,064 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,082 - EventsManager - ERROR - Error processing event 62580: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,082 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,158 - EventsManager - ERROR - Error processing event 22509: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,158 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,178 - EventsManager - ERROR - Error processing event 16282: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,178 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,196 - EventsManager - ERROR - Error processing event 64626: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,197 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,221 - EventsManager - ERROR - Error processing event 80515: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,221 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,265 - EventsManager - ERROR - Error processing event 29011: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,266 - EventsManager - ERROR - Error processing event 28999: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,266 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,267 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,271 - EventsManager - ERROR - Error processing event 81328: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,272 - EventsManager - ERROR - Error processing event 16168: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,272 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,272 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,299 - EventsManager - ERROR - Error processing event 57057: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,299 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:03:31,320 - EventsManager - ERROR - Error processing event 31867: 'DatabaseManager' object has no attribute 'insert_or_replace'
+2025-11-20 22:03:31,321 - EventsManager - INFO - Processed 0/5121 events
+2025-11-20 22:05:47,441 - EventsManager - INFO - 
+============================================================
+2025-11-20 22:05:47,441 - EventsManager - INFO - 📅 Loading EVENTS + MARKETS (detailed)
+2025-11-20 22:05:47,441 - EventsManager - INFO - ============================================================
+2025-11-20 22:05:47,441 - EventsManager - INFO - Step 1: Fetching basic event info...
+2025-11-20 22:05:47,441 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-20 22:06:14,711 - EventsManager - INFO - Successfully fetched and stored 4400 events (basic info)
+2025-11-20 22:06:14,711 - EventsManager - INFO - Step 2: Fetching detailed info + markets for 4400 events...
+2025-11-20 22:06:14,717 - EventsManager - INFO - Processing 5171 events for detailed information + markets (10 threads)...
+2025-11-20 22:06:15,657 - EventsManager - ERROR - Error processing event 35090: table markets has no column named open_interest
+2025-11-20 22:06:15,657 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:15,779 - EventsManager - ERROR - Error processing event 19696: table markets has no column named open_interest
+2025-11-20 22:06:15,780 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:15,962 - EventsManager - ERROR - Error processing event 33507: table markets has no column named open_interest
+2025-11-20 22:06:15,962 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,008 - EventsManager - ERROR - Error processing event 23947: table markets has no column named open_interest
+2025-11-20 22:06:16,008 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,012 - EventsManager - ERROR - Error processing event 23656: table markets has no column named open_interest
+2025-11-20 22:06:16,013 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,050 - EventsManager - ERROR - Error processing event 16100: table markets has no column named open_interest
+2025-11-20 22:06:16,050 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,066 - EventsManager - ERROR - Error processing event 31552: table markets has no column named open_interest
+2025-11-20 22:06:16,066 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,082 - EventsManager - ERROR - Error processing event 16096: table markets has no column named open_interest
+2025-11-20 22:06:16,082 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,169 - EventsManager - ERROR - Error processing event 33506: table markets has no column named open_interest
+2025-11-20 22:06:16,169 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,220 - EventsManager - ERROR - Error processing event 26857: table markets has no column named open_interest
+2025-11-20 22:06:16,220 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,288 - EventsManager - ERROR - Error processing event 16087: table markets has no column named open_interest
+2025-11-20 22:06:16,288 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,289 - EventsManager - ERROR - Error processing event 31875: table markets has no column named open_interest
+2025-11-20 22:06:16,289 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,294 - EventsManager - ERROR - Error processing event 30829: table markets has no column named open_interest
+2025-11-20 22:06:16,294 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,316 - EventsManager - ERROR - Error processing event 35532: table markets has no column named open_interest
+2025-11-20 22:06:16,316 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,329 - EventsManager - ERROR - Error processing event 16097: table markets has no column named open_interest
+2025-11-20 22:06:16,329 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,343 - EventsManager - ERROR - Error processing event 35754: table markets has no column named open_interest
+2025-11-20 22:06:16,343 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,351 - EventsManager - ERROR - Error processing event 70054: table markets has no column named open_interest
+2025-11-20 22:06:16,351 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,395 - EventsManager - ERROR - Error processing event 16108: table markets has no column named open_interest
+2025-11-20 22:06:16,395 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,426 - EventsManager - ERROR - Error processing event 27830: table markets has no column named open_interest
+2025-11-20 22:06:16,426 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,473 - EventsManager - ERROR - Error processing event 33509: table markets has no column named open_interest
+2025-11-20 22:06:16,473 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,540 - EventsManager - ERROR - Error processing event 16085: table markets has no column named open_interest
+2025-11-20 22:06:16,540 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,542 - EventsManager - ERROR - Error processing event 38884: table markets has no column named open_interest
+2025-11-20 22:06:16,542 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,596 - EventsManager - ERROR - Error processing event 17819: table markets has no column named open_interest
+2025-11-20 22:06:16,596 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,612 - EventsManager - ERROR - Error processing event 57718: table markets has no column named open_interest
+2025-11-20 22:06:16,613 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,647 - EventsManager - ERROR - Error processing event 29007: table markets has no column named open_interest
+2025-11-20 22:06:16,647 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,674 - EventsManager - ERROR - Error processing event 70055: table markets has no column named open_interest
+2025-11-20 22:06:16,674 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,779 - EventsManager - ERROR - Error processing event 16739: table markets has no column named open_interest
+2025-11-20 22:06:16,779 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,820 - EventsManager - ERROR - Error processing event 24895: table markets has no column named open_interest
+2025-11-20 22:06:16,820 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,822 - EventsManager - ERROR - Error processing event 48309: table markets has no column named open_interest
+2025-11-20 22:06:16,822 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,824 - EventsManager - ERROR - Error processing event 67691: table markets has no column named open_interest
+2025-11-20 22:06:16,824 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,827 - EventsManager - ERROR - Error processing event 59297: table markets has no column named open_interest
+2025-11-20 22:06:16,827 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,831 - EventsManager - ERROR - Error processing event 16180: table markets has no column named open_interest
+2025-11-20 22:06:16,832 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,877 - EventsManager - ERROR - Error processing event 59404: table markets has no column named open_interest
+2025-11-20 22:06:16,877 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,903 - EventsManager - ERROR - Error processing event 32426: table markets has no column named open_interest
+2025-11-20 22:06:16,904 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,964 - EventsManager - ERROR - Error processing event 17821: table markets has no column named open_interest
+2025-11-20 22:06:16,965 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,971 - EventsManager - ERROR - Error processing event 78602: table markets has no column named open_interest
+2025-11-20 22:06:16,971 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:16,994 - EventsManager - ERROR - Error processing event 17505: table markets has no column named open_interest
+2025-11-20 22:06:16,994 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,324 - EventsManager - ERROR - Error processing event 16092: table markets has no column named open_interest
+2025-11-20 22:06:17,324 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,334 - EventsManager - ERROR - Error processing event 39671: table markets has no column named open_interest
+2025-11-20 22:06:17,335 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,456 - EventsManager - ERROR - Error processing event 16105: table markets has no column named open_interest
+2025-11-20 22:06:17,457 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,476 - EventsManager - ERROR - Error processing event 33526: table markets has no column named open_interest
+2025-11-20 22:06:17,476 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,493 - EventsManager - ERROR - Error processing event 16095: table markets has no column named open_interest
+2025-11-20 22:06:17,493 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,501 - EventsManager - ERROR - Error processing event 17413: table markets has no column named open_interest
+2025-11-20 22:06:17,501 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,526 - EventsManager - ERROR - Error processing event 23784: table markets has no column named open_interest
+2025-11-20 22:06:17,526 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,555 - EventsManager - ERROR - Error processing event 83652: table markets has no column named open_interest
+2025-11-20 22:06:17,555 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,596 - EventsManager - ERROR - Error processing event 22987: table markets has no column named open_interest
+2025-11-20 22:06:17,597 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,620 - EventsManager - ERROR - Error processing event 38374: table markets has no column named open_interest
+2025-11-20 22:06:17,620 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,695 - EventsManager - ERROR - Error processing event 28997: table markets has no column named open_interest
+2025-11-20 22:06:17,695 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,745 - EventsManager - ERROR - Error processing event 26004: table markets has no column named open_interest
+2025-11-20 22:06:17,745 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,754 - EventsManager - ERROR - Error processing event 29001: table markets has no column named open_interest
+2025-11-20 22:06:17,754 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,852 - EventsManager - ERROR - Error processing event 38010: table markets has no column named open_interest
+2025-11-20 22:06:17,852 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,855 - EventsManager - ERROR - Error processing event 43172: table markets has no column named open_interest
+2025-11-20 22:06:17,855 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,889 - EventsManager - ERROR - Error processing event 16817: table markets has no column named open_interest
+2025-11-20 22:06:17,890 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,902 - EventsManager - ERROR - Error processing event 30386: table markets has no column named open_interest
+2025-11-20 22:06:17,902 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,907 - EventsManager - ERROR - Error processing event 23270: table markets has no column named open_interest
+2025-11-20 22:06:17,907 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,941 - EventsManager - ERROR - Error processing event 50251: table markets has no column named open_interest
+2025-11-20 22:06:17,941 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:17,947 - EventsManager - ERROR - Error processing event 82571: table markets has no column named open_interest
+2025-11-20 22:06:17,947 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,131 - EventsManager - ERROR - Error processing event 28833: table markets has no column named open_interest
+2025-11-20 22:06:18,131 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,133 - EventsManager - ERROR - Error processing event 57463: table markets has no column named open_interest
+2025-11-20 22:06:18,134 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,155 - EventsManager - ERROR - Error processing event 62671: table markets has no column named open_interest
+2025-11-20 22:06:18,155 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,164 - EventsManager - ERROR - Error processing event 16475: table markets has no column named open_interest
+2025-11-20 22:06:18,164 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,170 - EventsManager - ERROR - Error processing event 16166: table markets has no column named open_interest
+2025-11-20 22:06:18,170 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,181 - EventsManager - ERROR - Error processing event 16170: table markets has no column named open_interest
+2025-11-20 22:06:18,181 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,202 - EventsManager - ERROR - Error processing event 23085: table markets has no column named open_interest
+2025-11-20 22:06:18,202 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,228 - EventsManager - ERROR - Error processing event 19057: table markets has no column named open_interest
+2025-11-20 22:06:18,228 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,275 - EventsManager - ERROR - Error processing event 30615: table markets has no column named open_interest
+2025-11-20 22:06:18,276 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,378 - EventsManager - ERROR - Error processing event 22976: table markets has no column named open_interest
+2025-11-20 22:06:18,378 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,401 - EventsManager - ERROR - Error processing event 27546: table markets has no column named open_interest
+2025-11-20 22:06:18,401 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,404 - EventsManager - ERROR - Error processing event 19720: table markets has no column named open_interest
+2025-11-20 22:06:18,406 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,410 - EventsManager - ERROR - Error processing event 70056: table markets has no column named open_interest
+2025-11-20 22:06:18,410 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,424 - EventsManager - ERROR - Error processing event 46724: table markets has no column named open_interest
+2025-11-20 22:06:18,424 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,451 - EventsManager - ERROR - Error processing event 22509: table markets has no column named open_interest
+2025-11-20 22:06:18,451 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,478 - EventsManager - ERROR - Error processing event 16282: table markets has no column named open_interest
+2025-11-20 22:06:18,478 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,509 - EventsManager - ERROR - Error processing event 81328: table markets has no column named open_interest
+2025-11-20 22:06:18,509 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,590 - EventsManager - ERROR - Error processing event 62580: table markets has no column named open_interest
+2025-11-20 22:06:18,590 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,593 - EventsManager - ERROR - Error processing event 35908: table markets has no column named open_interest
+2025-11-20 22:06:18,593 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,631 - EventsManager - ERROR - Error processing event 64626: table markets has no column named open_interest
+2025-11-20 22:06:18,631 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,658 - EventsManager - ERROR - Error processing event 80515: table markets has no column named open_interest
+2025-11-20 22:06:18,658 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,674 - EventsManager - ERROR - Error processing event 29011: table markets has no column named open_interest
+2025-11-20 22:06:18,674 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,679 - EventsManager - ERROR - Error processing event 28999: table markets has no column named open_interest
+2025-11-20 22:06:18,679 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,701 - EventsManager - ERROR - Error processing event 16168: table markets has no column named open_interest
+2025-11-20 22:06:18,702 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,724 - EventsManager - ERROR - Error processing event 57057: table markets has no column named open_interest
+2025-11-20 22:06:18,724 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,726 - EventsManager - ERROR - Error processing event 31867: table markets has no column named open_interest
+2025-11-20 22:06:18,726 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,731 - EventsManager - ERROR - Error processing event 41137: table markets has no column named open_interest
+2025-11-20 22:06:18,731 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,819 - EventsManager - ERROR - Error processing event 17105: table markets has no column named open_interest
+2025-11-20 22:06:18,819 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,859 - EventsManager - ERROR - Error processing event 45915: table markets has no column named open_interest
+2025-11-20 22:06:18,859 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,882 - EventsManager - ERROR - Error processing event 17405: table markets has no column named open_interest
+2025-11-20 22:06:18,882 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,927 - EventsManager - ERROR - Error processing event 16489: table markets has no column named open_interest
+2025-11-20 22:06:18,927 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,961 - EventsManager - ERROR - Error processing event 57724: table markets has no column named open_interest
+2025-11-20 22:06:18,961 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,973 - EventsManager - ERROR - Error processing event 28628: table markets has no column named open_interest
+2025-11-20 22:06:18,973 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,978 - EventsManager - ERROR - Error processing event 30828: table markets has no column named open_interest
+2025-11-20 22:06:18,978 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:18,998 - EventsManager - ERROR - Error processing event 80518: table markets has no column named open_interest
+2025-11-20 22:06:18,998 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,025 - EventsManager - ERROR - Error processing event 67423: table markets has no column named open_interest
+2025-11-20 22:06:19,026 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,044 - EventsManager - ERROR - Error processing event 81827: table markets has no column named open_interest
+2025-11-20 22:06:19,044 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,139 - EventsManager - ERROR - Error processing event 67422: table markets has no column named open_interest
+2025-11-20 22:06:19,139 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,182 - EventsManager - ERROR - Error processing event 25036: table markets has no column named open_interest
+2025-11-20 22:06:19,182 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,221 - EventsManager - ERROR - Error processing event 17809: table markets has no column named open_interest
+2025-11-20 22:06:19,221 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,249 - EventsManager - ERROR - Error processing event 39639: table markets has no column named open_interest
+2025-11-20 22:06:19,249 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,260 - EventsManager - ERROR - Error processing event 24819: table markets has no column named open_interest
+2025-11-20 22:06:19,260 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,273 - EventsManager - ERROR - Error processing event 84896: table markets has no column named open_interest
+2025-11-20 22:06:19,274 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,274 - EventsManager - ERROR - Error processing event 53297: table markets has no column named open_interest
+2025-11-20 22:06:19,274 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,275 - EventsManager - ERROR - Error processing event 30611: table markets has no column named open_interest
+2025-11-20 22:06:19,275 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,339 - EventsManager - ERROR - Error processing event 62583: table markets has no column named open_interest
+2025-11-20 22:06:19,339 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,385 - EventsManager - ERROR - Error processing event 43346: table markets has no column named open_interest
+2025-11-20 22:06:19,385 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,404 - EventsManager - ERROR - Error processing event 21683: table markets has no column named open_interest
+2025-11-20 22:06:19,404 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,414 - EventsManager - ERROR - Error processing event 81331: table markets has no column named open_interest
+2025-11-20 22:06:19,414 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,428 - EventsManager - ERROR - Error processing event 34050: table markets has no column named open_interest
+2025-11-20 22:06:19,428 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,509 - EventsManager - ERROR - Error processing event 83260: table markets has no column named open_interest
+2025-11-20 22:06:19,509 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,556 - EventsManager - ERROR - Error processing event 80541: table markets has no column named open_interest
+2025-11-20 22:06:19,557 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,558 - EventsManager - ERROR - Error processing event 81502: table markets has no column named open_interest
+2025-11-20 22:06:19,559 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,562 - EventsManager - ERROR - Error processing event 79034: table markets has no column named open_interest
+2025-11-20 22:06:19,562 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,579 - EventsManager - ERROR - Error processing event 70057: table markets has no column named open_interest
+2025-11-20 22:06:19,579 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,615 - EventsManager - ERROR - Error processing event 80520: table markets has no column named open_interest
+2025-11-20 22:06:19,615 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,640 - EventsManager - ERROR - Error processing event 16106: table markets has no column named open_interest
+2025-11-20 22:06:19,641 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,674 - EventsManager - ERROR - Error processing event 35683: table markets has no column named open_interest
+2025-11-20 22:06:19,674 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,675 - EventsManager - ERROR - Error processing event 17823: table markets has no column named open_interest
+2025-11-20 22:06:19,675 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,742 - EventsManager - ERROR - Error processing event 50386: table markets has no column named open_interest
+2025-11-20 22:06:19,742 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,765 - EventsManager - ERROR - Error processing event 23091: table markets has no column named open_interest
+2025-11-20 22:06:19,765 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,826 - EventsManager - ERROR - Error processing event 44955: table markets has no column named open_interest
+2025-11-20 22:06:19,826 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,844 - EventsManager - ERROR - Error processing event 81323: table markets has no column named open_interest
+2025-11-20 22:06:19,844 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,852 - EventsManager - ERROR - Error processing event 80691: table markets has no column named open_interest
+2025-11-20 22:06:19,852 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,918 - EventsManager - ERROR - Error processing event 25930: table markets has no column named open_interest
+2025-11-20 22:06:19,918 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,966 - EventsManager - ERROR - Error processing event 38900: table markets has no column named open_interest
+2025-11-20 22:06:19,966 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:19,988 - EventsManager - ERROR - Error processing event 34038: table markets has no column named open_interest
+2025-11-20 22:06:19,989 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,014 - EventsManager - ERROR - Error processing event 16181: table markets has no column named open_interest
+2025-11-20 22:06:20,014 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,047 - EventsManager - ERROR - Error processing event 32754: table markets has no column named open_interest
+2025-11-20 22:06:20,048 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,052 - EventsManager - ERROR - Error processing event 36173: table markets has no column named open_interest
+2025-11-20 22:06:20,052 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,075 - EventsManager - ERROR - Error processing event 20803: table markets has no column named open_interest
+2025-11-20 22:06:20,075 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,082 - EventsManager - ERROR - Error processing event 59787: table markets has no column named open_interest
+2025-11-20 22:06:20,082 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,085 - EventsManager - ERROR - Error processing event 31759: table markets has no column named open_interest
+2025-11-20 22:06:20,085 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,099 - EventsManager - ERROR - Error processing event 59790: table markets has no column named open_interest
+2025-11-20 22:06:20,099 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,224 - EventsManager - ERROR - Error processing event 80533: table markets has no column named open_interest
+2025-11-20 22:06:20,224 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,263 - EventsManager - ERROR - Error processing event 17858: table markets has no column named open_interest
+2025-11-20 22:06:20,263 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,296 - EventsManager - ERROR - Error processing event 16171: table markets has no column named open_interest
+2025-11-20 22:06:20,296 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,307 - EventsManager - ERROR - Error processing event 23657: table markets has no column named open_interest
+2025-11-20 22:06:20,307 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,321 - EventsManager - ERROR - Error processing event 80530: table markets has no column named open_interest
+2025-11-20 22:06:20,321 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,340 - EventsManager - ERROR - Error processing event 21320: table markets has no column named open_interest
+2025-11-20 22:06:20,340 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,357 - EventsManager - ERROR - Error processing event 80525: table markets has no column named open_interest
+2025-11-20 22:06:20,357 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,367 - EventsManager - ERROR - Error processing event 43173: table markets has no column named open_interest
+2025-11-20 22:06:20,367 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,435 - EventsManager - ERROR - Error processing event 22448: table markets has no column named open_interest
+2025-11-20 22:06:20,435 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,465 - EventsManager - ERROR - Error processing event 42958: table markets has no column named open_interest
+2025-11-20 22:06:20,465 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:06:20,515 - EventsManager - ERROR - Error processing event 17523: table markets has no column named open_interest
+2025-11-20 22:06:20,515 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:23,109 - EventsManager - INFO - 
+============================================================
+2025-11-20 22:09:23,109 - EventsManager - INFO - 📅 Loading EVENTS + MARKETS (detailed)
+2025-11-20 22:09:23,109 - EventsManager - INFO - ============================================================
+2025-11-20 22:09:23,109 - EventsManager - INFO - Step 1: Fetching basic event info...
+2025-11-20 22:09:23,109 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-20 22:09:36,040 - EventsManager - INFO - Successfully fetched and stored 4442 events (basic info)
+2025-11-20 22:09:36,040 - EventsManager - INFO - Step 2: Fetching detailed info + markets for 4442 events...
+2025-11-20 22:09:36,047 - EventsManager - INFO - Processing 5171 events for detailed information + markets (10 threads)...
+2025-11-20 22:09:36,488 - EventsManager - ERROR - Error processing event 31552: table markets has no column named open_interest
+2025-11-20 22:09:36,489 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,038 - EventsManager - ERROR - Error processing event 35090: table markets has no column named open_interest
+2025-11-20 22:09:37,039 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,042 - EventsManager - ERROR - Error processing event 16100: table markets has no column named open_interest
+2025-11-20 22:09:37,042 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,101 - EventsManager - ERROR - Error processing event 23656: table markets has no column named open_interest
+2025-11-20 22:09:37,102 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,128 - EventsManager - ERROR - Error processing event 33507: table markets has no column named open_interest
+2025-11-20 22:09:37,128 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,130 - EventsManager - ERROR - Error processing event 19696: table markets has no column named open_interest
+2025-11-20 22:09:37,130 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,250 - EventsManager - ERROR - Error processing event 33506: table markets has no column named open_interest
+2025-11-20 22:09:37,250 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,254 - EventsManager - ERROR - Error processing event 23947: table markets has no column named open_interest
+2025-11-20 22:09:37,254 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,279 - EventsManager - ERROR - Error processing event 26857: table markets has no column named open_interest
+2025-11-20 22:09:37,279 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,316 - EventsManager - ERROR - Error processing event 27830: table markets has no column named open_interest
+2025-11-20 22:09:37,316 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,372 - EventsManager - ERROR - Error processing event 31875: table markets has no column named open_interest
+2025-11-20 22:09:37,372 - EventsManager - ERROR - Error processing event 30829: table markets has no column named open_interest
+2025-11-20 22:09:37,373 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,373 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,374 - EventsManager - ERROR - Error processing event 35532: table markets has no column named open_interest
+2025-11-20 22:09:37,374 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,375 - EventsManager - ERROR - Error processing event 16097: table markets has no column named open_interest
+2025-11-20 22:09:37,375 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,376 - EventsManager - ERROR - Error processing event 16087: table markets has no column named open_interest
+2025-11-20 22:09:37,376 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,380 - EventsManager - ERROR - Error processing event 16096: table markets has no column named open_interest
+2025-11-20 22:09:37,380 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,557 - EventsManager - ERROR - Error processing event 70054: table markets has no column named open_interest
+2025-11-20 22:09:37,557 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,559 - EventsManager - ERROR - Error processing event 16108: table markets has no column named open_interest
+2025-11-20 22:09:37,559 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,563 - EventsManager - ERROR - Error processing event 33509: table markets has no column named open_interest
+2025-11-20 22:09:37,563 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,640 - EventsManager - ERROR - Error processing event 35754: table markets has no column named open_interest
+2025-11-20 22:09:37,640 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,867 - EventsManager - ERROR - Error processing event 57718: table markets has no column named open_interest
+2025-11-20 22:09:37,867 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,876 - EventsManager - ERROR - Error processing event 38884: table markets has no column named open_interest
+2025-11-20 22:09:37,876 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,912 - EventsManager - ERROR - Error processing event 16085: table markets has no column named open_interest
+2025-11-20 22:09:37,912 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,925 - EventsManager - ERROR - Error processing event 17819: table markets has no column named open_interest
+2025-11-20 22:09:37,925 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,931 - EventsManager - ERROR - Error processing event 29007: table markets has no column named open_interest
+2025-11-20 22:09:37,931 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:37,963 - EventsManager - ERROR - Error processing event 70055: table markets has no column named open_interest
+2025-11-20 22:09:37,963 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,026 - EventsManager - ERROR - Error processing event 24895: table markets has no column named open_interest
+2025-11-20 22:09:38,026 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,074 - EventsManager - ERROR - Error processing event 59297: table markets has no column named open_interest
+2025-11-20 22:09:38,074 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,078 - EventsManager - ERROR - Error processing event 16739: table markets has no column named open_interest
+2025-11-20 22:09:38,078 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,082 - EventsManager - ERROR - Error processing event 78602: table markets has no column named open_interest
+2025-11-20 22:09:38,082 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,085 - EventsManager - ERROR - Error processing event 59404: table markets has no column named open_interest
+2025-11-20 22:09:38,085 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,125 - EventsManager - ERROR - Error processing event 48309: table markets has no column named open_interest
+2025-11-20 22:09:38,125 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,146 - EventsManager - ERROR - Error processing event 16180: table markets has no column named open_interest
+2025-11-20 22:09:38,146 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,169 - EventsManager - ERROR - Error processing event 32426: table markets has no column named open_interest
+2025-11-20 22:09:38,169 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,176 - EventsManager - ERROR - Error processing event 67691: table markets has no column named open_interest
+2025-11-20 22:09:38,176 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,179 - EventsManager - ERROR - Error processing event 17821: table markets has no column named open_interest
+2025-11-20 22:09:38,179 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,252 - EventsManager - ERROR - Error processing event 17505: table markets has no column named open_interest
+2025-11-20 22:09:38,253 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,325 - EventsManager - ERROR - Error processing event 16092: table markets has no column named open_interest
+2025-11-20 22:09:38,325 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,329 - EventsManager - ERROR - Error processing event 23784: table markets has no column named open_interest
+2025-11-20 22:09:38,330 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,343 - EventsManager - ERROR - Error processing event 16105: table markets has no column named open_interest
+2025-11-20 22:09:38,343 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,346 - EventsManager - ERROR - Error processing event 39671: table markets has no column named open_interest
+2025-11-20 22:09:38,346 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,352 - EventsManager - ERROR - Error processing event 83652: table markets has no column named open_interest
+2025-11-20 22:09:38,352 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,360 - EventsManager - ERROR - Error processing event 16095: table markets has no column named open_interest
+2025-11-20 22:09:38,360 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,399 - EventsManager - ERROR - Error processing event 33526: table markets has no column named open_interest
+2025-11-20 22:09:38,400 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,414 - EventsManager - ERROR - Error processing event 22987: table markets has no column named open_interest
+2025-11-20 22:09:38,415 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,418 - EventsManager - ERROR - Error processing event 17413: table markets has no column named open_interest
+2025-11-20 22:09:38,418 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,449 - EventsManager - ERROR - Error processing event 38374: table markets has no column named open_interest
+2025-11-20 22:09:38,450 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,566 - EventsManager - ERROR - Error processing event 26004: table markets has no column named open_interest
+2025-11-20 22:09:38,566 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,661 - EventsManager - ERROR - Error processing event 35908: table markets has no column named open_interest
+2025-11-20 22:09:38,661 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,705 - EventsManager - ERROR - Error processing event 28997: table markets has no column named open_interest
+2025-11-20 22:09:38,705 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,734 - EventsManager - ERROR - Error processing event 82571: table markets has no column named open_interest
+2025-11-20 22:09:38,735 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,754 - EventsManager - ERROR - Error processing event 29001: table markets has no column named open_interest
+2025-11-20 22:09:38,754 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,800 - EventsManager - ERROR - Error processing event 38010: table markets has no column named open_interest
+2025-11-20 22:09:38,800 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,805 - EventsManager - ERROR - Error processing event 43172: table markets has no column named open_interest
+2025-11-20 22:09:38,805 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,808 - EventsManager - ERROR - Error processing event 30386: table markets has no column named open_interest
+2025-11-20 22:09:38,808 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,844 - EventsManager - ERROR - Error processing event 23270: table markets has no column named open_interest
+2025-11-20 22:09:38,844 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,854 - EventsManager - ERROR - Error processing event 16817: table markets has no column named open_interest
+2025-11-20 22:09:38,855 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,865 - EventsManager - ERROR - Error processing event 28833: table markets has no column named open_interest
+2025-11-20 22:09:38,865 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,912 - EventsManager - ERROR - Error processing event 50251: table markets has no column named open_interest
+2025-11-20 22:09:38,913 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,944 - EventsManager - ERROR - Error processing event 57463: table markets has no column named open_interest
+2025-11-20 22:09:38,945 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:38,950 - EventsManager - ERROR - Error processing event 19057: table markets has no column named open_interest
+2025-11-20 22:09:38,950 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,014 - EventsManager - ERROR - Error processing event 30615: table markets has no column named open_interest
+2025-11-20 22:09:39,014 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,036 - EventsManager - ERROR - Error processing event 62671: table markets has no column named open_interest
+2025-11-20 22:09:39,037 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,037 - EventsManager - ERROR - Error processing event 23085: table markets has no column named open_interest
+2025-11-20 22:09:39,037 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,040 - EventsManager - ERROR - Error processing event 16166: table markets has no column named open_interest
+2025-11-20 22:09:39,040 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,062 - EventsManager - ERROR - Error processing event 16475: table markets has no column named open_interest
+2025-11-20 22:09:39,062 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,082 - EventsManager - ERROR - Error processing event 16170: table markets has no column named open_interest
+2025-11-20 22:09:39,082 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,094 - EventsManager - ERROR - Error processing event 62580: table markets has no column named open_interest
+2025-11-20 22:09:39,094 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,152 - EventsManager - ERROR - Error processing event 22976: table markets has no column named open_interest
+2025-11-20 22:09:39,152 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,159 - EventsManager - ERROR - Error processing event 19720: table markets has no column named open_interest
+2025-11-20 22:09:39,160 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,161 - EventsManager - ERROR - Error processing event 70056: table markets has no column named open_interest
+2025-11-20 22:09:39,161 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,231 - EventsManager - ERROR - Error processing event 46724: table markets has no column named open_interest
+2025-11-20 22:09:39,231 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,270 - EventsManager - ERROR - Error processing event 22509: table markets has no column named open_interest
+2025-11-20 22:09:39,271 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,273 - EventsManager - ERROR - Error processing event 27546: table markets has no column named open_interest
+2025-11-20 22:09:39,273 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,277 - EventsManager - ERROR - Error processing event 80691: table markets has no column named open_interest
+2025-11-20 22:09:39,277 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,281 - EventsManager - ERROR - Error processing event 16282: table markets has no column named open_interest
+2025-11-20 22:09:39,281 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,303 - EventsManager - ERROR - Error processing event 64626: table markets has no column named open_interest
+2025-11-20 22:09:39,303 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,312 - EventsManager - ERROR - Error processing event 81328: table markets has no column named open_interest
+2025-11-20 22:09:39,312 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,386 - EventsManager - ERROR - Error processing event 80541: table markets has no column named open_interest
+2025-11-20 22:09:39,387 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,395 - EventsManager - ERROR - Error processing event 80515: table markets has no column named open_interest
+2025-11-20 22:09:39,395 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,402 - EventsManager - ERROR - Error processing event 31867: table markets has no column named open_interest
+2025-11-20 22:09:39,402 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,444 - EventsManager - ERROR - Error processing event 29011: table markets has no column named open_interest
+2025-11-20 22:09:39,444 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,535 - EventsManager - ERROR - Error processing event 28999: table markets has no column named open_interest
+2025-11-20 22:09:39,535 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,543 - EventsManager - ERROR - Error processing event 16168: table markets has no column named open_interest
+2025-11-20 22:09:39,543 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,571 - EventsManager - ERROR - Error processing event 57057: table markets has no column named open_interest
+2025-11-20 22:09:39,571 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,578 - EventsManager - ERROR - Error processing event 41137: table markets has no column named open_interest
+2025-11-20 22:09:39,579 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,585 - EventsManager - ERROR - Error processing event 17105: table markets has no column named open_interest
+2025-11-20 22:09:39,585 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,591 - EventsManager - ERROR - Error processing event 45915: table markets has no column named open_interest
+2025-11-20 22:09:39,591 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,616 - EventsManager - ERROR - Error processing event 67423: table markets has no column named open_interest
+2025-11-20 22:09:39,616 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,626 - EventsManager - ERROR - Error processing event 81827: table markets has no column named open_interest
+2025-11-20 22:09:39,626 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,632 - EventsManager - ERROR - Error processing event 17405: table markets has no column named open_interest
+2025-11-20 22:09:39,632 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,649 - EventsManager - ERROR - Error processing event 57724: table markets has no column named open_interest
+2025-11-20 22:09:39,650 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,737 - EventsManager - ERROR - Error processing event 16489: table markets has no column named open_interest
+2025-11-20 22:09:39,737 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,762 - EventsManager - ERROR - Error processing event 80518: table markets has no column named open_interest
+2025-11-20 22:09:39,762 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,788 - EventsManager - ERROR - Error processing event 28628: table markets has no column named open_interest
+2025-11-20 22:09:39,788 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,823 - EventsManager - ERROR - Error processing event 30828: table markets has no column named open_interest
+2025-11-20 22:09:39,823 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,844 - EventsManager - ERROR - Error processing event 67422: table markets has no column named open_interest
+2025-11-20 22:09:39,844 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,852 - EventsManager - ERROR - Error processing event 25036: table markets has no column named open_interest
+2025-11-20 22:09:39,852 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,881 - EventsManager - ERROR - Error processing event 39639: table markets has no column named open_interest
+2025-11-20 22:09:39,881 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,886 - EventsManager - ERROR - Error processing event 43346: table markets has no column named open_interest
+2025-11-20 22:09:39,887 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,953 - EventsManager - ERROR - Error processing event 62583: table markets has no column named open_interest
+2025-11-20 22:09:39,953 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,957 - EventsManager - ERROR - Error processing event 17809: table markets has no column named open_interest
+2025-11-20 22:09:39,958 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,981 - EventsManager - ERROR - Error processing event 30611: table markets has no column named open_interest
+2025-11-20 22:09:39,981 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,993 - EventsManager - ERROR - Error processing event 53297: table markets has no column named open_interest
+2025-11-20 22:09:39,993 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:39,996 - EventsManager - ERROR - Error processing event 84896: table markets has no column named open_interest
+2025-11-20 22:09:39,996 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,037 - EventsManager - ERROR - Error processing event 24819: table markets has no column named open_interest
+2025-11-20 22:09:40,037 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,064 - EventsManager - ERROR - Error processing event 21683: table markets has no column named open_interest
+2025-11-20 22:09:40,064 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,088 - EventsManager - ERROR - Error processing event 81331: table markets has no column named open_interest
+2025-11-20 22:09:40,088 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,113 - EventsManager - ERROR - Error processing event 79034: table markets has no column named open_interest
+2025-11-20 22:09:40,113 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,119 - EventsManager - ERROR - Error processing event 34050: table markets has no column named open_interest
+2025-11-20 22:09:40,119 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,196 - EventsManager - ERROR - Error processing event 50386: table markets has no column named open_interest
+2025-11-20 22:09:40,196 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,199 - EventsManager - ERROR - Error processing event 83260: table markets has no column named open_interest
+2025-11-20 22:09:40,199 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,207 - EventsManager - ERROR - Error processing event 70057: table markets has no column named open_interest
+2025-11-20 22:09:40,207 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,220 - EventsManager - ERROR - Error processing event 80520: table markets has no column named open_interest
+2025-11-20 22:09:40,221 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,226 - EventsManager - ERROR - Error processing event 81502: table markets has no column named open_interest
+2025-11-20 22:09:40,226 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,271 - EventsManager - ERROR - Error processing event 35683: table markets has no column named open_interest
+2025-11-20 22:09:40,271 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,296 - EventsManager - ERROR - Error processing event 17823: table markets has no column named open_interest
+2025-11-20 22:09:40,296 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 22:09:40,311 - EventsManager - ERROR - Error processing event 16106: table markets has no column named open_interest
+2025-11-20 22:09:40,311 - EventsManager - INFO - Processed 0/5171 events
+2025-11-20 23:09:58,927 - EventsManager - INFO - 
+============================================================
+2025-11-20 23:09:58,927 - EventsManager - INFO - 📅 Loading ACTIVE EVENTS Only
+2025-11-20 23:09:58,927 - EventsManager - INFO - ============================================================
+2025-11-20 23:09:58,927 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-20 23:10:16,558 - EventsManager - ERROR - ❌ Error loading events: table markets has no column named open_interest

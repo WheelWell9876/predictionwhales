@@ -85,6 +85,7 @@ def get_schema():
         liquidity REAL DEFAULT 0,
         liquidity_num REAL DEFAULT 0,
         liquidity_clob REAL DEFAULT 0,
+        open_interest REAL DEFAULT 0,
         active INTEGER DEFAULT 1,
         closed INTEGER DEFAULT 0,
         new INTEGER DEFAULT 0,
