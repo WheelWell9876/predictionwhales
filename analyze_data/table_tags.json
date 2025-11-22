@@ -1,0 +1,378 @@
+{
+  "table_name": "tags",
+  "row_count": 733,
+  "columns": [
+    {
+      "name": "id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "label",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "force_show",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "force_hide",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "is_carousel",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "published_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_by",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_by",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "fetched_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {
+    "id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 100.0,
+      "min_length": 1,
+      "max_length": 6,
+      "avg_length": 5.1,
+      "sample_values": [
+        "1",
+        "10",
+        "100",
+        "1000",
+        "100021"
+      ]
+    },
+    "label": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 100.0,
+      "min_length": 1,
+      "max_length": 34,
+      "avg_length": 8.38,
+      "sample_values": [
+        "Sports",
+        "NFL",
+        "Cowboys vs Eagles",
+        "World Elections",
+        "Global Elections"
+      ]
+    },
+    "slug": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 100.0,
+      "min_length": 1,
+      "max_length": 34,
+      "avg_length": 8.3,
+      "sample_values": [
+        "15M",
+        "1H",
+        "2025-predictions",
+        "2026-fifa-world-cup",
+        "4h"
+      ]
+    },
+    "force_show": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.02,
+      "sum": 18,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 715
+        },
+        {
+          "value": 1,
+          "count": 18
+        }
+      ]
+    },
+    "force_hide": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.02,
+      "sum": 12,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 721
+        },
+        {
+          "value": 1,
+          "count": 12
+        }
+      ]
+    },
+    "is_carousel": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 1,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 732
+        },
+        {
+          "value": 1,
+          "count": 1
+        }
+      ]
+    },
+    "published_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 220,
+      "null_count": 513,
+      "null_percentage": 69.99,
+      "earliest": "2023-10-24 22:37:50.296+00",
+      "latest": "2024-03-12 00:56:52.382+00",
+      "distinct_values": 220
+    },
+    "created_by": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 3,
+      "null_count": 730,
+      "null_percentage": 99.59,
+      "min": 15,
+      "max": 15,
+      "avg": 15.0,
+      "sum": 45,
+      "median": 15,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 15,
+          "count": 3
+        }
+      ]
+    },
+    "updated_by": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 35,
+      "null_count": 698,
+      "null_percentage": 95.23,
+      "min": 13,
+      "max": 15,
+      "avg": 14.83,
+      "sum": 519,
+      "median": 15,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 15,
+          "count": 32
+        },
+        {
+          "value": 13,
+          "count": 3
+        }
+      ]
+    },
+    "created_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 705,
+      "null_count": 28,
+      "null_percentage": 3.82,
+      "earliest": "2023-10-24T22:37:50.31Z",
+      "latest": "2025-11-21T23:46:04.067592Z",
+      "distinct_values": 702
+    },
+    "updated_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 255,
+      "null_count": 478,
+      "null_percentage": 65.21,
+      "earliest": "2023-11-02T21:02:48.665Z",
+      "latest": "2025-11-06T19:43:57.795025Z",
+      "distinct_values": 255
+    },
+    "fetched_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 733,
+      "non_null": 733,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "2025-11-22T10:48:09.164807",
+      "latest": "2025-11-22T10:48:14.054786",
+      "distinct_values": 733
+    }
+  },
+  "sample_rows": [
+    "id:1 | label:Sports | slug:sports | force_show:0 | force_hide:1 | is_carousel:0 | published_at:2023-10-24 22:37:50.296+00 | created_by:NULL | updated_by:15 | created_at:2023-10-24T22:37:50.31Z | ...",
+    "id:450 | label:NFL | slug:nfl | force_show:0 | force_hide:0 | is_carousel:0 | published_at:2023-11-02 23:11:18.762+00 | created_by:NULL | updated_by:NULL | created_at:2023-11-02T23:11:18.767Z | ...",
+    "id:102549 | label:Cowboys vs Eagles | slug:cowboys-vs-eagles | force_show:0 | force_hide:0 | is_carousel:0 | published_at:NULL | created_by:NULL | updated_by:NULL | created_at:2025-09-04T16:28:02.986793Z | ...",
+    "id:101206 | label:World Elections | slug:world-elections | force_show:0 | force_hide:0 | is_carousel:0 | published_at:NULL | created_by:NULL | updated_by:NULL | created_at:2024-11-07T23:07:25.512144Z | ...",
+    "id:1597 | label:Global Elections | slug:global-elections | force_show:1 | force_hide:0 | is_carousel:0 | published_at:2024-03-07 20:44:01.258+00 | created_by:15 | updated_by:15 | created_at:2024-03-07T20:41:56.773Z | ..."
+  ],
+  "indexes": [
+    {
+      "name": "idx_tags_slug",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_tags_2",
+      "unique": true
+    },
+    {
+      "name": "sqlite_autoindex_tags_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [],
+    "referenced_by": [
+      {
+        "table": "event_tags",
+        "column": "tag_id"
+      },
+      {
+        "table": "market_tags",
+        "column": "tag_id"
+      },
+      {
+        "table": "series_tags",
+        "column": "tag_id"
+      },
+      {
+        "table": "tag_relationships",
+        "column": "tag_id"
+      }
+    ]
+  }
+}

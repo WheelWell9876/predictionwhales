@@ -1,0 +1,59 @@
+{
+  "table_name": "event_live_volume",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "event_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "volume",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "volume_24hr",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "liquidity",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_event_live_volume_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "event_id",
+        "references_table": "events",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

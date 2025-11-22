@@ -1,0 +1,52 @@
+{
+  "table_name": "market_holders",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "market_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "proxy_wallet",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "shares",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "avg_price",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_market_holders_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "market_id",
+        "references_table": "markets",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

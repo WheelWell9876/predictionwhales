@@ -1,0 +1,121 @@
+{
+  "table_name": "users",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "proxy_wallet",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "username",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "pseudonym",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "bio",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "profile_image",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "profile_image_optimized",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "total_value",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "is_whale",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "last_updated",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "idx_users_value",
+      "unique": false
+    },
+    {
+      "name": "idx_users_whale",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_users_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [],
+    "referenced_by": [
+      {
+        "table": "user_activity",
+        "column": "proxy_wallet"
+      },
+      {
+        "table": "user_trades",
+        "column": "proxy_wallet"
+      },
+      {
+        "table": "user_positions_current",
+        "column": "proxy_wallet"
+      },
+      {
+        "table": "user_positions_closed",
+        "column": "proxy_wallet"
+      },
+      {
+        "table": "user_values",
+        "column": "proxy_wallet"
+      },
+      {
+        "table": "transactions",
+        "column": "proxy_wallet"
+      }
+    ]
+  }
+}

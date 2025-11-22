@@ -8,7 +8,6 @@ import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Optional
 from threading import Lock
-from datetime import datetime, timedelta
 from backend.database.database_manager import DatabaseManager
 from backend.database.entity.store_markets import StoreMarketsManager
 from backend.fetch.entity.batch.batch_markets import BatchMarketsManager
@@ -37,12 +36,12 @@ class MarketsManager:
         # Initialize storage handler
         self.storage = StoreMarketsManager()
         
-        # Thread safety and progress tracking
+        # Thread safety and counters
         self._lock = Lock()
-        self._progress_counter = 0
+        self._market_counter = 0
+        self._event_counter = 0
         self._error_counter = 0
-        self._start_time = None
-        self._total_items = 0
+        self._tag_counter = 0
     
     def _setup_logger(self):
         """Setup logger for markets manager"""
@@ -66,36 +65,6 @@ class MarketsManager:
             logger.addHandler(fh)
         
         return logger
-    
-    def _calculate_eta(self, current: int, total: int) -> str:
-        """Calculate estimated time of arrival"""
-        if current == 0 or not self._start_time:
-            return "calculating..."
-        
-        elapsed = time.time() - self._start_time
-        rate = current / elapsed
-        remaining = total - current
-        
-        if rate > 0:
-            eta_seconds = remaining / rate
-            eta = datetime.now() + timedelta(seconds=eta_seconds)
-            return eta.strftime("%H:%M:%S")
-        return "unknown"
-    
-    def _show_progress(self, current: int, total: int, description: str = "Processing"):
-        """Show progress bar with ETA"""
-        percentage = (current / total * 100) if total > 0 else 0
-        bar_length = 40
-        filled = int(bar_length * current / total) if total > 0 else 0
-        bar = '█' * filled + '░' * (bar_length - filled)
-        
-        eta = self._calculate_eta(current, total)
-        
-        # Clear line and print progress
-        print(f'\r{description}: |{bar}| {percentage:.1f}% ({current}/{total}) ETA: {eta}', end='', flush=True)
-        
-        if current >= total:
-            print()  # New line when complete
     
     def fetch_markets_from_stored_events(self, num_threads: int = 20) -> List[Dict]:
         """
@@ -122,15 +91,16 @@ class MarketsManager:
             self.logger.warning("No active events found in database. Please load events first.")
             return []
         
-        self.logger.info(f"Found {len(events)} active events. Starting market fetch...")
+        self.logger.info(f"Found {len(events)} active events")
         
-        # Initialize progress tracking
-        self._progress_counter = 0
+        # Reset counters
+        self._market_counter = 0
+        self._event_counter = 0
         self._error_counter = 0
-        self._total_items = len(events)
-        self._start_time = time.time()
+        self._tag_counter = 0
+        
+        start_time = time.time()
         all_markets = []
-        markets_count = 0
         
         # Import managers here to avoid circular imports
         from backend.series_manager import SeriesManager
@@ -157,6 +127,12 @@ class MarketsManager:
                             # Ensure event_id is set
                             for market in markets:
                                 market['eventId'] = event_id
+                                
+                                # Store market tags if present
+                                if 'tags' in market and market['tags']:
+                                    tags_manager.store_market_tags(market['id'], market['tags'])
+                                    with self._lock:
+                                        self._tag_counter += len(market['tags'])
                             
                             # Store markets
                             with self._lock:
@@ -166,7 +142,7 @@ class MarketsManager:
                     if 'series' in event_data and event_data['series']:
                         series_manager.store_event_series(event_id, event_data['series'])
                     
-                    # Delegate to tags manager for tag data  
+                    # Delegate to tags manager for event tag data  
                     if 'tags' in event_data and event_data['tags']:
                         tags_manager.store_event_tags(event_id, event_data['tags'])
                     
@@ -187,7 +163,7 @@ class MarketsManager:
                 self.logger.error(f"Error fetching markets for event {event_id}: {e}")
                 return []
         
-        # Process events concurrently with progress tracking
+        # Process events concurrently
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             futures = {
                 executor.submit(fetch_event_markets, event): event 
@@ -199,43 +175,39 @@ class MarketsManager:
                     markets = future.result()
                     if markets:
                         all_markets.extend(markets)
-                        markets_count += len(markets)
+                        with self._lock:
+                            self._market_counter += len(markets)
                     
                     with self._lock:
-                        self._progress_counter += 1
+                        self._event_counter += 1
                         
-                        # Update progress every event
-                        self._show_progress(
-                            self._progress_counter, 
-                            self._total_items,
-                            f"Fetching markets from events"
-                        )
-                        
-                        # Log summary every 100 events
-                        if self._progress_counter % 100 == 0:
-                            elapsed = time.time() - self._start_time
-                            rate = self._progress_counter / elapsed
+                        # Log progress every 100 events
+                        if self._event_counter % 100 == 0:
                             self.logger.info(
-                                f"Progress: {self._progress_counter}/{self._total_items} events "
-                                f"({markets_count} markets found, {rate:.1f} events/sec)"
+                                f"Processed {self._event_counter} events "
+                                f"({self._market_counter} markets found)"
                             )
+                            
+                            # Log tag progress
+                            if self._tag_counter > 0 and self._tag_counter % 100 == 0:
+                                self.logger.info(f"Stored {self._tag_counter} market tags")
                             
                 except Exception as e:
                     self.logger.error(f"Error in thread: {e}")
         
         # Final statistics
-        elapsed = time.time() - self._start_time
-        self.logger.info(f"\n✅ Market fetch complete!")
-        self.logger.info(f"   Events processed: {self._progress_counter}")
-        self.logger.info(f"   Markets found: {len(all_markets)}")
-        self.logger.info(f"   Errors: {self._error_counter}")
-        self.logger.info(f"   Time taken: {elapsed:.1f} seconds")
-        self.logger.info(f"   Average: {self._progress_counter/elapsed:.1f} events/sec")
+        elapsed = time.time() - start_time
+        self.logger.info(f"Market fetch complete!")
+        self.logger.info(f"  Events processed: {self._event_counter}")
+        self.logger.info(f"  Markets found: {len(all_markets)}")
+        self.logger.info(f"  Market tags stored: {self._tag_counter}")
+        self.logger.info(f"  Errors: {self._error_counter}")
+        self.logger.info(f"  Time: {elapsed:.1f} seconds")
         
         return all_markets
     
     def _store_categories(self, categories: List[Dict], event_id: str):
-        """Store categories (minimal implementation, can be moved to separate manager)"""
+        """Store categories (minimal implementation)"""
         category_records = []
         event_category_records = []
         
@@ -264,7 +236,7 @@ class MarketsManager:
             self.db_manager.bulk_insert_or_ignore('event_categories', event_category_records)
     
     def _store_collections(self, collections: List[Dict], event_id: str):
-        """Store collections (minimal implementation, can be moved to separate manager)"""
+        """Store collections (minimal implementation)"""
         collection_records = []
         event_collection_records = []
         
@@ -314,7 +286,7 @@ class MarketsManager:
         return self.id_fetcher.fetch_market_by_id(market_id)
     
     def process_all_markets_detailed(self, num_threads: int = 20):
-        """Process all markets to fetch detailed information with progress tracking"""
+        """Process all markets to fetch detailed information"""
         markets = self.db_manager.fetch_all("SELECT id, question FROM markets ORDER BY volume_num DESC")
         
         if not markets:
@@ -323,11 +295,8 @@ class MarketsManager:
         
         self.logger.info(f"Processing {len(markets)} markets for detailed information...")
         
-        # Initialize progress tracking
-        self._progress_counter = 0
-        self._error_counter = 0
-        self._total_items = len(markets)
-        self._start_time = time.time()
+        processed = 0
+        errors = 0
         
         def process_market(market):
             try:
@@ -337,44 +306,30 @@ class MarketsManager:
                 self.logger.error(f"Error processing market {market['id']}: {e}")
                 return False
         
-        # Process markets concurrently with progress tracking
+        # Process markets concurrently
         with ThreadPoolExecutor(max_workers=num_threads) as executor:
             futures = {executor.submit(process_market, market): market for market in markets}
             
             for future in as_completed(futures):
                 if future.result():
-                    with self._lock:
-                        self._progress_counter += 1
+                    processed += 1
                 else:
-                    with self._lock:
-                        self._error_counter += 1
+                    errors += 1
                 
-                # Update progress
-                with self._lock:
-                    self._show_progress(
-                        self._progress_counter + self._error_counter,
-                        self._total_items,
-                        "Processing market details"
+                # Log every 100 markets
+                if (processed + errors) % 100 == 0:
+                    self.logger.info(
+                        f"Processed {processed + errors}/{len(markets)} markets "
+                        f"({processed} successful)"
                     )
-                    
-                    # Log every 100 markets
-                    if (self._progress_counter + self._error_counter) % 100 == 0:
-                        elapsed = time.time() - self._start_time
-                        rate = self._progress_counter / elapsed if elapsed > 0 else 0
-                        self.logger.info(
-                            f"Detailed processing: {self._progress_counter} successful, "
-                            f"{self._error_counter} errors ({rate:.1f} markets/sec)"
-                        )
         
-        self.logger.info(f"\n✅ Market processing complete. Processed: {self._progress_counter}, Errors: {self._error_counter}")
+        self.logger.info(f"Market processing complete. Processed: {processed}, Errors: {errors}")
     
     def load_markets_only(self, event_ids: List[str] = None) -> Dict:
         """
         Load only markets data - callable from data_fetcher
         """
-        self.logger.info("\n" + "=" * 60)
-        self.logger.info("📊 Loading MARKETS from stored events")
-        self.logger.info("=" * 60)
+        self.logger.info("Loading MARKETS from stored events")
         
         start_time = time.time()
         result = {'success': False, 'count': 0, 'error': None}
@@ -385,20 +340,18 @@ class MarketsManager:
             result['success'] = True
             
             elapsed_time = time.time() - start_time
-            self.logger.info(f"✅ Markets loaded: {result['count']}")
-            self.logger.info(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
+            self.logger.info(f"Markets loaded: {result['count']}")
+            self.logger.info(f"Time taken: {elapsed_time:.2f} seconds")
             
         except Exception as e:
             result['error'] = str(e)
-            self.logger.error(f"❌ Error loading markets: {e}")
+            self.logger.error(f"Error loading markets: {e}")
             
         return result
     
     def delete_markets_only(self, keep_active: bool = False) -> Dict:
         """Delete markets data"""
-        self.logger.info("\n" + "=" * 60)
-        self.logger.info(f"🗑️ Deleting {'CLOSED' if keep_active else 'ALL'} MARKETS Data")
-        self.logger.info("=" * 60)
+        self.logger.info(f"Deleting {'CLOSED' if keep_active else 'ALL'} MARKETS Data")
         
         result = {'success': False, 'deleted': 0, 'error': None}
         
@@ -410,20 +363,16 @@ class MarketsManager:
             else:
                 before_count = self.db_manager.get_table_count('markets')
                 
-                # Delete all markets and cascade
-                self.db_manager.delete_records('market_tags', commit=False)
-                self.db_manager.delete_records('market_categories', commit=False)
-                self.db_manager.delete_records('market_open_interest', commit=False)
-                self.db_manager.delete_records('market_holders', commit=False)
+                # Delete only from markets table, not related tables
                 deleted = self.db_manager.delete_records('markets', commit=True)
                 result['deleted'] = before_count
             
             result['success'] = True
-            self.logger.info(f"✅ Deleted {result['deleted']} markets and related data")
+            self.logger.info(f"Deleted {result['deleted']} markets")
             
         except Exception as e:
             result['error'] = str(e)
-            self.logger.error(f"❌ Error deleting markets: {e}")
+            self.logger.error(f"Error deleting markets: {e}")
             
         return result
     

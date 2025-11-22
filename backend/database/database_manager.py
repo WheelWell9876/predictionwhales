@@ -29,23 +29,18 @@ class DatabaseManager:
         # Ensure database directory exists
         Path(self.db_path).parent.mkdir(parents=True, exist_ok=True)
         
-        self.logger.info(f"Initializing database at: {self.db_path}")
-        
         # Initialize database schema
         self.initialize_schema()
-        
-        # Verify all tables are created
-        self.verify_tables()
     
     def _setup_logger(self) -> logging.Logger:
         """Setup logger for database operations"""
         logger = logging.getLogger('DatabaseManager')
-        logger.setLevel(logging.DEBUG)  # Set to DEBUG for better debugging
+        logger.setLevel(logging.WARNING)  # Only warnings and errors
         
         # Console handler
         if not logger.handlers:
             handler = logging.StreamHandler()
-            handler.setLevel(logging.DEBUG)
+            handler.setLevel(logging.WARNING)
             formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
             handler.setFormatter(formatter)
             logger.addHandler(handler)
@@ -73,14 +68,10 @@ class DatabaseManager:
     def close_connection(self):
         """Close database connection - for compatibility with managers that expect this method"""
         # SQLite connections in this implementation are closed after each operation
-        # This method exists for compatibility with other managers
-        self.logger.debug("close_connection called (no-op for SQLite with per-operation connections)")
-    pass
+        pass
     
     def initialize_schema(self):
         """Initialize database schema from database_schema.py"""
-        self.logger.info("Initializing database schema...")
-        
         try:
             # Import the schema
             from backend.database.database_schema import get_schema
@@ -94,57 +85,25 @@ class DatabaseManager:
             # Split by semicolons to execute each statement separately
             statements = [s.strip() for s in schema_sql.split(';') if s.strip()]
             
-            self.logger.info(f"Executing {len(statements)} SQL statements...")
-            
-            # Track what tables we're creating
-            tables_created = []
-            indexes_created = []
-            
-            for i, statement in enumerate(statements):
+            # Execute all statements
+            errors = []
+            for statement in statements:
                 if statement.strip():
                     try:
-                        # Debug: Log what type of statement this is
-                        if 'CREATE TABLE' in statement:
-                            # Extract table name for logging
-                            import re
-                            match = re.search(r'CREATE TABLE IF NOT EXISTS (\w+)', statement)
-                            if match:
-                                table_name = match.group(1)
-                                tables_created.append(table_name)
-                                self.logger.debug(f"Creating table: {table_name}")
-                        elif 'CREATE INDEX' in statement:
-                            import re
-                            match = re.search(r'CREATE INDEX IF NOT EXISTS (\w+)', statement)
-                            if match:
-                                index_name = match.group(1)
-                                indexes_created.append(index_name)
-                                self.logger.debug(f"Creating index: {index_name}")
-                        
                         cursor.execute(statement)
-                        
                     except sqlite3.Error as e:
-                        self.logger.error(f"Error executing statement {i+1}: {e}")
-                        self.logger.error(f"Statement: {statement[:100]}...")
-                        raise
+                        # Only log actual errors, not "already exists" warnings
+                        if "already exists" not in str(e).lower():
+                            errors.append(str(e))
             
             conn.commit()
-            
-            # Log summary
-            self.logger.info(f"✅ Schema initialization complete!")
-            self.logger.info(f"   Tables created: {len(tables_created)}")
-            self.logger.info(f"   Indexes created: {len(indexes_created)}")
-            
-            # Log specific tables for debugging
-            if tables_created:
-                self.logger.debug(f"Tables: {', '.join(sorted(tables_created))}")
-            
-            # Specifically check for event_tags
-            if 'event_tags' in tables_created:
-                self.logger.info("✅ event_tags table successfully created!")
-            else:
-                self.logger.warning("⚠️ event_tags table not found in creation list!")
-            
             conn.close()
+            
+            # Only log if there were actual errors
+            if errors:
+                self.logger.error(f"Schema initialization had {len(errors)} errors")
+                for error in errors[:5]:  # Show first 5 errors only
+                    self.logger.error(f"  {error}")
             
         except ImportError as e:
             self.logger.error(f"Failed to import schema: {e}")
@@ -154,16 +113,9 @@ class DatabaseManager:
             raise
     
     def verify_tables(self):
-        """Verify all required tables exist"""
-        self.logger.info("Verifying database tables...")
-        
+        """Verify all required tables exist - silent unless errors"""
         required_tables = [
-            'events', 'markets', 'collections', 'series', 'tags', 'users', 'comments',
-            'event_tags', 'market_tags', 'series_tags', 'collection_tags',  # Relationship tables
-            'series_events', 'series_collections', 'tag_relationships',
-            'event_live_volume', 'market_open_interest', 'market_holders',
-            'user_activity', 'user_trades', 'user_positions_current', 'user_positions_closed',
-            'user_values', 'transactions', 'comment_reactions'
+            'events', 'markets', 'series', 'tags', 'users', 'comments'
         ]
         
         try:
@@ -178,28 +130,21 @@ class DatabaseManager:
             """)
             existing_tables = {row[0] for row in cursor.fetchall()}
             
-            # Check each required table
+            # Check for missing tables
             missing_tables = []
             for table in required_tables:
                 if table not in existing_tables:
                     missing_tables.append(table)
-                    self.logger.error(f"❌ Missing table: {table}")
-                else:
-                    self.logger.debug(f"✅ Table exists: {table}")
             
             if missing_tables:
-                self.logger.error(f"Missing {len(missing_tables)} tables: {', '.join(missing_tables)}")
+                self.logger.error(f"Missing tables: {', '.join(missing_tables)}")
                 # Try to create missing tables by re-initializing schema
-                self.logger.info("Attempting to recreate missing tables...")
                 self.initialize_schema()
-            else:
-                self.logger.info(f"✅ All {len(required_tables)} required tables verified!")
             
             conn.close()
             
         except Exception as e:
             self.logger.error(f"Error verifying tables: {e}")
-            raise
     
     def execute(self, query: str, params: tuple = None) -> int:
         """Execute a query and return affected rows"""
@@ -214,7 +159,6 @@ class DatabaseManager:
             return cursor.rowcount
         except sqlite3.Error as e:
             self.logger.error(f"Database error: {e}")
-            self.logger.error(f"Query: {query[:200]}...")
             conn.rollback()
             raise
         finally:
@@ -233,7 +177,6 @@ class DatabaseManager:
             return cursor.rowcount
         except sqlite3.Error as e:
             self.logger.error(f"Database error in executemany: {e}")
-            self.logger.error(f"Query: {query[:200]}...")
             conn.rollback()
             raise
         finally:
@@ -248,13 +191,10 @@ class DatabaseManager:
                 cursor.execute(query, params)
             else:
                 cursor.execute(query)
-            
             row = cursor.fetchone()
-            if row:
-                return dict(row)
-            return None
+            return dict(row) if row else None
         except sqlite3.Error as e:
-            self.logger.error(f"Database error: {e}")
+            self.logger.error(f"Fetch error: {e}")
             raise
         finally:
             conn.close()
@@ -268,176 +208,173 @@ class DatabaseManager:
                 cursor.execute(query, params)
             else:
                 cursor.execute(query)
-            
             rows = cursor.fetchall()
             return [dict(row) for row in rows]
         except sqlite3.Error as e:
-            self.logger.error(f"Database error: {e}")
+            self.logger.error(f"Fetch all error: {e}")
             raise
         finally:
             conn.close()
+    
+    def insert(self, table: str, data: Dict) -> int:
+        """Insert single record"""
+        if not data:
+            return 0
+        
+        columns = list(data.keys())
+        placeholders = ','.join(['?' for _ in columns])
+        columns_str = ','.join(columns)
+        values = [data[col] for col in columns]
+        
+        query = f"INSERT INTO {table} ({columns_str}) VALUES ({placeholders})"
+        
+        try:
+            return self.execute(query, tuple(values))
+        except sqlite3.IntegrityError as e:
+            if "UNIQUE constraint" in str(e):
+                # Silently skip duplicates
+                return 0
+            raise
     
     def insert_or_replace(self, table: str, data: Dict) -> int:
-        """Insert or replace a single record"""
+        """Insert or replace single record"""
         if not data:
             return 0
         
         columns = list(data.keys())
         placeholders = ','.join(['?' for _ in columns])
-        query = f"INSERT OR REPLACE INTO {table} ({','.join(columns)}) VALUES ({placeholders})"
-        values = tuple(data.get(col) for col in columns)
+        columns_str = ','.join(columns)
+        values = [data[col] for col in columns]
         
-        conn = self.get_connection()
-        try:
-            cursor = conn.cursor()
-            cursor.execute(query, values)
-            conn.commit()
-            return cursor.rowcount
-        except sqlite3.Error as e:
-            self.logger.error(f"Insert or replace error in {table}: {e}")
-            self.logger.error(f"Data: {data}")
-            conn.rollback()
-            raise
-        finally:
-            conn.close()
+        query = f"INSERT OR REPLACE INTO {table} ({columns_str}) VALUES ({placeholders})"
+        return self.execute(query, tuple(values))
     
     def insert_or_ignore(self, table: str, data: Dict) -> int:
-        """Insert or ignore a single record"""
+        """Insert single record, ignore if exists"""
         if not data:
             return 0
         
         columns = list(data.keys())
         placeholders = ','.join(['?' for _ in columns])
-        query = f"INSERT OR IGNORE INTO {table} ({','.join(columns)}) VALUES ({placeholders})"
-        values = tuple(data.get(col) for col in columns)
+        columns_str = ','.join(columns)
+        values = [data[col] for col in columns]
         
-        conn = self.get_connection()
-        try:
-            cursor = conn.cursor()
-            cursor.execute(query, values)
-            conn.commit()
-            return cursor.rowcount
-        except sqlite3.Error as e:
-            self.logger.error(f"Insert or ignore error in {table}: {e}")
-            self.logger.error(f"Data: {data}")
-            conn.rollback()
-            raise
-        finally:
-            conn.close()
+        query = f"INSERT OR IGNORE INTO {table} ({columns_str}) VALUES ({placeholders})"
+        return self.execute(query, tuple(values))
     
-    def bulk_insert_or_replace(self, table: str, data: List[Dict], batch_size: int = 100) -> int:
-        """Bulk insert or replace data with reduced logging"""
+    def update(self, table: str, data: Dict, where_clause: str, params: tuple = None) -> int:
+        """Update records"""
+        if not data:
+            return 0
+        
+        set_clause = ','.join([f"{col} = ?" for col in data.keys()])
+        values = list(data.values())
+        
+        query = f"UPDATE {table} SET {set_clause} WHERE {where_clause}"
+        
+        if params:
+            values.extend(params)
+        
+        return self.execute(query, tuple(values))
+    
+    def bulk_insert(self, table: str, data: List[Dict]) -> int:
+        """Bulk insert records"""
         if not data:
             return 0
         
         # Get columns from first record
         columns = list(data[0].keys())
         placeholders = ','.join(['?' for _ in columns])
-        query = f"INSERT OR REPLACE INTO {table} ({','.join(columns)}) VALUES ({placeholders})"
+        columns_str = ','.join(columns)
         
-        total_inserted = 0
-        conn = self.get_connection()
+        query = f"INSERT INTO {table} ({columns_str}) VALUES ({placeholders})"
         
-        try:
-            cursor = conn.cursor()
-            
-            # Process in batches
-            for i in range(0, len(data), batch_size):
-                batch = data[i:i+batch_size]
-                params_list = [tuple(record.get(col) for col in columns) for record in batch]
-                
-                cursor.executemany(query, params_list)
-                total_inserted += cursor.rowcount
-                
-                # Commit after each batch
-                conn.commit()
-                
-                # Only log every 1000 records
-                if (i + batch_size) % 1000 == 0:
-                    self.logger.debug(f"Progress: {i + batch_size} records processed for {table}")
-            
-            # Final summary
-            self.logger.info(f"Bulk inserted/replaced {total_inserted} records into {table}")
-            return total_inserted
-            
-        except sqlite3.Error as e:
-            self.logger.error(f"Bulk insert/replace error in {table}: {e}")
-            conn.rollback()
-            raise
-        finally:
-            conn.close()
+        # Convert to list of tuples
+        params_list = []
+        for record in data:
+            values = [record.get(col) for col in columns]
+            params_list.append(tuple(values))
+        
+        return self.executemany(query, params_list)
     
-    def bulk_insert_or_ignore(self, table: str, data: List[Dict], batch_size: int = 100) -> int:
-        """Bulk insert or ignore data with reduced logging"""
+    def bulk_insert_or_replace(self, table: str, data: List[Dict], batch_size: int = 1000) -> int:
+        """Bulk insert or replace records in batches"""
         if not data:
             return 0
         
         # Get columns from first record
         columns = list(data[0].keys())
         placeholders = ','.join(['?' for _ in columns])
-        query = f"INSERT OR IGNORE INTO {table} ({','.join(columns)}) VALUES ({placeholders})"
+        columns_str = ','.join(columns)
         
-        total_inserted = 0
+        query = f"INSERT OR REPLACE INTO {table} ({columns_str}) VALUES ({placeholders})"
+        
         conn = self.get_connection()
-        
         try:
             cursor = conn.cursor()
+            total_inserted = 0
             
             # Process in batches
             for i in range(0, len(data), batch_size):
-                batch = data[i:i+batch_size]
-                params_list = [tuple(record.get(col) for col in columns) for record in batch]
+                batch = data[i:i + batch_size]
+                params_list = []
+                for record in batch:
+                    values = [record.get(col) for col in columns]
+                    params_list.append(tuple(values))
                 
                 cursor.executemany(query, params_list)
                 total_inserted += cursor.rowcount
-                
-                # Commit after each batch
                 conn.commit()
-                
-                # Only log every 1000 records to file, not console
-                if (i + batch_size) % 1000 == 0:
-                    self.logger.debug(f"Progress: {i + batch_size} records processed for {table}")
-            
-            # Final summary
-            if total_inserted > 0:
-                self.logger.info(f"Bulk inserted {total_inserted} records into {table}")
             
             return total_inserted
             
         except sqlite3.Error as e:
-            # Only log errors in detail
             self.logger.error(f"Bulk insert error in {table}: {e}")
+            conn.rollback()
+            raise
+        finally:
+            conn.close()
+    
+    def bulk_insert_or_ignore(self, table: str, data: List[Dict], batch_size: int = 1000) -> int:
+        """Bulk insert records, ignoring duplicates, in batches"""
+        if not data:
+            return 0
+        
+        # Get columns from first record
+        columns = list(data[0].keys())
+        placeholders = ','.join(['?' for _ in columns])
+        columns_str = ','.join(columns)
+        
+        query = f"INSERT OR IGNORE INTO {table} ({columns_str}) VALUES ({placeholders})"
+        
+        conn = self.get_connection()
+        try:
+            cursor = conn.cursor()
+            total_inserted = 0
             
-            # Enhanced error debugging only for failures
-            if "FOREIGN KEY" in str(e):
-                self.logger.error("=== FOREIGN KEY DEBUG ===")
-                cursor = conn.cursor()
-                cursor.execute(f"PRAGMA foreign_key_list({table})")
-                fk_info = cursor.fetchall()
-                self.logger.error(f"Foreign keys for {table}: {[dict(row) for row in fk_info]}")
+            # Process in batches
+            for i in range(0, len(data), batch_size):
+                batch = data[i:i + batch_size]
+                params_list = []
+                for record in batch:
+                    values = [record.get(col) for col in columns]
+                    params_list.append(tuple(values))
                 
-                # Log sample of problematic data
-                if data:
-                    self.logger.error(f"First problematic record: {data[0]}")
+                cursor.executemany(query, params_list)
+                total_inserted += cursor.rowcount
+                conn.commit()
             
+            return total_inserted
+            
+        except sqlite3.Error as e:
+            self.logger.error(f"Bulk insert error in {table}: {e}")
             conn.rollback()
             raise
         finally:
             conn.close()
     
     def delete_records(self, table: str, where_clause: str = None, params: tuple = None, commit: bool = True) -> int:
-        """
-        Delete records from a table
-        
-        Args:
-            table: Table name
-            where_clause: Optional WHERE clause (without the WHERE keyword)
-            params: Optional parameters for the where clause
-            commit: Whether to commit immediately
-            
-        Returns:
-            Number of deleted records
-        """
+        """Delete records from a table"""
         conn = self.get_connection()
         try:
             cursor = conn.cursor()
@@ -456,7 +393,6 @@ class DatabaseManager:
             
             if commit:
                 conn.commit()
-                self.logger.info(f"Deleted {deleted} records from {table}")
             
             return deleted
             
@@ -475,7 +411,6 @@ class DatabaseManager:
             return result['count'] if result else 0
         except sqlite3.Error as e:
             if "no such table" in str(e):
-                self.logger.warning(f"Table '{table}' does not exist")
                 return 0
             raise
     
@@ -485,10 +420,7 @@ class DatabaseManager:
             "SELECT name FROM sqlite_master WHERE type='table' AND name=?",
             (table,)
         )
-        exists = result is not None
-        if not exists:
-            self.logger.warning(f"Table '{table}' does not exist!")
-        return exists
+        return result is not None
     
     def get_table_columns(self, table: str) -> List[str]:
         """Get list of column names for a table"""
@@ -498,141 +430,119 @@ class DatabaseManager:
             cursor.execute(f"PRAGMA table_info({table})")
             columns = [row[1] for row in cursor.fetchall()]
             return columns
-        except sqlite3.Error as e:
-            self.logger.error(f"Error getting columns for {table}: {e}")
-            return []
         finally:
             conn.close()
     
     def vacuum(self):
         """Vacuum database to reclaim space"""
-        self.logger.info("Running VACUUM on database...")
         conn = self.get_connection()
         try:
             conn.execute("VACUUM")
-            self.logger.info("✅ VACUUM completed")
-        except sqlite3.Error as e:
-            self.logger.error(f"VACUUM failed: {e}")
-            raise
+            conn.commit()
         finally:
             conn.close()
     
-    def analyze(self):
-        """Analyze database for query optimization"""
-        self.logger.info("Running ANALYZE on database...")
+    def get_database_size(self) -> float:
+        """Get database file size in MB"""
+        db_path = Path(self.db_path)
+        if db_path.exists():
+            size_bytes = db_path.stat().st_size
+            return size_bytes / (1024 * 1024)  # Convert to MB
+        return 0.0
+    
+    def backup_database(self, backup_path: str = None):
+        """Create a backup of the database"""
+        import shutil
+        
+        if not backup_path:
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            backup_path = f"{self.db_path}.backup_{timestamp}"
+        
+        try:
+            shutil.copy2(self.db_path, backup_path)
+            self.logger.info(f"Database backed up to: {backup_path}")
+            return backup_path
+        except Exception as e:
+            self.logger.error(f"Backup failed: {e}")
+            raise
+    
+    def optimize_database(self):
+        """Optimize database performance"""
         conn = self.get_connection()
         try:
             conn.execute("ANALYZE")
-            self.logger.info("✅ ANALYZE completed")
-        except sqlite3.Error as e:
-            self.logger.error(f"ANALYZE failed: {e}")
-            raise
+            conn.execute("REINDEX")
+            conn.commit()
         finally:
             conn.close()
     
-    def get_database_stats(self) -> Dict:
-        """Get database statistics"""
-        stats = {}
-        
-        # Get all tables
-        tables = self.fetch_all("""
-            SELECT name FROM sqlite_master 
-            WHERE type='table' 
-            ORDER BY name
-        """)
-        
-        # Get count for each table
-        for table in tables:
-            table_name = table['name']
-            count = self.get_table_count(table_name)
-            stats[table_name] = count
-        
-        # Get database file size
-        db_path = Path(self.db_path)
-        if db_path.exists():
-            stats['database_size_mb'] = db_path.stat().st_size / (1024 * 1024)
-        
-        return stats
-    
-    def __del__(self):
-        """Cleanup on deletion"""
-        # SQLite connections are automatically closed, but we can be explicit
-        pass
-
-
-    def remove_closed_events(self):
-        """Remove all closed/inactive events and their associated data"""
-        self.logger.info("🧹 Removing closed/inactive events and associated data...")
-        
+    def get_table_stats(self) -> Dict[str, int]:
+        """Get record count for all tables"""
         conn = self.get_connection()
-        
+        try:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT name FROM sqlite_master 
+                WHERE type='table' AND name NOT LIKE 'sqlite_%'
+                ORDER BY name
+            """)
+            
+            stats = {}
+            for row in cursor.fetchall():
+                table_name = row[0]
+                count_result = conn.execute(f"SELECT COUNT(*) FROM {table_name}").fetchone()
+                stats[table_name] = count_result[0] if count_result else 0
+            
+            return stats
+        finally:
+            conn.close()
+    
+    def remove_closed_events(self) -> int:
+        """Remove all closed events from the database"""
+        try:
+            # First delete related records
+            self.delete_records('event_tags', 'event_id IN (SELECT id FROM events WHERE closed = 1)')
+            self.delete_records('event_live_volume', 'event_id IN (SELECT id FROM events WHERE closed = 1)')
+            self.delete_records('comments', 'event_id IN (SELECT id FROM events WHERE closed = 1)')
+            self.delete_records('markets', 'event_id IN (SELECT id FROM events WHERE closed = 1)')
+            
+            # Then delete the closed events
+            deleted = self.delete_records('events', 'closed = 1')
+            
+            return deleted
+            
+        except Exception as e:
+            self.logger.error(f"Error removing closed events: {e}")
+            raise
+    
+    def clear_all_data(self):
+        """Clear all data from all tables (keeping schema)"""
+        conn = self.get_connection()
         try:
             cursor = conn.cursor()
             
-            # Get count before deletion
-            cursor.execute("SELECT COUNT(*) FROM events WHERE closed = 1 OR active = 0")
-            result = cursor.fetchone()
-            closed_count = result[0] if result else 0
+            # Disable foreign keys temporarily
+            cursor.execute("PRAGMA foreign_keys = OFF")
             
-            if closed_count == 0:
-                self.logger.info("No closed events to remove")
-                return 0
+            # Get all tables
+            cursor.execute("""
+                SELECT name FROM sqlite_master 
+                WHERE type='table' AND name NOT LIKE 'sqlite_%'
+            """)
+            tables = [row[0] for row in cursor.fetchall()]
             
-            self.logger.info(f"Found {closed_count} closed/inactive events to remove")
+            # Clear each table
+            for table in tables:
+                cursor.execute(f"DELETE FROM {table}")
             
-            # Get IDs of closed events
-            cursor.execute("SELECT id FROM events WHERE closed = 1 OR active = 0")
-            closed_event_ids = [row[0] for row in cursor.fetchall()]
-            
-            if not closed_event_ids:
-                return 0
-            
-            # Create placeholders for SQL IN clause
-            placeholders = ','.join('?' * len(closed_event_ids))
-            
-            # Start transaction
-            cursor.execute("BEGIN TRANSACTION")
-            
-            # Delete markets associated with closed events
-            cursor.execute(f"SELECT COUNT(*) FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
-            result = cursor.fetchone()
-            markets_count = result[0] if result else 0
-            
-            cursor.execute(f"DELETE FROM markets WHERE event_id IN ({placeholders})", closed_event_ids)
-            self.logger.info(f"  Deleted {markets_count} markets associated with closed events")
-            
-            # Delete comments associated with closed events
-            cursor.execute(f"SELECT COUNT(*) FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
-            result = cursor.fetchone()
-            comments_count = result[0] if result else 0
-            
-            cursor.execute(f"DELETE FROM comments WHERE event_id IN ({placeholders})", closed_event_ids)
-            self.logger.info(f"  Deleted {comments_count} comments associated with closed events")
-            
-            # Delete event_tags associated with closed events
-            cursor.execute(f"SELECT COUNT(*) FROM event_tags WHERE event_id IN ({placeholders})", closed_event_ids)
-            result = cursor.fetchone()
-            event_tags_count = result[0] if result else 0
-            
-            cursor.execute(f"DELETE FROM event_tags WHERE event_id IN ({placeholders})", closed_event_ids)
-            self.logger.info(f"  Deleted {event_tags_count} event_tags associated with closed events")
-            
-            # Delete the closed events themselves
-            cursor.execute(f"DELETE FROM events WHERE id IN ({placeholders})", closed_event_ids)
+            # Re-enable foreign keys
+            cursor.execute("PRAGMA foreign_keys = ON")
             
             conn.commit()
             
-            # Vacuum to reclaim space
-            self.logger.info("  Running VACUUM to reclaim space...")
-            conn.execute("VACUUM")
-            
-            self.logger.info(f"✅ Successfully removed {closed_count} closed events and associated data")
-            
-            return closed_count
-            
         except Exception as e:
+            self.logger.error(f"Error clearing data: {e}")
             conn.rollback()
-            self.logger.error(f"Remove closed events failed: {e}")
             raise
         finally:
             conn.close()

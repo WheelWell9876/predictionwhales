@@ -1,0 +1,1022 @@
+{
+  "table_name": "series",
+  "row_count": 353,
+  "columns": [
+    {
+      "name": "id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "ticker",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "title",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "subtitle",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "series_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "recurrence",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "description",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "image",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "icon",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "layout",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "active",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "1",
+      "primary_key": false
+    },
+    {
+      "name": "closed",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "archived",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "new",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "featured",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "restricted",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "is_template",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "template_variables",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "published_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_by",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_by",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "comments_enabled",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "competitive",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "volume_24hr",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "liquidity",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "start_date",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "pyth_token_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "cg_asset_name",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "score",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "fetched_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {
+    "id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 353,
+      "uniqueness_ratio": 100.0,
+      "min_length": 2,
+      "max_length": 5,
+      "avg_length": 4.94,
+      "sample_values": [
+        "10000",
+        "10005",
+        "10006",
+        "10007",
+        "10008"
+      ]
+    },
+    "ticker": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 353,
+      "uniqueness_ratio": 100.0,
+      "min_length": 3,
+      "max_length": 59,
+      "avg_length": 19.12,
+      "sample_values": [
+        "bitcoin-hit-price-monthly",
+        "ethereum-hit-price-monthly",
+        "powell-out",
+        "tiktok-sale",
+        "solana-hit-price-monthly"
+      ]
+    },
+    "slug": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 353,
+      "uniqueness_ratio": 100.0,
+      "min_length": 3,
+      "max_length": 59,
+      "avg_length": 19.12,
+      "sample_values": [
+        "1-free-app",
+        "1-paid-app",
+        "10-year-treasur",
+        "2025-fide-world-cup",
+        "aapl-daily-up-down"
+      ]
+    },
+    "title": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 353,
+      "uniqueness_ratio": 100.0,
+      "min_length": 3,
+      "max_length": 60,
+      "avg_length": 19.39,
+      "sample_values": [
+        "Bitcoin Hit Price Monthly",
+        "Ethereum Hit Price Monthly",
+        "powell out",
+        "TikTok Sale",
+        "Solana Hit Price Monthly"
+      ]
+    },
+    "subtitle": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 2,
+      "null_count": 351,
+      "null_percentage": 99.43,
+      "unique_values": 2,
+      "uniqueness_ratio": 100.0,
+      "min_length": 3,
+      "max_length": 3,
+      "avg_length": 3.0,
+      "sample_values": [
+        "BTC",
+        "ETH"
+      ]
+    },
+    "series_type": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 1,
+      "uniqueness_ratio": 0.28,
+      "min_length": 6,
+      "max_length": 6,
+      "avg_length": 6.0,
+      "sample_values": [
+        "single"
+      ],
+      "top_values": [
+        {
+          "value": "single",
+          "count": 353
+        }
+      ]
+    },
+    "recurrence": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 7,
+      "uniqueness_ratio": 1.98,
+      "min_length": 0,
+      "max_length": 7,
+      "avg_length": 5.87,
+      "sample_values": [
+        "monthly",
+        "weekly",
+        "",
+        "annual",
+        "daily"
+      ],
+      "top_values": [
+        {
+          "value": "daily",
+          "count": 114
+        },
+        {
+          "value": "annual",
+          "count": 96
+        },
+        {
+          "value": "monthly",
+          "count": 87
+        },
+        {
+          "value": "weekly",
+          "count": 47
+        },
+        {
+          "value": "hourly",
+          "count": 4
+        }
+      ]
+    },
+    "description": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 0,
+      "null_count": 353,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "image": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 339,
+      "null_count": 14,
+      "null_percentage": 3.97,
+      "unique_values": 43,
+      "uniqueness_ratio": 12.68,
+      "min_length": 0,
+      "max_length": 177,
+      "avg_length": 18.09,
+      "sample_values": [
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/bitcoin+colors.jpeg",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/ethereum+colors.jpeg",
+        "",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/what-price-will-solana-hit-in-january-qzsv3_SfD...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png"
+      ],
+      "top_values": [
+        {
+          "value": "",
+          "count": 273
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 9
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 4
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 3
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 3
+        }
+      ]
+    },
+    "icon": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 339,
+      "null_count": 14,
+      "null_percentage": 3.97,
+      "unique_values": 43,
+      "uniqueness_ratio": 12.68,
+      "min_length": 0,
+      "max_length": 135,
+      "avg_length": 17.79,
+      "sample_values": [
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/bitcoin+colors.jpeg",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/ethereum+colors.jpeg",
+        "",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/what-price-will-solana-hit-in-january-qzsv3_SfD...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png"
+      ],
+      "top_values": [
+        {
+          "value": "",
+          "count": 273
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 12
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 4
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 3
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 3
+        }
+      ]
+    },
+    "layout": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 7,
+      "null_count": 346,
+      "null_percentage": 98.02,
+      "unique_values": 1,
+      "uniqueness_ratio": 14.29,
+      "min_length": 7,
+      "max_length": 7,
+      "avg_length": 7.0,
+      "sample_values": [
+        "default"
+      ],
+      "top_values": [
+        {
+          "value": "default",
+          "count": 7
+        }
+      ]
+    },
+    "active": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "1",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 1,
+      "max": 1,
+      "avg": 1.0,
+      "sum": 353,
+      "median": 1,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 353
+        }
+      ]
+    },
+    "closed": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 353
+        }
+      ]
+    },
+    "archived": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 353
+        }
+      ]
+    },
+    "new": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 353
+        }
+      ]
+    },
+    "featured": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.01,
+      "sum": 5,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 348
+        },
+        {
+          "value": 1,
+          "count": 5
+        }
+      ]
+    },
+    "restricted": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.98,
+      "sum": 346,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 346
+        },
+        {
+          "value": 0,
+          "count": 7
+        }
+      ]
+    },
+    "is_template": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 353
+        }
+      ]
+    },
+    "template_variables": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 353
+        }
+      ]
+    },
+    "published_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 8,
+      "null_count": 345,
+      "null_percentage": 97.73,
+      "earliest": "2023-03-08 16:15:53.316+00",
+      "latest": "2024-06-14 18:57:17.756574+00",
+      "distinct_values": 8
+    },
+    "created_by": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 7,
+      "null_count": 346,
+      "null_percentage": 98.02,
+      "earliest": "15",
+      "latest": "15",
+      "distinct_values": 1
+    },
+    "updated_by": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 7,
+      "null_count": 346,
+      "null_percentage": 98.02,
+      "earliest": "15",
+      "latest": "9",
+      "distinct_values": 3
+    },
+    "created_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "2023-02-03T22:02:38.864Z",
+      "latest": "2025-11-20T15:10:15.314126Z",
+      "distinct_values": 347
+    },
+    "updated_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "2025-11-22T13:27:08.085575Z",
+      "latest": "2025-11-22T16:46:00.542426Z",
+      "distinct_values": 353
+    },
+    "comments_enabled": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 353
+        }
+      ]
+    },
+    "competitive": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 8,
+      "null_count": 345,
+      "null_percentage": 97.73,
+      "unique_values": 1,
+      "uniqueness_ratio": 12.5,
+      "min_length": 1,
+      "max_length": 1,
+      "avg_length": 1.0,
+      "sample_values": [
+        "0"
+      ],
+      "top_values": [
+        {
+          "value": "0",
+          "count": 8
+        }
+      ]
+    },
+    "volume_24hr": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 8,
+      "null_count": 345,
+      "null_percentage": 97.73,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 8
+        }
+      ]
+    },
+    "volume": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 344,
+      "null_count": 9,
+      "null_percentage": 2.55,
+      "min": 1.0204,
+      "max": 144175441.756887,
+      "avg": 2194956.9,
+      "sum": 755065174.833635,
+      "median": 150719.069269,
+      "distinct_values": 333
+    },
+    "liquidity": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 14.0,
+      "max": 33649270.34069,
+      "avg": 540149.66,
+      "sum": 190672831.10308,
+      "median": 23007.06239,
+      "distinct_values": 352
+    },
+    "start_date": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 6,
+      "null_count": 347,
+      "null_percentage": 98.3,
+      "earliest": "2021-01-01T17:00:00Z",
+      "latest": "2024-06-14T18:57:17.756574Z",
+      "distinct_values": 4
+    },
+    "pyth_token_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 2,
+      "null_count": 351,
+      "null_percentage": 99.43,
+      "unique_values": 2,
+      "uniqueness_ratio": 100.0,
+      "min_length": 66,
+      "max_length": 66,
+      "avg_length": 66.0,
+      "sample_values": [
+        "0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43",
+        "0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace"
+      ]
+    },
+    "cg_asset_name": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 2,
+      "null_count": 351,
+      "null_percentage": 99.43,
+      "unique_values": 2,
+      "uniqueness_ratio": 100.0,
+      "min_length": 7,
+      "max_length": 8,
+      "avg_length": 7.5,
+      "sample_values": [
+        "bitcoin",
+        "ethereum"
+      ]
+    },
+    "score": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 0,
+      "null_count": 353,
+      "null_percentage": 100.0
+    },
+    "fetched_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "2025-11-22T10:48:29.718456",
+      "latest": "2025-11-22T10:55:15.578479",
+      "distinct_values": 353
+    }
+  },
+  "sample_rows": [
+    "id:10016 | ticker:bitcoin-hit-price-monthly | slug:bitcoin-hit-price-monthly | title:Bitcoin Hit Price Monthly | subtitle:NULL | series_type:single | recurrence:monthly | description:NULL | image:https://polymarket-upload.s3.u... | icon:https://polymarket-upload.s3.u... | ...",
+    "id:10017 | ticker:ethereum-hit-price-monthly | slug:ethereum-hit-price-monthly | title:Ethereum Hit Price Monthly | subtitle:NULL | series_type:single | recurrence:monthly | description:NULL | image:https://polymarket-upload.s3.u... | icon:https://polymarket-upload.s3.u... | ...",
+    "id:10154 | ticker:powell-out | slug:powell-out | title:powell out | subtitle:NULL | series_type:single | recurrence:monthly | description:NULL | image: | icon: | ...",
+    "id:10615 | ticker:tiktok-sale | slug:tiktok-sale | title:TikTok Sale | subtitle:NULL | series_type:single | recurrence:monthly | description:NULL | image: | icon: | ...",
+    "id:10032 | ticker:solana-hit-price-monthly | slug:solana-hit-price-monthly | title:Solana Hit Price Monthly | subtitle:NULL | series_type:single | recurrence:monthly | description:NULL | image:https://polymarket-upload.s3.u... | icon:https://polymarket-upload.s3.u... | ..."
+  ],
+  "indexes": [
+    {
+      "name": "idx_series_slug",
+      "unique": false
+    },
+    {
+      "name": "idx_series_volume",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_series_2",
+      "unique": true
+    },
+    {
+      "name": "sqlite_autoindex_series_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [],
+    "referenced_by": [
+      {
+        "table": "event_series",
+        "column": "series_id"
+      },
+      {
+        "table": "series_tags",
+        "column": "series_id"
+      },
+      {
+        "table": "series_categories",
+        "column": "series_id"
+      },
+      {
+        "table": "series_collections",
+        "column": "series_id"
+      },
+      {
+        "table": "series_chats",
+        "column": "series_id"
+      },
+      {
+        "table": "series_events",
+        "column": "series_id"
+      }
+    ]
+  }
+}

@@ -39,31 +39,89 @@ def setup_database():
     print("=" * 60)
     
     try:
-        db = DatabaseManager()
-        # Initialize schema is already called in __init__
-        print("✅ Database initialized successfully")
+        # Suppress verbose logging during setup
+        import logging
+        logging.getLogger('DatabaseManager').setLevel(logging.WARNING)
         
-        # Show initial stats
-        print("\n📊 Database Tables Created:")
+        db = DatabaseManager()
+        
+        # Get statistics about what was created
         tables = db.fetch_all("""
             SELECT name FROM sqlite_master 
             WHERE type='table' 
             ORDER BY name
         """)
-        for table in tables:
-            print(f"   • {table['name']}")
+        
+        indexes = db.fetch_all("""
+            SELECT name FROM sqlite_master 
+            WHERE type='index' 
+            ORDER BY name
+        """)
+        
+        print(f"\n✅ Database initialized successfully")
+        print(f"   📊 Tables created: {len(tables)}")
+        print(f"   🔍 Indexes created: {len(indexes)}")
+        
+        # Only show errors if any tables are missing
+        expected_tables = [
+            'events', 'markets', 'series', 'tags', 'categories', 'collections',
+            'event_tags', 'market_tags', 'series_tags', 'users', 'comments'
+        ]
+        
+        table_names = [t['name'] for t in tables]
+        missing = [t for t in expected_tables if t not in table_names]
+        
+        if missing:
+            print(f"\n⚠️  Missing tables: {', '.join(missing)}")
         
         return True
     except Exception as e:
         print(f"❌ Database setup failed: {e}")
         return False
 
+def verify_tables_for_operation(operation: str, section: str) -> bool:
+    """Verify required tables exist for an operation"""
+    db = DatabaseManager()
+    
+    # Define required tables for each section
+    required_tables = {
+        'events': ['events', 'tags', 'event_tags'],
+        'markets': ['markets', 'events', 'tags', 'market_tags', 'categories', 'series'],
+        'series': ['series', 'series_events', 'series_tags', 'series_categories'],
+        'tags': ['tags', 'event_tags', 'market_tags', 'series_tags'],
+        'users': ['users'],
+        'comments': ['comments', 'events'],
+        'positions': ['user_positions_current', 'user_positions_closed', 'users'],
+        'transactions': ['transactions', 'users', 'markets']
+    }
+    
+    tables_needed = required_tables.get(section, [])
+    if not tables_needed:
+        return True
+    
+    # Check if tables exist
+    existing_tables = db.fetch_all("""
+        SELECT name FROM sqlite_master 
+        WHERE type='table'
+    """)
+    existing_names = [t['name'] for t in existing_tables]
+    
+    missing = [t for t in tables_needed if t not in existing_names]
+    
+    if missing:
+        print(f"⚠️  Missing required tables for {section}: {', '.join(missing)}")
+        return False
+    
+    return True
+
 def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
     """Load a specific data section"""
-    print("\n" + "=" * 60)
-    print(f"📥 LOADING {section.upper()}")
-    print("=" * 60)
+    # Verify tables first
+    if not verify_tables_for_operation('load', section):
+        print(f"❌ Cannot load {section}: required tables missing")
+        return False
     
+    print(f"\n📥 Loading {section.upper()}")
     start_time = time.time()
     
     try:
@@ -90,7 +148,7 @@ def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
         elapsed = time.time() - start_time
         
         if result.get('success', False):
-            print(f"✅ {section.upper()} loaded successfully in {elapsed:.2f} seconds")
+            print(f"✅ {section.upper()} loaded in {elapsed:.2f} seconds")
             return True
         else:
             print(f"❌ Failed to load {section}: {result.get('error', 'Unknown error')}")
@@ -102,19 +160,23 @@ def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
 
 def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
     """Delete a specific data section"""
-    print("\n" + "=" * 60)
-    print(f"🗑️ DELETING {section.upper()}")
-    print("=" * 60)
+    # Verify tables first
+    if not verify_tables_for_operation('delete', section):
+        print(f"❌ Cannot delete {section}: required tables missing")
+        return False
+    
+    print(f"\n🗑️ Deleting {section.upper()}")
     
     # Confirm deletion
-    response = input(f"⚠️  Are you sure you want to delete all {section} data? (yes/no): ")
+    response = input(f"⚠️  Delete all {section} data? (yes/no): ")
     if response.lower() != 'yes':
-        print("❌ Deletion cancelled")
+        print("Cancelled")
         return False
     
     try:
         if section == "events":
-            result = fetcher.delete_events_only(keep_active=kwargs.get('keep_active', True))
+            # Only delete from events table, not related tables
+            result = fetcher.delete_events_only(keep_active=kwargs.get('keep_active', False))
         elif section == "markets":
             result = fetcher.delete_markets_only()
         elif section == "series":
@@ -134,7 +196,7 @@ def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
             return False
         
         if result.get('success', False):
-            print(f"✅ {section.upper()} deleted successfully")
+            print(f"✅ {section.upper()} deleted")
             return True
         else:
             print(f"❌ Failed to delete {section}: {result.get('error', 'Unknown error')}")
@@ -147,25 +209,19 @@ def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
 def initial_load():
     """Perform complete initial data load in correct sequence"""
     print("\n" + "=" * 80)
-    print("🚀 INITIAL DATA LOAD - COMPLETE SEQUENTIAL LOAD")
+    print("🚀 INITIAL DATA LOAD")
     print("=" * 80)
-    print("\nThis will load all data in the following order:")
-    print("1. Events (active only)")
-    print("2. Markets")
-    print("3. Clean closed events")
-    print("4. Series")
-    print("5. Tags")
-    print("6. Clean closed events again")
-    print("7. Users (whales)")
-    print("8. Comments")
-    print("9. Positions (whales)")
-    print("10. Transactions (comprehensive)")
-    print("11. Analyze data")
     
     response = input("\n⚠️  This will take considerable time. Continue? (yes/no): ")
     if response.lower() != 'yes':
-        print("❌ Initial load cancelled")
+        print("Cancelled")
         return False
+    
+    # Suppress verbose logging
+    import logging
+    logging.getLogger('DatabaseManager').setLevel(logging.WARNING)
+    logging.getLogger('EventsManager').setLevel(logging.WARNING)
+    logging.getLogger('MarketsManager').setLevel(logging.WARNING)
     
     fetcher = PolymarketDataFetcher()
     start_time = time.time()
@@ -173,101 +229,137 @@ def initial_load():
     steps = [
         ("events", lambda: load_section(fetcher, "events", closed=False)),
         ("markets", lambda: load_section(fetcher, "markets")),
-        ("cleanup1", lambda: run_command("python cleanup_closed_events.py", "Cleaning closed events (pass 1)")),
         ("series", lambda: load_section(fetcher, "series")),
         ("tags", lambda: load_section(fetcher, "tags")),
-        ("cleanup2", lambda: run_command("python cleanup_closed_events.py", "Cleaning closed events (pass 2)")),
-        ("users", lambda: load_section(fetcher, "users", whales_only=True)),
-        ("comments", lambda: load_section(fetcher, "comments", limit_per_event=15)),
-        ("positions", lambda: load_section(fetcher, "positions", whale_users_only=True)),
-        ("transactions", lambda: load_section(fetcher, "transactions", comprehensive=True)),
-        ("analyze", lambda: run_command(
-            "python analyze_data.py --db polymarket_terminal.db --output report.json",
-            "Analyzing data and generating report"
-        ))
     ]
     
     completed = 0
     failed = []
     
     for step_name, step_func in steps:
-        print(f"\n{'=' * 60}")
-        print(f"Step {completed + 1}/{len(steps)}: {step_name.upper()}")
-        print('=' * 60)
+        print(f"\n[{completed + 1}/{len(steps)}] {step_name.upper()}")
         
         if step_func():
             completed += 1
-            print(f"✅ {step_name} completed ({completed}/{len(steps)})")
         else:
             failed.append(step_name)
-            print(f"⚠️ {step_name} failed but continuing...")
             completed += 1
     
     elapsed = time.time() - start_time
     
     print("\n" + "=" * 80)
-    print("📊 INITIAL LOAD SUMMARY")
-    print("=" * 80)
+    print("📊 SUMMARY")
     print(f"✅ Completed: {completed}/{len(steps)} steps")
     if failed:
-        print(f"⚠️  Failed steps: {', '.join(failed)}")
-    print(f"⏱️  Total time: {elapsed/60:.2f} minutes")
-    
-    if not failed:
-        print("\n🎉 Initial load completed successfully!")
-    else:
-        print(f"\n⚠️ Initial load completed with {len(failed)} failures")
+        print(f"⚠️  Failed: {', '.join(failed)}")
+    print(f"⏱️  Time: {elapsed/60:.2f} minutes")
     
     return len(failed) == 0
 
+def show_database_status():
+    """Show current database status with table checkmarks"""
+    db = DatabaseManager()
+    
+    print("\n" + "=" * 60)
+    print("📊 DATABASE STATUS")
+    print("=" * 60)
+    
+    # Define all expected tables
+    all_tables = [
+        'events', 'markets', 'series', 'tags', 'categories', 'collections',
+        'event_tags', 'market_tags', 'series_tags', 'event_categories',
+        'market_categories', 'series_categories', 'event_series', 'event_collections',
+        'series_collections', 'users', 'comments', 'transactions',
+        'user_positions_current', 'user_positions_closed', 'user_activity',
+        'user_trades', 'user_values', 'event_live_volume', 'market_open_interest',
+        'market_holders', 'image_optimized', 'event_creators', 'chats',
+        'templates', 'comment_reactions', 'tag_relationships'
+    ]
+    
+    # Get existing tables
+    existing = db.fetch_all("SELECT name FROM sqlite_master WHERE type='table'")
+    existing_names = [t['name'] for t in existing]
+    
+    # Display in two columns
+    print("\nTables:")
+    for i in range(0, len(all_tables), 2):
+        table1 = all_tables[i]
+        status1 = "✅" if table1 in existing_names else "❌"
+        
+        if i + 1 < len(all_tables):
+            table2 = all_tables[i + 1]
+            status2 = "✅" if table2 in existing_names else "❌"
+            print(f"  {status1} {table1:<30} {status2} {table2}")
+        else:
+            print(f"  {status1} {table1}")
+    
+    # Show record counts for main tables
+    print("\nRecord Counts:")
+    main_tables = ['events', 'markets', 'series', 'tags', 'users']
+    for table in main_tables:
+        if table in existing_names:
+            count = db.fetch_one(f"SELECT COUNT(*) as c FROM {table}")
+            print(f"  {table:<15} {count['c']:>10,} records")
+
 def main():
     """Main entry point"""
-    parser = argparse.ArgumentParser(description='Polymarket Terminal Setup and Data Management')
+    parser = argparse.ArgumentParser(description='Polymarket Terminal Setup')
     
-    # Setup command
-    parser.add_argument('--setup', action='store_true', help='Initialize database schema')
+    # Commands
+    parser.add_argument('--setup', action='store_true', help='Initialize database')
+    parser.add_argument('--status', action='store_true', help='Show database status')
+    parser.add_argument('--initial-load', action='store_true', help='Complete initial load')
     
     # Load commands
-    parser.add_argument('--initial-load', action='store_true', help='Perform complete initial data load')
-    parser.add_argument('--load-events', action='store_true', help='Load events data')
-    parser.add_argument('--load-markets', action='store_true', help='Load markets data')
-    parser.add_argument('--load-series', action='store_true', help='Load series data')
-    parser.add_argument('--load-tags', action='store_true', help='Load tags data')
-    parser.add_argument('--load-users', action='store_true', help='Load users data')
-    parser.add_argument('--load-comments', action='store_true', help='Load comments data')
-    parser.add_argument('--load-positions', action='store_true', help='Load positions data')
-    parser.add_argument('--load-transactions', action='store_true', help='Load transactions data')
+    parser.add_argument('--load-events', action='store_true')
+    parser.add_argument('--load-markets', action='store_true')
+    parser.add_argument('--load-series', action='store_true')
+    parser.add_argument('--load-tags', action='store_true')
+    parser.add_argument('--load-users', action='store_true')
+    parser.add_argument('--load-comments', action='store_true')
+    parser.add_argument('--load-positions', action='store_true')
+    parser.add_argument('--load-transactions', action='store_true')
     
-    # Delete commands
-    parser.add_argument('--delete-events', action='store_true', help='Delete events data')
-    parser.add_argument('--delete-markets', action='store_true', help='Delete markets data')
-    parser.add_argument('--delete-series', action='store_true', help='Delete series data')
-    parser.add_argument('--delete-tags', action='store_true', help='Delete tags data')
-    parser.add_argument('--delete-users', action='store_true', help='Delete users data')
-    parser.add_argument('--delete-comments', action='store_true', help='Delete comments data')
-    parser.add_argument('--delete-positions', action='store_true', help='Delete positions data')
-    parser.add_argument('--delete-transactions', action='store_true', help='Delete transactions data')
+    # Delete commands  
+    parser.add_argument('--delete-events', action='store_true')
+    parser.add_argument('--delete-markets', action='store_true')
+    parser.add_argument('--delete-series', action='store_true')
+    parser.add_argument('--delete-tags', action='store_true')
+    parser.add_argument('--delete-users', action='store_true')
+    parser.add_argument('--delete-comments', action='store_true')
+    parser.add_argument('--delete-positions', action='store_true')
+    parser.add_argument('--delete-transactions', action='store_true')
     
     # Options
-    parser.add_argument('--closed', action='store_true', help='Include closed events when loading')
-    parser.add_argument('--all-users', action='store_true', help='Load all users, not just whales')
-    parser.add_argument('--quick', action='store_true', help='Quick mode for transactions (not comprehensive)')
+    parser.add_argument('--closed', action='store_true')
+    parser.add_argument('--all-users', action='store_true')
+    parser.add_argument('--quick', action='store_true')
     
     args = parser.parse_args()
     
-    # Check if any argument was provided
+    # Suppress verbose logging by default
+    import logging
+    logging.getLogger('DatabaseManager').setLevel(logging.WARNING)
+    logging.getLogger('EventsManager').setLevel(logging.WARNING)
+    logging.getLogger('MarketsManager').setLevel(logging.WARNING)
+    logging.getLogger('SeriesManager').setLevel(logging.WARNING)
+    logging.getLogger('TagsManager').setLevel(logging.WARNING)
+    
     if len(sys.argv) == 1:
         parser.print_help()
         return
     
     print("\n" + "=" * 80)
-    print("🚀 POLYMARKET TERMINAL - DATA MANAGEMENT")
+    print("🚀 POLYMARKET TERMINAL")
     print("=" * 80)
-    print(f"📅 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     
     # Handle commands
     if args.setup:
         setup_database()
+        show_database_status()
+    
+    elif args.status:
+        show_database_status()
     
     elif args.initial_load:
         initial_load()
@@ -296,7 +388,7 @@ def main():
         
         # Delete operations
         if args.delete_events:
-            delete_section(fetcher, "events")
+            delete_section(fetcher, "events", keep_active=not args.closed)
         if args.delete_markets:
             delete_section(fetcher, "markets")
         if args.delete_series:

@@ -1,0 +1,102 @@
+{
+  "table_name": "image_optimized",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "image_url_source",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "image_url_optimized",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "image_size_kb_source",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "image_size_kb_optimized",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "image_optimized_complete",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "image_optimized_last_updated",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "rel_id",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "field",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "relname",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "entity_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "entity_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_image_optimized_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [],
+    "referenced_by": []
+  }
+}

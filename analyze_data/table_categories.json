@@ -1,0 +1,98 @@
+{
+  "table_name": "categories",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "label",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "parent_category",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "published_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_by",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_by",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_categories_2",
+      "unique": true
+    },
+    {
+      "name": "sqlite_autoindex_categories_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [],
+    "referenced_by": [
+      {
+        "table": "market_categories",
+        "column": "category_id"
+      },
+      {
+        "table": "event_categories",
+        "column": "category_id"
+      },
+      {
+        "table": "series_categories",
+        "column": "category_id"
+      }
+    ]
+  }
+}

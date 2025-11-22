@@ -1,0 +1,58 @@
+{
+  "table_name": "market_tags",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "market_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "tag_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "tag_slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "idx_market_tags_tag",
+      "unique": false
+    },
+    {
+      "name": "idx_market_tags_market",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_market_tags_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "tag_id",
+        "references_table": "tags",
+        "references_column": "id"
+      },
+      {
+        "column": "market_id",
+        "references_table": "markets",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

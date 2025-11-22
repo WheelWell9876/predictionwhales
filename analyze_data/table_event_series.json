@@ -1,0 +1,94 @@
+{
+  "table_name": "event_series",
+  "row_count": 353,
+  "columns": [
+    {
+      "name": "event_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "series_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {
+    "event_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 353,
+      "uniqueness_ratio": 100.0,
+      "min_length": 5,
+      "max_length": 5,
+      "avg_length": 5.0,
+      "sample_values": [
+        "17505",
+        "20803",
+        "22976",
+        "26008",
+        "28217"
+      ]
+    },
+    "series_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 353,
+      "non_null": 353,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 353,
+      "uniqueness_ratio": 100.0,
+      "min_length": 2,
+      "max_length": 5,
+      "avg_length": 4.94,
+      "sample_values": [
+        "10016",
+        "10017",
+        "10154",
+        "10615",
+        "10032"
+      ]
+    }
+  },
+  "sample_rows": [
+    "event_id:70054 | series_id:10016",
+    "event_id:70055 | series_id:10017",
+    "event_id:17505 | series_id:10154",
+    "event_id:22976 | series_id:10615",
+    "event_id:31867 | series_id:10032"
+  ],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_event_series_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "series_id",
+        "references_table": "series",
+        "references_column": "id"
+      },
+      {
+        "column": "event_id",
+        "references_table": "events",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

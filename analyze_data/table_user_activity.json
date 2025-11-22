@@ -1,0 +1,169 @@
+{
+  "table_name": "user_activity",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "proxy_wallet",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "condition_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "transaction_hash",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "side",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "size",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "usdc_size",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "price",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "asset",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "outcome_index",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "title",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "event_slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "outcome",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "username",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "pseudonym",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "bio",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "profile_image",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "idx_activity_size",
+      "unique": false
+    },
+    {
+      "name": "idx_activity_timestamp",
+      "unique": false
+    },
+    {
+      "name": "idx_activity_wallet",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_user_activity_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "proxy_wallet",
+        "references_table": "users",
+        "references_column": "proxy_wallet"
+      }
+    ],
+    "referenced_by": []
+  }
+}

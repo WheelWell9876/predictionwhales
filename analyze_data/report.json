@@ -1,0 +1,483 @@
+{
+  "generated_at": "2025-11-22T11:03:54.981694",
+  "database_path": "polymarket_terminal.db",
+  "overview": {
+    "total_tables": 37,
+    "total_rows": 50995,
+    "tables_with_data": 6,
+    "empty_tables": 31,
+    "total_columns": 510,
+    "total_indexes": 77,
+    "total_foreign_keys": 42,
+    "largest_tables": [
+      [
+        "markets",
+        24300
+      ],
+      [
+        "event_tags",
+        20856
+      ],
+      [
+        "events",
+        4400
+      ],
+      [
+        "tags",
+        733
+      ],
+      [
+        "event_series",
+        353
+      ],
+      [
+        "series",
+        353
+      ],
+      [
+        "categories",
+        0
+      ],
+      [
+        "chats",
+        0
+      ],
+      [
+        "collections",
+        0
+      ],
+      [
+        "comment_reactions",
+        0
+      ]
+    ],
+    "categories": {
+      "core": {
+        "tables": [
+          "events",
+          "markets",
+          "series",
+          "tags",
+          "categories",
+          "collections"
+        ],
+        "count": 6,
+        "total_rows": 29786
+      },
+      "user": {
+        "tables": [
+          "users",
+          "user_activity",
+          "user_trades",
+          "user_positions_current",
+          "user_positions_closed",
+          "user_values"
+        ],
+        "count": 6,
+        "total_rows": 0
+      },
+      "transaction": {
+        "tables": [
+          "transactions",
+          "comments",
+          "comment_reactions"
+        ],
+        "count": 3,
+        "total_rows": 0
+      },
+      "relationship": {
+        "tables": [
+          "event_categories",
+          "event_chats",
+          "event_collections",
+          "event_creators",
+          "event_event_creators",
+          "event_live_volume",
+          "event_series",
+          "event_tags",
+          "event_templates",
+          "market_categories",
+          "market_holders",
+          "market_open_interest",
+          "market_tags",
+          "series_categories",
+          "series_chats",
+          "series_collections",
+          "series_events",
+          "series_tags",
+          "tag_relationships"
+        ],
+        "count": 19,
+        "total_rows": 21209
+      },
+      "tracking": {
+        "tables": [
+          "event_live_volume",
+          "market_open_interest",
+          "market_holders"
+        ],
+        "count": 3,
+        "total_rows": 0
+      }
+    }
+  },
+  "table_summaries": {
+    "categories": {
+      "table_name": "categories",
+      "row_count": 0,
+      "column_count": 9,
+      "index_count": 2,
+      "foreign_keys": 0,
+      "referenced_by": 3,
+      "has_data": false
+    },
+    "chats": {
+      "table_name": "chats",
+      "row_count": 0,
+      "column_count": 7,
+      "index_count": 1,
+      "foreign_keys": 0,
+      "referenced_by": 2,
+      "has_data": false
+    },
+    "collections": {
+      "table_name": "collections",
+      "row_count": 0,
+      "column_count": 26,
+      "index_count": 2,
+      "foreign_keys": 0,
+      "referenced_by": 2,
+      "has_data": false
+    },
+    "comment_reactions": {
+      "table_name": "comment_reactions",
+      "row_count": 0,
+      "column_count": 5,
+      "index_count": 1,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "comments": {
+      "table_name": "comments",
+      "row_count": 0,
+      "column_count": 16,
+      "index_count": 4,
+      "foreign_keys": 1,
+      "referenced_by": 1,
+      "has_data": false
+    },
+    "event_categories": {
+      "table_name": "event_categories",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "event_chats": {
+      "table_name": "event_chats",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "event_collections": {
+      "table_name": "event_collections",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "event_creators": {
+      "table_name": "event_creators",
+      "row_count": 0,
+      "column_count": 7,
+      "index_count": 1,
+      "foreign_keys": 0,
+      "referenced_by": 1,
+      "has_data": false
+    },
+    "event_event_creators": {
+      "table_name": "event_event_creators",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "event_live_volume": {
+      "table_name": "event_live_volume",
+      "row_count": 0,
+      "column_count": 5,
+      "index_count": 1,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "event_series": {
+      "table_name": "event_series",
+      "row_count": 353,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": true,
+      "primary_keys": [
+        "event_id"
+      ],
+      "null_percentage": 0.0
+    },
+    "event_tags": {
+      "table_name": "event_tags",
+      "row_count": 20856,
+      "column_count": 3,
+      "index_count": 3,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": true,
+      "primary_keys": [
+        "event_id"
+      ],
+      "null_percentage": 0.0
+    },
+    "event_templates": {
+      "table_name": "event_templates",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "events": {
+      "table_name": "events",
+      "row_count": 4400,
+      "column_count": 76,
+      "index_count": 5,
+      "foreign_keys": 0,
+      "referenced_by": 11,
+      "has_data": true,
+      "primary_keys": [
+        "id"
+      ],
+      "null_percentage": 41.02
+    },
+    "image_optimized": {
+      "table_name": "image_optimized",
+      "row_count": 0,
+      "column_count": 12,
+      "index_count": 1,
+      "foreign_keys": 0,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "market_categories": {
+      "table_name": "market_categories",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "market_holders": {
+      "table_name": "market_holders",
+      "row_count": 0,
+      "column_count": 4,
+      "index_count": 1,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "market_open_interest": {
+      "table_name": "market_open_interest",
+      "row_count": 0,
+      "column_count": 4,
+      "index_count": 1,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "market_tags": {
+      "table_name": "market_tags",
+      "row_count": 0,
+      "column_count": 3,
+      "index_count": 3,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "markets": {
+      "table_name": "markets",
+      "row_count": 24300,
+      "column_count": 137,
+      "index_count": 6,
+      "foreign_keys": 1,
+      "referenced_by": 5,
+      "has_data": true,
+      "primary_keys": [
+        "id"
+      ],
+      "null_percentage": 40.65
+    },
+    "series": {
+      "table_name": "series",
+      "row_count": 353,
+      "column_count": 34,
+      "index_count": 4,
+      "foreign_keys": 0,
+      "referenced_by": 6,
+      "has_data": true,
+      "primary_keys": [
+        "id"
+      ],
+      "null_percentage": 35.13
+    },
+    "series_categories": {
+      "table_name": "series_categories",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "series_chats": {
+      "table_name": "series_chats",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "series_collections": {
+      "table_name": "series_collections",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "series_events": {
+      "table_name": "series_events",
+      "row_count": 0,
+      "column_count": 2,
+      "index_count": 1,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "series_tags": {
+      "table_name": "series_tags",
+      "row_count": 0,
+      "column_count": 3,
+      "index_count": 3,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "tag_relationships": {
+      "table_name": "tag_relationships",
+      "row_count": 0,
+      "column_count": 5,
+      "index_count": 1,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "tags": {
+      "table_name": "tags",
+      "row_count": 733,
+      "column_count": 12,
+      "index_count": 3,
+      "foreign_keys": 0,
+      "referenced_by": 4,
+      "has_data": true,
+      "primary_keys": [
+        "id"
+      ],
+      "null_percentage": 27.82
+    },
+    "templates": {
+      "table_name": "templates",
+      "row_count": 0,
+      "column_count": 12,
+      "index_count": 1,
+      "foreign_keys": 0,
+      "referenced_by": 1,
+      "has_data": false
+    },
+    "transactions": {
+      "table_name": "transactions",
+      "row_count": 0,
+      "column_count": 13,
+      "index_count": 5,
+      "foreign_keys": 2,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "user_activity": {
+      "table_name": "user_activity",
+      "row_count": 0,
+      "column_count": 19,
+      "index_count": 4,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "user_positions_closed": {
+      "table_name": "user_positions_closed",
+      "row_count": 0,
+      "column_count": 17,
+      "index_count": 3,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "user_positions_current": {
+      "table_name": "user_positions_current",
+      "row_count": 0,
+      "column_count": 27,
+      "index_count": 3,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "user_trades": {
+      "table_name": "user_trades",
+      "row_count": 0,
+      "column_count": 19,
+      "index_count": 3,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "user_values": {
+      "table_name": "user_values",
+      "row_count": 0,
+      "column_count": 3,
+      "index_count": 1,
+      "foreign_keys": 1,
+      "referenced_by": 0,
+      "has_data": false
+    },
+    "users": {
+      "table_name": "users",
+      "row_count": 0,
+      "column_count": 10,
+      "index_count": 3,
+      "foreign_keys": 0,
+      "referenced_by": 6,
+      "has_data": false
+    }
+  }
+}

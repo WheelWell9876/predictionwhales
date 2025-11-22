@@ -1,0 +1,43 @@
+{
+  "table_name": "series_categories",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "series_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "category_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_series_categories_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "category_id",
+        "references_table": "categories",
+        "references_column": "id"
+      },
+      {
+        "column": "series_id",
+        "references_table": "series",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

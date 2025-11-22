@@ -1,0 +1,59 @@
+{
+  "table_name": "tag_relationships",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "tag_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "related_tag_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "relationship_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "strength",
+      "type": "REAL",
+      "nullable": true,
+      "default": "1.0",
+      "primary_key": false
+    },
+    {
+      "name": "created_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_tag_relationships_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "tag_id",
+        "references_table": "tags",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

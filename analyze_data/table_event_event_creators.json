@@ -1,0 +1,43 @@
+{
+  "table_name": "event_event_creators",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "event_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "creator_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_event_event_creators_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "creator_id",
+        "references_table": "event_creators",
+        "references_column": "id"
+      },
+      {
+        "column": "event_id",
+        "references_table": "events",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

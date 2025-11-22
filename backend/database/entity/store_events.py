@@ -14,6 +14,8 @@ class StoreEvents:
         self.db_manager = database_manager
         self.config = database_manager.config
         self.logger = logging.getLogger(self.__class__.__name__)
+        self._event_counter = 0
+        self._tag_progress_counter = 0
 
     def store_events_batch(self, events: List[Dict]):
         """
@@ -36,12 +38,16 @@ class StoreEvents:
             if 'tags' in event and event['tags']:
                 events_with_tags.append((event['id'], event['tags']))
         
-        # FIRST: Bulk insert all events
+        # Bulk insert all events
         if event_records:
             self.db_manager.bulk_insert_or_replace('events', event_records)
-            self.logger.info(f"Stored {len(event_records)} events in database")
+            self._event_counter += len(event_records)
+            
+            # Log progress every 100 events
+            if self._event_counter % 100 == 0:
+                self.logger.info(f"Stored {self._event_counter} events")
         
-        # SECOND: Now that events exist, store their tags
+        # Now that events exist, store their tags
         for event_id, tags in events_with_tags:
             self.store_event_tags(event_id, tags)
 
@@ -65,7 +71,7 @@ class StoreEvents:
 
     def store_event_tags(self, event_id: str, tags: List):
         """
-        Store tags for an event with detailed debugging
+        Store tags for an event
         
         Args:
             event_id: The event ID
@@ -74,16 +80,10 @@ class StoreEvents:
         if not tags or not self.config.FETCH_TAGS:
             return
         
-        self.logger.debug(f"=== STORE EVENT TAGS DEBUG ===")
-        self.logger.debug(f"Event ID: {event_id}")
-        self.logger.debug(f"Raw tags received (first 3): {tags[:3] if len(tags) >= 3 else tags}")
-        
         tag_records = []
         event_tag_records = []
         
-        for idx, tag in enumerate(tags):
-            self.logger.debug(f"Processing tag {idx+1}: Type={type(tag)}, Value={tag}")
-            
+        for tag in tags:
             # Handle both string tags and tag objects
             if isinstance(tag, str):
                 tag_id = tag
@@ -93,10 +93,7 @@ class StoreEvents:
                 tag_id = tag.get('id', '')
                 tag_slug = tag.get('slug', '')
                 tag_label = tag.get('label', '')
-                
-                self.logger.debug(f"  Extracted - ID: {tag_id}, Slug: {tag_slug}, Label: {tag_label}")
             else:
-                self.logger.warning(f"  Skipping unknown tag type: {type(tag)}")
                 continue
                 
             if tag_id:
@@ -125,20 +122,19 @@ class StoreEvents:
                 }
                 event_tag_records.append(event_tag_record)
         
-        self.logger.debug(f"Prepared {len(tag_records)} tag records and {len(event_tag_records)} event_tag records")
-        
-        # First insert the tags themselves (ignore if they already exist)
+        # Insert tags (ignore if they already exist)
         if tag_records:
-            self.logger.debug("Inserting tags into tags table...")
             self.db_manager.bulk_insert_or_ignore('tags', tag_records)
-            self.logger.debug(f"Tags insert complete")
         
-        # Then insert the event-tag relationships
+        # Insert event-tag relationships
         if event_tag_records:
-            self.logger.debug("Inserting relationships into event_tags table...")
-            self.logger.debug(f"First event_tag record: {event_tag_records[0]}")
             self.db_manager.bulk_insert_or_ignore('event_tags', event_tag_records)
-            self.logger.debug(f"Event_tags insert complete")
+            
+        # Update progress tracking if we have it
+        if hasattr(self, '_tag_progress_counter'):
+            self._tag_progress_counter += len(event_tag_records)
+            if self._tag_progress_counter % 100 == 0:
+                self.logger.info(f"Stored {self._tag_progress_counter} event-tag relationships")
 
     def store_event_live_volume(self, event_id: str, volume_data: Dict):
         """

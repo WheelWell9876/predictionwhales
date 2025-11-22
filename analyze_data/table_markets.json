@@ -1,0 +1,3842 @@
+{
+  "table_name": "markets",
+  "row_count": 24300,
+  "columns": [
+    {
+      "name": "id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "event_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "question",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "condition_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "twitter_card_image",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "resolution_source",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "end_date",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "start_date",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "category",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "subcategory",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "amm_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "liquidity",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "liquidity_num",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "liquidity_amm",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "liquidity_clob",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "sponsor_name",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "sponsor_image",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "x_axis_value",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "y_axis_value",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "denomination_token",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "fee",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "image",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "icon",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "lower_bound",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "upper_bound",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "lower_bound_date",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "upper_bound_date",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "description",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "outcomes",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "outcome_prices",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "short_outcomes",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "volume",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "volume_num",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_amm",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_clob",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_24hr",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_24hr_amm",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_24hr_clob",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1wk",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1wk_amm",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1wk_clob",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1mo",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1mo_amm",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1mo_clob",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1yr",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1yr_amm",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "volume_1yr_clob",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "active",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "1",
+      "primary_key": false
+    },
+    {
+      "name": "closed",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "archived",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "new",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "featured",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "restricted",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "market_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "format_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "market_maker_address",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_by",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_by",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "created_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "updated_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "closed_time",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "wide_format",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "mailchimp_tag",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "resolved_by",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "market_group",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "group_item_title",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "group_item_threshold",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "group_item_range",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "question_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "uma_end_date",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "uma_end_date_iso",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "enable_order_book",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "order_price_min_tick_size",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "order_min_size",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "uma_resolution_status",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "uma_resolution_statuses",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "curation_order",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "end_date_iso",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "start_date_iso",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "has_reviewed_dates",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "ready_for_cron",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "comments_enabled",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "game_start_time",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "seconds_delay",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "clob_token_ids",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "disqus_thread",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "team_a_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "team_b_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "uma_bond",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "uma_reward",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "fpmmLive",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "maker_base_fee",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "taker_base_fee",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "custom_liveness",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "accepting_orders",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "accepting_orders_timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "notifications_enabled",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "score",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "creator",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "ready",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "funded",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "past_slugs",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "ready_timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "funded_timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "competitive",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "rewards_min_size",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "rewards_max_spread",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "spread",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "automatically_resolved",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "one_day_price_change",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "one_hour_price_change",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "one_week_price_change",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "one_month_price_change",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "one_year_price_change",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "last_trade_price",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "best_bid",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "best_ask",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "automatically_active",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "clear_book_on_start",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "chart_color",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "series_color",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "show_gmp_series",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "show_gmp_outcome",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "manual_activation",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "neg_risk",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "neg_risk_other",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "game_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "sports_market_type",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "line",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "pending_deployment",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "deploying",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "deploying_timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "scheduled_deployment_timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "rfq_enabled",
+      "type": "INTEGER",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    },
+    {
+      "name": "event_start_time",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "fetched_at",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {
+    "id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 24300,
+      "uniqueness_ratio": 100.0,
+      "min_length": 6,
+      "max_length": 6,
+      "avg_length": 6.0,
+      "sample_values": [
+        "516706",
+        "516710",
+        "516711",
+        "516712",
+        "516713"
+      ]
+    },
+    "event_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 4399,
+      "uniqueness_ratio": 18.1,
+      "min_length": 5,
+      "max_length": 5,
+      "avg_length": 5.0,
+      "sample_values": [
+        "16084",
+        "16085",
+        "16086",
+        "16087",
+        "16092"
+      ],
+      "top_values": [
+        {
+          "value": "63699",
+          "count": 139
+        },
+        {
+          "value": "30829",
+          "count": 128
+        },
+        {
+          "value": "31552",
+          "count": 128
+        },
+        {
+          "value": "31875",
+          "count": 128
+        },
+        {
+          "value": "79987",
+          "count": 128
+        }
+      ]
+    },
+    "question": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 24049,
+      "uniqueness_ratio": 98.97,
+      "min_length": 8,
+      "max_length": 147,
+      "avg_length": 56.19,
+      "sample_values": [
+        "Xi Jinping out in 2025?",
+        "Will Bitcoin reach $1,000,000 by December 31, 2025?",
+        "Will Bitcoin reach $250,000 by December 31, 2025?",
+        "Will Bitcoin reach $200,000 by December 31, 2025?",
+        "Will Bitcoin reach $150,000 by December 31, 2025?"
+      ]
+    },
+    "condition_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 24300,
+      "uniqueness_ratio": 100.0,
+      "min_length": 0,
+      "max_length": 66,
+      "avg_length": 66.0,
+      "sample_values": [
+        "",
+        "0x00000977017fa72fb6b1908ae694000d3b51f442c2552656b10bdbbfd16ff707",
+        "0x0007f331f8a37549ff90f03c0504f0471f18861d37e849d1b180f0f42928d2e4",
+        "0x0008043c3ed513ecff7ee64380fc943dc73eb3dfb6674f281149efe4769f7515",
+        "0x000a197d6d7e891a471c31a4913f224e2a2562863b2d56d6e4e2bacbb3099587"
+      ]
+    },
+    "slug": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 24300,
+      "uniqueness_ratio": 100.0,
+      "min_length": 15,
+      "max_length": 137,
+      "avg_length": 51.02,
+      "sample_values": [
+        "xi-jinping-out-in-2025",
+        "will-bitcoin-reach-1000000-by-december-31-2025",
+        "will-bitcoin-reach-250000-by-december-31-2025",
+        "will-bitcoin-reach-200000-by-december-31-2025",
+        "will-bitcoin-reach-150000-by-december-31-2025-188"
+      ]
+    },
+    "twitter_card_image": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "resolution_source": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 16638,
+      "null_count": 7662,
+      "null_percentage": 31.53,
+      "unique_values": 127,
+      "uniqueness_ratio": 0.76,
+      "min_length": 0,
+      "max_length": 83,
+      "avg_length": 13.73,
+      "sample_values": [
+        "",
+        "https://x.com/elonmusk",
+        "https://www.ncaa.com/",
+        "https://www.premierleague.com/",
+        "https://finance.yahoo.com/quote/META/"
+      ],
+      "top_values": [
+        {
+          "value": "",
+          "count": 8629
+        },
+        {
+          "value": "https://www.ncaa.com/",
+          "count": 1162
+        },
+        {
+          "value": "https://www.nhl.com/awards",
+          "count": 628
+        },
+        {
+          "value": "https://www.nba.com/stats",
+          "count": 396
+        },
+        {
+          "value": "https://www.nfl.com/scores",
+          "count": 340
+        }
+      ]
+    },
+    "end_date": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 22493,
+      "null_count": 1807,
+      "null_percentage": 7.44,
+      "earliest": "2025-03-31T12:00:00Z",
+      "latest": "2028-11-07T00:00:00Z",
+      "distinct_values": 776
+    },
+    "start_date": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24296,
+      "null_count": 4,
+      "null_percentage": 0.02,
+      "earliest": "2024-12-29T22:39:18.322Z",
+      "latest": "2025-11-22T16:47:49.086712Z",
+      "distinct_values": 24296
+    },
+    "category": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "subcategory": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "amm_type": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "liquidity": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 23519,
+      "null_count": 781,
+      "null_percentage": 3.21,
+      "unique_values": 15705,
+      "uniqueness_ratio": 66.78,
+      "min_length": 1,
+      "max_length": 13,
+      "avg_length": 6.39,
+      "sample_values": [
+        "699966.41913",
+        "113498.35444",
+        "154631.48722",
+        "267024.18457",
+        "207187.54909"
+      ]
+    },
+    "liquidity_num": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 23519,
+      "null_count": 781,
+      "null_percentage": 3.21,
+      "min": 0.0,
+      "max": 4792693.98661,
+      "avg": 14589.47,
+      "sum": 343129715.33574,
+      "median": 169.3342,
+      "distinct_values": 15705
+    },
+    "liquidity_amm": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 6984,
+      "null_count": 17316,
+      "null_percentage": 71.26,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6984
+        }
+      ]
+    },
+    "liquidity_clob": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 23519,
+      "null_count": 781,
+      "null_percentage": 3.21,
+      "min": 0.0,
+      "max": 4792693.98661,
+      "avg": 14589.47,
+      "sum": 343129715.33574,
+      "median": 169.3342,
+      "distinct_values": 15705
+    },
+    "sponsor_name": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "sponsor_image": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "x_axis_value": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "y_axis_value": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "denomination_token": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "fee": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 12,
+      "null_count": 24288,
+      "null_percentage": 99.95,
+      "unique_values": 1,
+      "uniqueness_ratio": 8.33,
+      "min_length": 17,
+      "max_length": 17,
+      "avg_length": 17.0,
+      "sample_values": [
+        "20000000000000000"
+      ],
+      "top_values": [
+        {
+          "value": "20000000000000000",
+          "count": 12
+        }
+      ]
+    },
+    "image": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 2814,
+      "uniqueness_ratio": 11.58,
+      "min_length": 0,
+      "max_length": 202,
+      "avg_length": 96.2,
+      "sample_values": [
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/xi-jinping-out-in-2025-EjF4SM20eaa3.jpg",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/russia-x-ukraine-ceasefire-in-2025-w2voYOygx80B...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/jerome+powell+glasses1.png",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-ariana-grande-be-the-top-spotify-artist-fo..."
+      ],
+      "top_values": [
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 926
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 894
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 794
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 782
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 661
+        }
+      ]
+    },
+    "icon": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 2813,
+      "uniqueness_ratio": 11.58,
+      "min_length": 0,
+      "max_length": 202,
+      "avg_length": 96.18,
+      "sample_values": [
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/xi-jinping-out-in-2025-EjF4SM20eaa3.jpg",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/russia-x-ukraine-ceasefire-in-2025-w2voYOygx80B...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/jerome+powell+glasses1.png",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-ariana-grande-be-the-top-spotify-artist-fo..."
+      ],
+      "top_values": [
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 926
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 894
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 794
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 782
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 661
+        }
+      ]
+    },
+    "lower_bound": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "upper_bound": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "lower_bound_date": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "upper_bound_date": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "description": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 7082,
+      "uniqueness_ratio": 29.14,
+      "min_length": 123,
+      "max_length": 2951,
+      "avg_length": 678.47,
+      "sample_values": [
+        "This market will resolve to \"Yes\" if China's General Secretary of the Communist Party, Xi Jinping, i...",
+        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b...",
+        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b...",
+        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b...",
+        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b..."
+      ],
+      "top_values": [
+        {
+          "value": "This market will resolve according to the player w...",
+          "count": 139
+        },
+        {
+          "value": "This market will resolve to \u201cYes\u201d if the named ind...",
+          "count": 128
+        },
+        {
+          "value": "The next French presidential election is currently...",
+          "count": 128
+        },
+        {
+          "value": "The 2028 US Presidential Election is scheduled to ...",
+          "count": 128
+        },
+        {
+          "value": "This market will resolve to \u201cYes\u201d if the named ind...",
+          "count": 123
+        }
+      ]
+    },
+    "outcomes": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 1397,
+      "uniqueness_ratio": 5.75,
+      "min_length": 18,
+      "max_length": 76,
+      "avg_length": 20.79,
+      "sample_values": [
+        "\"[\\\"Yes\\\", \\\"No\\\"]\"",
+        "\"[\\\"Tulane\\\", \\\"Temple\\\"]\"",
+        "\"[\\\"Over\\\", \\\"Under\\\"]\"",
+        "\"[\\\"Oklahoma\\\", \\\"Missouri\\\"]\"",
+        "\"[\\\"Missouri\\\", \\\"Oklahoma\\\"]\""
+      ],
+      "top_values": [
+        {
+          "value": "\"[\\\"Yes\\\", \\\"No\\\"]\"",
+          "count": 20907
+        },
+        {
+          "value": "\"[\\\"Over\\\", \\\"Under\\\"]\"",
+          "count": 999
+        },
+        {
+          "value": "\"[\\\"Up\\\", \\\"Down\\\"]\"",
+          "count": 633
+        },
+        {
+          "value": "\"[\\\"Patriots\\\", \\\"Bengals\\\"]\"",
+          "count": 9
+        },
+        {
+          "value": "\"[\\\"Hawks\\\", \\\"Pelicans\\\"]\"",
+          "count": 8
+        }
+      ]
+    },
+    "outcome_prices": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 17491,
+      "null_count": 6809,
+      "null_percentage": 28.02,
+      "unique_values": 821,
+      "uniqueness_ratio": 4.69,
+      "min_length": 16,
+      "max_length": 26,
+      "avg_length": 23.23,
+      "sample_values": [
+        "\"[\\\"0.0185\\\", \\\"0.9815\\\"]\"",
+        "\"[\\\"0.0035\\\", \\\"0.9965\\\"]\"",
+        "\"[\\\"0.009\\\", \\\"0.991\\\"]\"",
+        "\"[\\\"0.013\\\", \\\"0.987\\\"]\"",
+        "\"[\\\"0.0305\\\", \\\"0.9695\\\"]\""
+      ],
+      "top_values": [
+        {
+          "value": "\"[\\\"0.5\\\", \\\"0.5\\\"]\"",
+          "count": 1441
+        },
+        {
+          "value": "\"[\\\"0.495\\\", \\\"0.505\\\"]\"",
+          "count": 674
+        },
+        {
+          "value": "\"[\\\"0\\\", \\\"1\\\"]\"",
+          "count": 631
+        },
+        {
+          "value": "\"[\\\"0.0015\\\", \\\"0.9985\\\"]\"",
+          "count": 444
+        },
+        {
+          "value": "\"[\\\"0.0005\\\", \\\"0.9995\\\"]\"",
+          "count": 424
+        }
+      ]
+    },
+    "short_outcomes": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "volume": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 20426,
+      "null_count": 3874,
+      "null_percentage": 15.94,
+      "unique_values": 11497,
+      "uniqueness_ratio": 56.29,
+      "min_length": 1,
+      "max_length": 15,
+      "avg_length": 6.46,
+      "sample_values": [
+        "57667089.31421",
+        "5208848.82663",
+        "5080166.676055",
+        "8948910.11724",
+        "10222177.596026"
+      ]
+    },
+    "volume_num": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 20426,
+      "null_count": 3874,
+      "null_percentage": 15.94,
+      "min": 0.0,
+      "max": 70402978.150491,
+      "avg": 161995.34,
+      "sum": 3308916904.201284,
+      "median": 119.0,
+      "distinct_values": 11497
+    },
+    "volume_amm": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 6809,
+      "null_count": 17491,
+      "null_percentage": 71.98,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6809
+        }
+      ]
+    },
+    "volume_clob": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 20426,
+      "null_count": 3874,
+      "null_percentage": 15.94,
+      "min": 0.0,
+      "max": 70402978.150491,
+      "avg": 161995.34,
+      "sum": 3308916904.201284,
+      "median": 119.0,
+      "distinct_values": 11497
+    },
+    "volume_24hr": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 13797,
+      "null_count": 10503,
+      "null_percentage": 43.22,
+      "min": 0.0,
+      "max": 3121745.99,
+      "avg": 5716.96,
+      "sum": 78876864.117835,
+      "median": 1.25,
+      "distinct_values": 5850
+    },
+    "volume_24hr_amm": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 6809,
+      "null_count": 17491,
+      "null_percentage": 71.98,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6809
+        }
+      ]
+    },
+    "volume_24hr_clob": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 13797,
+      "null_count": 10503,
+      "null_percentage": 43.22,
+      "min": 0.0,
+      "max": 3121745.99,
+      "avg": 5716.96,
+      "sum": 78876864.117835,
+      "median": 1.25,
+      "distinct_values": 5850
+    },
+    "volume_1wk": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 18091,
+      "null_count": 6209,
+      "null_percentage": 25.55,
+      "min": 0.0,
+      "max": 15675655.83877605,
+      "avg": 27502.8,
+      "sum": 497553100.838558,
+      "median": 42.442099999999996,
+      "distinct_values": 9496
+    },
+    "volume_1wk_amm": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 6824,
+      "null_count": 17476,
+      "null_percentage": 71.92,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6824
+        }
+      ]
+    },
+    "volume_1wk_clob": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 18091,
+      "null_count": 6209,
+      "null_percentage": 25.55,
+      "min": 0.0,
+      "max": 15675655.83877605,
+      "avg": 27502.8,
+      "sum": 497553100.838558,
+      "median": 42.442099999999996,
+      "distinct_values": 9496
+    },
+    "volume_1mo": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 20104,
+      "null_count": 4196,
+      "null_percentage": 17.27,
+      "min": 0.0,
+      "max": 68453147.18731599,
+      "avg": 77693.1,
+      "sum": 1561942176.4561722,
+      "median": 90.0,
+      "distinct_values": 11116
+    },
+    "volume_1mo_amm": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 6824,
+      "null_count": 17476,
+      "null_percentage": 71.92,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6824
+        }
+      ]
+    },
+    "volume_1mo_clob": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 20104,
+      "null_count": 4196,
+      "null_percentage": 17.27,
+      "min": 0.0,
+      "max": 68453147.18731599,
+      "avg": 77693.1,
+      "sum": 1561942176.4561722,
+      "median": 90.0,
+      "distinct_values": 11116
+    },
+    "volume_1yr": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 20366,
+      "null_count": 3934,
+      "null_percentage": 16.19,
+      "min": 0.0,
+      "max": 70402044.23249316,
+      "avg": 162213.91,
+      "sum": 3303648423.747477,
+      "median": 114.565216,
+      "distinct_values": 11492
+    },
+    "volume_1yr_amm": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 6824,
+      "null_count": 17476,
+      "null_percentage": 71.92,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6824
+        }
+      ]
+    },
+    "volume_1yr_clob": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 20366,
+      "null_count": 3934,
+      "null_percentage": 16.19,
+      "min": 0.0,
+      "max": 70402044.23249316,
+      "avg": 162213.91,
+      "sum": 3303648423.747477,
+      "median": 114.565216,
+      "distinct_values": 11492
+    },
+    "active": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "1",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.72,
+      "sum": 17448,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 17448
+        },
+        {
+          "value": 0,
+          "count": 6852
+        }
+      ]
+    },
+    "closed": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.04,
+      "sum": 891,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 23409
+        },
+        {
+          "value": 1,
+          "count": 891
+        }
+      ]
+    },
+    "archived": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 28,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24272
+        },
+        {
+          "value": 1,
+          "count": 28
+        }
+      ]
+    },
+    "new": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 12,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24288
+        },
+        {
+          "value": 1,
+          "count": 12
+        }
+      ]
+    },
+    "featured": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 28,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24272
+        },
+        {
+          "value": 1,
+          "count": 28
+        }
+      ]
+    },
+    "restricted": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 1,
+      "max": 1,
+      "avg": 1.0,
+      "sum": 24300,
+      "median": 1,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 24300
+        }
+      ]
+    },
+    "market_type": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "format_type": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "market_maker_address": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 507,
+      "uniqueness_ratio": 2.09,
+      "min_length": 0,
+      "max_length": 42,
+      "avg_length": 0.87,
+      "sample_values": [
+        "",
+        "0xbc71FAFA0A35C9eb495AD2939cE200cF73771823",
+        "0x1158C11a3AA20A5b7b8535C13beEC505af11e7F8",
+        "0x6990884550e6ebADE0b44799A1d7f2b35B21Aa09",
+        "0x1226ed690fb23B75B2BCe8787805E2a6a21F89a9"
+      ],
+      "top_values": [
+        {
+          "value": "",
+          "count": 23794
+        },
+        {
+          "value": "0xffDd0eeaBBafC1269304fD588F5171Cdd31f1c5c",
+          "count": 1
+        },
+        {
+          "value": "0xff35a9079d3B4489D3F1Ca6D86B82342289fe5cc",
+          "count": 1
+        },
+        {
+          "value": "0xfcF18356EF2594B43b0d40c1cC7b9261Bf206133",
+          "count": 1
+        },
+        {
+          "value": "0xfc7C3E783FCb1d398ceDa833fe1FB562d139Fe77",
+          "count": 1
+        }
+      ]
+    },
+    "created_by": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "updated_by": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "created_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "2024-12-29T17:38:00.916304Z",
+      "latest": "2025-11-22T16:47:24.061004Z",
+      "distinct_values": 24300
+    },
+    "updated_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24299,
+      "null_count": 1,
+      "null_percentage": 0.0,
+      "earliest": "2024-12-30T18:07:26.563901Z",
+      "latest": "2025-11-22T16:54:57.45699Z",
+      "distinct_values": 24299
+    },
+    "closed_time": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 891,
+      "null_count": 23409,
+      "null_percentage": 96.33,
+      "earliest": "2025-01-06 17:16:04+00",
+      "latest": "2025-11-22 16:29:37+00",
+      "distinct_values": 764
+    },
+    "wide_format": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 12,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24288
+        },
+        {
+          "value": 1,
+          "count": 12
+        }
+      ]
+    },
+    "mailchimp_tag": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "resolved_by": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 23924,
+      "null_count": 376,
+      "null_percentage": 1.55,
+      "unique_values": 4,
+      "uniqueness_ratio": 0.02,
+      "min_length": 42,
+      "max_length": 42,
+      "avg_length": 42.0,
+      "sample_values": [
+        "0x6A9D222616C90FcA5754cd1333cFD9b7fb6a4F74",
+        "0x157Ce2d672854c848c9b79C49a8Cc6cc89176a49",
+        "0x65070BE91477460D8A7AeEb94ef92fe056C2f2A7",
+        "0x2F5e3684cb1F318ec51b00Edba38d79Ac2c0aA9d"
+      ],
+      "top_values": [
+        {
+          "value": "0x2F5e3684cb1F318ec51b00Edba38d79Ac2c0aA9d",
+          "count": 16433
+        },
+        {
+          "value": "0x65070BE91477460D8A7AeEb94ef92fe056C2f2A7",
+          "count": 6332
+        },
+        {
+          "value": "0x6A9D222616C90FcA5754cd1333cFD9b7fb6a4F74",
+          "count": 643
+        },
+        {
+          "value": "0x157Ce2d672854c848c9b79C49a8Cc6cc89176a49",
+          "count": 516
+        }
+      ]
+    },
+    "market_group": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "group_item_title": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 22667,
+      "null_count": 1633,
+      "null_percentage": 6.72,
+      "unique_values": 9000,
+      "uniqueness_ratio": 39.71,
+      "min_length": 0,
+      "max_length": 72,
+      "avg_length": 11.31,
+      "sample_values": [
+        "",
+        "\u2191 1,000,000",
+        "\u2191 250,000",
+        "\u2191 200,000",
+        "\u2191 150,000"
+      ],
+      "top_values": [
+        {
+          "value": "",
+          "count": 845
+        },
+        {
+          "value": "Other",
+          "count": 409
+        },
+        {
+          "value": "O/U 2.5",
+          "count": 179
+        },
+        {
+          "value": "Both Teams to Score",
+          "count": 174
+        },
+        {
+          "value": "O/U 3.5",
+          "count": 104
+        }
+      ]
+    },
+    "group_item_threshold": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24003,
+      "null_count": 297,
+      "null_percentage": 1.22,
+      "unique_values": 128,
+      "uniqueness_ratio": 0.53,
+      "min_length": 1,
+      "max_length": 3,
+      "avg_length": 1.37,
+      "sample_values": [
+        "0",
+        "1",
+        "2",
+        "4",
+        "6"
+      ],
+      "top_values": [
+        {
+          "value": "0",
+          "count": 5681
+        },
+        {
+          "value": "2",
+          "count": 2456
+        },
+        {
+          "value": "1",
+          "count": 2151
+        },
+        {
+          "value": "3",
+          "count": 998
+        },
+        {
+          "value": "4",
+          "count": 772
+        }
+      ]
+    },
+    "group_item_range": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "question_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24299,
+      "null_count": 1,
+      "null_percentage": 0.0,
+      "unique_values": 24299,
+      "uniqueness_ratio": 100.0,
+      "min_length": 66,
+      "max_length": 66,
+      "avg_length": 66.0,
+      "sample_values": [
+        "0x26278b28ec125b422960cda90b7d9c27da0bbef8723fbdbd331c3fd674200ffa",
+        "0x0422835a21786de482a3b7efd8cdb222e211ce392e8b2a975d9577d25ef5dc86",
+        "0xfb38fc0c31a2c8f3fed2052b1f8d2eead9bbc16f3cab4bab76b10d5f0d034d49",
+        "0x8f105aeae28912e3e4da965325903c1aff6aa308e5261e07d933439d25bda63d",
+        "0x71ed27d517315ae446e8a937a402a84d79577fb25d113d5fcd6a3a58402c398f"
+      ]
+    },
+    "uma_end_date": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 891,
+      "null_count": 23409,
+      "null_percentage": 96.33,
+      "earliest": "2025-01-06T17:16:04Z",
+      "latest": "2025-11-22T16:29:37Z",
+      "distinct_values": 764
+    },
+    "uma_end_date_iso": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "enable_order_book": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 1,
+      "max": 1,
+      "avg": 1.0,
+      "sum": 24300,
+      "median": 1,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 24300
+        }
+      ]
+    },
+    "order_price_min_tick_size": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0.001,
+      "max": 0.01,
+      "avg": 0.01,
+      "sum": 173.016,
+      "median": 0.01,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0.01,
+          "count": 16524
+        },
+        {
+          "value": 0.001,
+          "count": 7776
+        }
+      ]
+    },
+    "order_min_size": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 5.0,
+      "max": 5.0,
+      "avg": 5.0,
+      "sum": 121500.0,
+      "median": 5.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 5.0,
+          "count": 24300
+        }
+      ]
+    },
+    "uma_resolution_status": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 1065,
+      "null_count": 23235,
+      "null_percentage": 95.62,
+      "earliest": "disputed",
+      "latest": "resolved",
+      "distinct_values": 3
+    },
+    "uma_resolution_statuses": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "\"[\\\"proposed\\\", \\\"disputed\\\", \\\"proposed\\\", \\\"disputed\\\", \\\"proposed\\\", \\\"disputed\\\"]\"",
+      "latest": "\"[]\"",
+      "distinct_values": 9
+    },
+    "curation_order": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "end_date_iso": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 22299,
+      "null_count": 2001,
+      "null_percentage": 8.23,
+      "earliest": "2025-03-31",
+      "latest": "2028-11-07",
+      "distinct_values": 180
+    },
+    "start_date_iso": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 17750,
+      "null_count": 6550,
+      "null_percentage": 26.95,
+      "earliest": "2024-12-29",
+      "latest": "2025-11-22",
+      "distinct_values": 246
+    },
+    "has_reviewed_dates": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.99,
+      "sum": 24106,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 24106
+        },
+        {
+          "value": 0,
+          "count": 194
+        }
+      ]
+    },
+    "ready_for_cron": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24300
+        }
+      ]
+    },
+    "comments_enabled": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24300
+        }
+      ]
+    },
+    "game_start_time": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 5159,
+      "null_count": 19141,
+      "null_percentage": 78.77,
+      "earliest": "2025-03-03 21:06:00+00",
+      "latest": "2025-12-20 15:30:00+00",
+      "distinct_values": 573
+    },
+    "seconds_delay": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 4909,
+      "null_count": 19391,
+      "null_percentage": 79.8,
+      "min": 3,
+      "max": 3,
+      "avg": 3.0,
+      "sum": 14727,
+      "median": 3,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 3,
+          "count": 4909
+        }
+      ]
+    },
+    "clob_token_ids": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24299,
+      "null_count": 1,
+      "null_percentage": 0.0,
+      "unique_values": 24299,
+      "uniqueness_ratio": 100.0,
+      "min_length": 163,
+      "max_length": 170,
+      "avg_length": 168.09,
+      "sample_values": [
+        "\"[\\\"114304586861386186441621124384163963092522056897081085884483958561365015034812\\\", \\\"112744882674...",
+        "\"[\\\"112540911653160777059655478391259433595972605218365763034134019729862917878641\\\", \\\"729578459692...",
+        "\"[\\\"15600657178409553723631854347165934450743544837722869853285023214749561849304\\\", \\\"9583272205236...",
+        "\"[\\\"85949163243245471221790979452091560100141884930227668573477517865165344048388\\\", \\\"3692156993944...",
+        "\"[\\\"87484108660213248881541352117231933897620313251765619093583161767567942237143\\\", \\\"6622760305035..."
+      ]
+    },
+    "disqus_thread": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "team_a_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "team_b_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "uma_bond": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 23913,
+      "null_count": 387,
+      "null_percentage": 1.59,
+      "unique_values": 5,
+      "uniqueness_ratio": 0.02,
+      "min_length": 3,
+      "max_length": 5,
+      "avg_length": 3.08,
+      "sample_values": [
+        "500",
+        "25000",
+        "50000",
+        "10000",
+        "2500"
+      ],
+      "top_values": [
+        {
+          "value": "500",
+          "count": 22493
+        },
+        {
+          "value": "2500",
+          "count": 998
+        },
+        {
+          "value": "25000",
+          "count": 256
+        },
+        {
+          "value": "50000",
+          "count": 128
+        },
+        {
+          "value": "10000",
+          "count": 38
+        }
+      ]
+    },
+    "uma_reward": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 23913,
+      "null_count": 387,
+      "null_percentage": 1.59,
+      "unique_values": 4,
+      "uniqueness_ratio": 0.02,
+      "min_length": 1,
+      "max_length": 2,
+      "avg_length": 1.06,
+      "sample_values": [
+        "5",
+        "10",
+        "20",
+        "2"
+      ],
+      "top_values": [
+        {
+          "value": "5",
+          "count": 14218
+        },
+        {
+          "value": "2",
+          "count": 8290
+        },
+        {
+          "value": "20",
+          "count": 1126
+        },
+        {
+          "value": "10",
+          "count": 279
+        }
+      ]
+    },
+    "fpmmLive": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 12,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24288
+        },
+        {
+          "value": 1,
+          "count": 12
+        }
+      ]
+    },
+    "maker_base_fee": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "taker_base_fee": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "custom_liveness": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 22589,
+      "null_count": 1711,
+      "null_percentage": 7.04,
+      "min": 0,
+      "max": 3600,
+      "avg": 31.24,
+      "sum": 705600,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 22393
+        },
+        {
+          "value": 3600,
+          "count": 196
+        }
+      ]
+    },
+    "accepting_orders": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.96,
+      "sum": 23404,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 23404
+        },
+        {
+          "value": 0,
+          "count": 896
+        }
+      ]
+    },
+    "accepting_orders_timestamp": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24295,
+      "null_count": 5,
+      "null_percentage": 0.02,
+      "earliest": "2024-12-29T22:38:10Z",
+      "latest": "2025-11-22T16:47:27Z",
+      "distinct_values": 9369
+    },
+    "notifications_enabled": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24300
+        }
+      ]
+    },
+    "score": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "creator": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "ready": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24300
+        }
+      ]
+    },
+    "funded": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24300
+        }
+      ]
+    },
+    "past_slugs": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "ready_timestamp": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "funded_timestamp": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "competitive": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 23521,
+      "null_count": 779,
+      "null_percentage": 3.21,
+      "min": 0.0,
+      "max": 1.0,
+      "avg": 0.51,
+      "sum": 12025.904443078029,
+      "median": 0.8009597099244316,
+      "distinct_values": 1568
+    },
+    "rewards_min_size": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0.0,
+      "max": 200.0,
+      "avg": 16.07,
+      "sum": 390440.0,
+      "median": 0.0,
+      "distinct_values": 7,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 18565
+        },
+        {
+          "value": 50.0,
+          "count": 1931
+        },
+        {
+          "value": 100.0,
+          "count": 1710
+        },
+        {
+          "value": 20.0,
+          "count": 1642
+        },
+        {
+          "value": 200.0,
+          "count": 450
+        },
+        {
+          "value": 40.0,
+          "count": 1
+        },
+        {
+          "value": 10.0,
+          "count": 1
+        }
+      ]
+    },
+    "rewards_max_spread": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0.0,
+      "max": 5.5,
+      "avg": 0.95,
+      "sum": 23080.0,
+      "median": 0.0,
+      "distinct_values": 6,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 18473
+        },
+        {
+          "value": 3.5,
+          "count": 3311
+        },
+        {
+          "value": 4.5,
+          "count": 2315
+        },
+        {
+          "value": 5.5,
+          "count": 191
+        },
+        {
+          "value": 2.5,
+          "count": 9
+        },
+        {
+          "value": 1.0,
+          "count": 1
+        }
+      ]
+    },
+    "spread": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0.001,
+      "max": 1.0,
+      "avg": 0.42,
+      "sum": 10182.351,
+      "median": 0.086,
+      "distinct_values": 495
+    },
+    "automatically_resolved": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.04,
+      "sum": 891,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 23409
+        },
+        {
+          "value": 1,
+          "count": 891
+        }
+      ]
+    },
+    "one_day_price_change": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 17847,
+      "null_count": 6453,
+      "null_percentage": 26.56,
+      "min": -0.6145,
+      "max": 0.964,
+      "avg": 0.0,
+      "sum": 19.5605,
+      "median": 0.0,
+      "distinct_values": 747
+    },
+    "one_hour_price_change": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 12299,
+      "null_count": 12001,
+      "null_percentage": 49.39,
+      "min": -0.4985,
+      "max": 0.75,
+      "avg": -0.0,
+      "sum": -0.7609999999999997,
+      "median": 0.0,
+      "distinct_values": 300
+    },
+    "one_week_price_change": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 16707,
+      "null_count": 7593,
+      "null_percentage": 31.25,
+      "min": -0.8695,
+      "max": 0.944,
+      "avg": -0.0,
+      "sum": -2.651999999999999,
+      "median": 0.0,
+      "distinct_values": 915
+    },
+    "one_month_price_change": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 13410,
+      "null_count": 10890,
+      "null_percentage": 44.81,
+      "min": -0.8255,
+      "max": 0.9135,
+      "avg": -0.03,
+      "sum": -464.578,
+      "median": 0.0,
+      "distinct_values": 1119
+    },
+    "one_year_price_change": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 6824,
+      "null_count": 17476,
+      "null_percentage": 71.92,
+      "min": 0.0,
+      "max": 0.0,
+      "avg": 0,
+      "sum": 0.0,
+      "median": 0.0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0.0,
+          "count": 6824
+        }
+      ]
+    },
+    "last_trade_price": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 18586,
+      "null_count": 5714,
+      "null_percentage": 23.51,
+      "min": 0.0,
+      "max": 1.0,
+      "avg": 0.16,
+      "sum": 3002.572,
+      "median": 0.005,
+      "distinct_values": 413
+    },
+    "best_bid": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 22504,
+      "null_count": 1796,
+      "null_percentage": 7.39,
+      "min": 0.0,
+      "max": 0.999,
+      "avg": 0.13,
+      "sum": 2972.029,
+      "median": 0.01,
+      "distinct_values": 387
+    },
+    "best_ask": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0.001,
+      "max": 1.0,
+      "avg": 0.54,
+      "sum": 13154.417,
+      "median": 0.52,
+      "distinct_values": 545
+    },
+    "automatically_active": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 1.0,
+      "sum": 24295,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 24295
+        },
+        {
+          "value": 0,
+          "count": 5
+        }
+      ]
+    },
+    "clear_book_on_start": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.98,
+      "sum": 23923,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 23923
+        },
+        {
+          "value": 0,
+          "count": 377
+        }
+      ]
+    },
+    "chart_color": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0,
+      "unique_values": 0,
+      "uniqueness_ratio": 0.0
+    },
+    "series_color": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 7937,
+      "null_count": 16363,
+      "null_percentage": 67.34,
+      "unique_values": 40,
+      "uniqueness_ratio": 0.5,
+      "min_length": 0,
+      "max_length": 15,
+      "avg_length": 0.09,
+      "sample_values": [
+        "",
+        "#FA534D",
+        "#E2BF6C,#ECDB9B",
+        "#99C9F5",
+        "#456BD5,#2970FF"
+      ],
+      "top_values": [
+        {
+          "value": "",
+          "count": 7831
+        },
+        {
+          "value": "#1F3F97",
+          "count": 7
+        },
+        {
+          "value": "#FB4E06",
+          "count": 3
+        },
+        {
+          "value": "#F7B303",
+          "count": 3
+        },
+        {
+          "value": "#F73802",
+          "count": 3
+        }
+      ]
+    },
+    "show_gmp_series": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 61,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24239
+        },
+        {
+          "value": 1,
+          "count": 61
+        }
+      ]
+    },
+    "show_gmp_outcome": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 0,
+      "avg": 0,
+      "sum": 0,
+      "median": 0,
+      "distinct_values": 1,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24300
+        }
+      ]
+    },
+    "manual_activation": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.29,
+      "sum": 7086,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 17214
+        },
+        {
+          "value": 1,
+          "count": 7086
+        }
+      ]
+    },
+    "neg_risk": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.68,
+      "sum": 16433,
+      "median": 1,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 1,
+          "count": 16433
+        },
+        {
+          "value": 0,
+          "count": 7867
+        }
+      ]
+    },
+    "neg_risk_other": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.02,
+      "sum": 399,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 23901
+        },
+        {
+          "value": 1,
+          "count": 399
+        }
+      ]
+    },
+    "game_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 145,
+      "null_count": 24155,
+      "null_percentage": 99.4,
+      "unique_values": 145,
+      "uniqueness_ratio": 100.0,
+      "min_length": 5,
+      "max_length": 7,
+      "avg_length": 6.46,
+      "sample_values": [
+        "1268736",
+        "730234",
+        "730235",
+        "1268733",
+        "730225"
+      ]
+    },
+    "sports_market_type": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 2990,
+      "null_count": 21310,
+      "null_percentage": 87.7,
+      "unique_values": 12,
+      "uniqueness_ratio": 0.4,
+      "min_length": 6,
+      "max_length": 21,
+      "avg_length": 9.51,
+      "sample_values": [
+        "spreads",
+        "moneyline",
+        "totals",
+        "first_half_moneyline",
+        "ufc_go_the_distance"
+      ],
+      "top_values": [
+        {
+          "value": "moneyline",
+          "count": 1132
+        },
+        {
+          "value": "totals",
+          "count": 760
+        },
+        {
+          "value": "spreads",
+          "count": 455
+        },
+        {
+          "value": "team_totals",
+          "count": 200
+        },
+        {
+          "value": "both_teams_to_score",
+          "count": 174
+        }
+      ]
+    },
+    "line": {
+      "type": "REAL",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 1490,
+      "null_count": 22810,
+      "null_percentage": 93.87,
+      "min": 0.5,
+      "max": 244.5,
+      "avg": 27.68,
+      "sum": 41247.0,
+      "median": 6.5,
+      "distinct_values": 132
+    },
+    "pending_deployment": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 4,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24296
+        },
+        {
+          "value": 1,
+          "count": 4
+        }
+      ]
+    },
+    "deploying": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 1,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24299
+        },
+        {
+          "value": 1,
+          "count": 1
+        }
+      ]
+    },
+    "deploying_timestamp": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 23261,
+      "null_count": 1039,
+      "null_percentage": 4.28,
+      "earliest": "2025-04-30T19:53:01.891823Z",
+      "latest": "2025-11-22T16:32:22.575915Z",
+      "distinct_values": 23260
+    },
+    "scheduled_deployment_timestamp": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 0,
+      "null_count": 24300,
+      "null_percentage": 100.0
+    },
+    "rfq_enabled": {
+      "type": "INTEGER",
+      "nullable": true,
+      "primary_key": false,
+      "default": "0",
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "min": 0,
+      "max": 1,
+      "avg": 0.0,
+      "sum": 1,
+      "median": 0,
+      "distinct_values": 2,
+      "value_distribution": [
+        {
+          "value": 0,
+          "count": 24299
+        },
+        {
+          "value": 1,
+          "count": 1
+        }
+      ]
+    },
+    "event_start_time": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 806,
+      "null_count": 23494,
+      "null_percentage": 96.68,
+      "earliest": "2025-10-10T14:00:00Z",
+      "latest": "2025-12-03T10:00:00Z",
+      "distinct_values": 187
+    },
+    "fetched_at": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 24300,
+      "non_null": 24300,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "earliest": "2025-11-22T10:48:29.402724",
+      "latest": "2025-11-22T10:55:15.574243",
+      "distinct_values": 24300
+    }
+  },
+  "sample_rows": [
+    "id:551963 | event_id:26857 | question:Xi Jinping out in 2025? | condition_id:0xf2ce8d3897ac5009a131637d3575... | slug:xi-jinping-out-in-2025 | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T23:55:00Z | start_date:2025-06-12T19:41:07.661Z | category:NULL | ...",
+    "id:516861 | event_id:16096 | question:Will Bitcoin reach $1,000,000 ... | condition_id:0xd8b9ff369452daebce1ac8cb6a29... | slug:will-bitcoin-reach-1000000-by-... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:00:50.534Z | category:NULL | ...",
+    "id:516862 | event_id:16096 | question:Will Bitcoin reach $250,000 by... | condition_id:0xac2be3a5471b343d43b9f0d3f141... | slug:will-bitcoin-reach-250000-by-d... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:01:06.714Z | category:NULL | ...",
+    "id:516863 | event_id:16096 | question:Will Bitcoin reach $200,000 by... | condition_id:0x4e2887e913cd6e091c9b07b5e401... | slug:will-bitcoin-reach-200000-by-d... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:01:26.81Z | category:NULL | ...",
+    "id:516864 | event_id:16096 | question:Will Bitcoin reach $150,000 by... | condition_id:0x9aa6086535a4b3145e9f7378dd58... | slug:will-bitcoin-reach-150000-by-d... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:01:36.925Z | category:NULL | ..."
+  ],
+  "indexes": [
+    {
+      "name": "idx_markets_active",
+      "unique": false
+    },
+    {
+      "name": "idx_markets_volume",
+      "unique": false
+    },
+    {
+      "name": "idx_markets_condition",
+      "unique": false
+    },
+    {
+      "name": "idx_markets_event",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_markets_2",
+      "unique": true
+    },
+    {
+      "name": "sqlite_autoindex_markets_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "event_id",
+        "references_table": "events",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": [
+      {
+        "table": "market_open_interest",
+        "column": "market_id"
+      },
+      {
+        "table": "market_holders",
+        "column": "market_id"
+      },
+      {
+        "table": "market_tags",
+        "column": "market_id"
+      },
+      {
+        "table": "market_categories",
+        "column": "market_id"
+      },
+      {
+        "table": "transactions",
+        "column": "market_id"
+      }
+    ]
+  }
+}

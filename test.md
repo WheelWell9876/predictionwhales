@@ -640,3 +640,95 @@ backend/run.py
 
 
 DO NOT WRITE ANY FUCKING DOCUMENTATION FILES THOSE ARE USELESS AND I DO NOT NEED THEM JUST IMPLEMENT THE FIXES THAT I HAVE ASKED FOR AND SIMPLY JUST SHOW WHAT I NEED TO DO TO RUN THEM!!! NO WRITING CUSTOM SCRIPTS TO FIX IT, NO IMPLEMENTATION GUIDES OR READMES OR EXAMPLES OR ANY OTHER CUTE SHIT!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+I need help with fixing the functionality of my newly refactored application which is getting data from the Polymarket API and loading it into a database. 
+
+What I need to do is fix up for one the tags manager and series manager file so that it is compatible with the new locations of my fetch, database, and storage files. This file needs to act as an aggregator for the rest of my files and should control this section. I want to implement into the tags manager and series manager the functionality that will allow it to communicate with my fetch and storage and database files and then have this data loaded into the database and all of the corresponding tables.
+
+For the tags functionality, I have 4 files which control the fetching of the tags. For this one, I only want to use the fetch tag relationships batch so I can fill my database with tag relationships. I have uploaded another one of my files which is my events manager file for context as to what this file should look like as the tags manager. I have also uploade dthe btach tags and ID tags. I want these tags and their details stored in the tag relationships table with all of its relevant data. I have also uploaded by store_tags file that needs to be fixed up for this new functionality. I have uploaded my store events file as well for context as to what this file should look like. I have pasted below the current database schema for the tag relationships
+
+    -- Tag relationships table
+    CREATE TABLE IF NOT EXISTS tag_relationships (
+        tag_id TEXT,
+        related_tag_id TEXT,
+        relationship_type TEXT,
+        strength REAL DEFAULT 1.0,
+        created_at TEXT,
+        PRIMARY KEY (tag_id, related_tag_id),
+        FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+    );
+
+For the series functionality, I again have 4 files which control the fetching of the series. Again I want to use the batch series file and the function inside of it to control the mass fetching of the series. I want that data to be saved in the series table. It should also be noted that for each series, it will contain events that are in a series. While I have already downloaded the events, I do not want to download duplicate events, but I do want to keep note as to what events are located in which series. To do this, I have a table called series_events which I want to have all of the events that are contained in a series to be stored in. To do this, I want to have the series ID be the primary key, and then I want to have the any events that are found within a series to have their IDs be in nested JSON object within the column of the database and all of those events linked to the series will be in that one row inside that nested JSON object in one column. This means that you will have to slightly tweak the database schema file to match the description of what I want. I want the exact same thing to happen with the other tables that appear inside a series object as well. This includes series_categories, series_collections, series_chats, and series_tags. I have pasted all of their schemas below
+
+
+
+    -- Series tags relationship table
+    CREATE TABLE IF NOT EXISTS series_tags (
+        series_id TEXT,
+        tag_id TEXT,
+        tag_slug TEXT,
+        PRIMARY KEY (series_id, tag_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+    );
+
+    -- Series categories relationship table
+    CREATE TABLE IF NOT EXISTS series_categories (
+        series_id TEXT,
+        category_id TEXT,
+        PRIMARY KEY (series_id, category_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    );
+
+    -- Series collections relationship table
+    CREATE TABLE IF NOT EXISTS series_collections (
+        series_id TEXT,
+        collection_id TEXT,
+        PRIMARY KEY (series_id, collection_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+    );
+
+    -- Series chats relationship table
+    CREATE TABLE IF NOT EXISTS series_chats (
+        series_id TEXT,
+        chat_id TEXT,
+        PRIMARY KEY (series_id, chat_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+    );
+
+
+
+
+
+
+

@@ -1,0 +1,43 @@
+{
+  "table_name": "market_categories",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "market_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "category_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_market_categories_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "category_id",
+        "references_table": "categories",
+        "references_column": "id"
+      },
+      {
+        "column": "market_id",
+        "references_table": "markets",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

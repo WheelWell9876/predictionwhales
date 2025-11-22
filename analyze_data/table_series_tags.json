@@ -1,0 +1,58 @@
+{
+  "table_name": "series_tags",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "series_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "tag_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "tag_slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "idx_series_tags_tag",
+      "unique": false
+    },
+    {
+      "name": "idx_series_tags_series",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_series_tags_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "tag_id",
+        "references_table": "tags",
+        "references_column": "id"
+      },
+      {
+        "column": "series_id",
+        "references_table": "series",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

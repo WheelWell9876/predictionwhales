@@ -1,0 +1,197 @@
+{
+  "table_name": "event_tags",
+  "row_count": 20856,
+  "columns": [
+    {
+      "name": "event_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "tag_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "tag_slug",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {
+    "event_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 20856,
+      "non_null": 20856,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 4399,
+      "uniqueness_ratio": 21.09,
+      "min_length": 5,
+      "max_length": 5,
+      "avg_length": 5.0,
+      "sample_values": [
+        "16084",
+        "16085",
+        "16086",
+        "16087",
+        "16092"
+      ],
+      "top_values": [
+        {
+          "value": "53328",
+          "count": 17
+        },
+        {
+          "value": "17857",
+          "count": 13
+        },
+        {
+          "value": "42734",
+          "count": 13
+        },
+        {
+          "value": "46869",
+          "count": 13
+        },
+        {
+          "value": "16104",
+          "count": 12
+        }
+      ]
+    },
+    "tag_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 20856,
+      "non_null": 20856,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 3.51,
+      "min_length": 1,
+      "max_length": 6,
+      "avg_length": 4.28,
+      "sample_values": [
+        "1",
+        "10",
+        "100",
+        "1000",
+        "100021"
+      ],
+      "top_values": [
+        {
+          "value": "1",
+          "count": 2100
+        },
+        {
+          "value": "100639",
+          "count": 1927
+        },
+        {
+          "value": "100350",
+          "count": 839
+        },
+        {
+          "value": "21",
+          "count": 835
+        },
+        {
+          "value": "102169",
+          "count": 815
+        }
+      ]
+    },
+    "tag_slug": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 20856,
+      "non_null": 20856,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 3.51,
+      "min_length": 1,
+      "max_length": 34,
+      "avg_length": 7.77,
+      "sample_values": [
+        "sports",
+        "nfl",
+        "cowboys-vs-eagles",
+        "world-elections",
+        "global-elections"
+      ],
+      "top_values": [
+        {
+          "value": "sports",
+          "count": 2100
+        },
+        {
+          "value": "games",
+          "count": 1927
+        },
+        {
+          "value": "soccer",
+          "count": 839
+        },
+        {
+          "value": "crypto",
+          "count": 835
+        },
+        {
+          "value": "hide-from-new",
+          "count": 815
+        }
+      ]
+    }
+  },
+  "sample_rows": [
+    "event_id:23656 | tag_id:1 | tag_slug:sports",
+    "event_id:23656 | tag_id:450 | tag_slug:nfl",
+    "event_id:23656 | tag_id:102549 | tag_slug:cowboys-vs-eagles",
+    "event_id:30829 | tag_id:101206 | tag_slug:world-elections",
+    "event_id:30829 | tag_id:1597 | tag_slug:global-elections"
+  ],
+  "indexes": [
+    {
+      "name": "idx_event_tags_tag",
+      "unique": false
+    },
+    {
+      "name": "idx_event_tags_event",
+      "unique": false
+    },
+    {
+      "name": "sqlite_autoindex_event_tags_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "tag_id",
+        "references_table": "tags",
+        "references_column": "id"
+      },
+      {
+        "column": "event_id",
+        "references_table": "events",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}

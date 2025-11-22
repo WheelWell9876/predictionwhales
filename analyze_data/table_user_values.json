@@ -1,0 +1,45 @@
+{
+  "table_name": "user_values",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "proxy_wallet",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "market_condition_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "value",
+      "type": "REAL",
+      "nullable": true,
+      "default": "0",
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_user_values_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "proxy_wallet",
+        "references_table": "users",
+        "references_column": "proxy_wallet"
+      }
+    ],
+    "referenced_by": []
+  }
+}

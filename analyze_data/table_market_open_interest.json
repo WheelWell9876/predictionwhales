@@ -1,0 +1,52 @@
+{
+  "table_name": "market_open_interest",
+  "row_count": 0,
+  "columns": [
+    {
+      "name": "market_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": true
+    },
+    {
+      "name": "condition_id",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "timestamp",
+      "type": "TEXT",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    },
+    {
+      "name": "open_interest",
+      "type": "REAL",
+      "nullable": true,
+      "default": null,
+      "primary_key": false
+    }
+  ],
+  "column_analysis": {},
+  "sample_rows": [],
+  "indexes": [
+    {
+      "name": "sqlite_autoindex_market_open_interest_1",
+      "unique": true
+    }
+  ],
+  "relationships": {
+    "foreign_keys": [
+      {
+        "column": "market_id",
+        "references_table": "markets",
+        "references_column": "id"
+      }
+    ],
+    "referenced_by": []
+  }
+}
