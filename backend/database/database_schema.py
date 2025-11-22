@@ -1,10 +1,10 @@
 """
 Database Schema for Polymarket Terminal
-Complete schema definition for all tables
+Complete schema definition for all tables including comprehensive market data
 """
 
 def get_schema():
-    """Get the complete database schema SQL with debugging"""
+    """Get the complete database schema SQL with all market-related tables"""
     
     # Core tables
     core_tables = """
@@ -14,6 +14,7 @@ def get_schema():
         ticker TEXT,
         slug TEXT UNIQUE,
         title TEXT,
+        subtitle TEXT,
         description TEXT,
         resolution_source TEXT,
         start_date TEXT,
@@ -21,13 +22,17 @@ def get_schema():
         end_date TEXT,
         image TEXT,
         icon TEXT,
+        featured_image TEXT,
         active INTEGER DEFAULT 1,
         closed INTEGER DEFAULT 0,
         archived INTEGER DEFAULT 0,
         new INTEGER DEFAULT 0,
         featured INTEGER DEFAULT 0,
         restricted INTEGER DEFAULT 0,
+        is_template INTEGER DEFAULT 0,
+        template_variables TEXT,
         liquidity REAL DEFAULT 0,
+        liquidity_amm REAL DEFAULT 0,
         liquidity_clob REAL DEFAULT 0,
         volume REAL DEFAULT 0,
         volume_clob REAL DEFAULT 0,
@@ -42,138 +47,283 @@ def get_schema():
         open_interest REAL DEFAULT 0,
         competitive REAL DEFAULT 0,
         comment_count INTEGER DEFAULT 0,
+        tweet_count INTEGER DEFAULT 0,
         enable_order_book INTEGER DEFAULT 0,
         cyom INTEGER DEFAULT 0,
         show_all_outcomes INTEGER DEFAULT 0,
         show_market_images INTEGER DEFAULT 0,
         enable_neg_risk INTEGER DEFAULT 0,
+        neg_risk_market_id TEXT,
+        neg_risk_fee_bips INTEGER,
+        automatically_resolved INTEGER DEFAULT 0,
         automatically_active INTEGER DEFAULT 0,
-        neg_risk_augmented INTEGER DEFAULT 0,
+        closed_time TEXT,
+        event_date TEXT,
+        start_time TEXT,
+        event_week INTEGER,
+        series_slug TEXT,
+        score TEXT,
+        elapsed TEXT,
+        period TEXT,
+        live INTEGER DEFAULT 0,
+        ended INTEGER DEFAULT 0,
+        finished_timestamp TEXT,
+        gmp_chart_mode TEXT,
+        estimate_value INTEGER DEFAULT 0,
+        cant_estimate INTEGER DEFAULT 0,
+        estimated_value TEXT,
+        carousel_map TEXT,
         pending_deployment INTEGER DEFAULT 0,
         deploying INTEGER DEFAULT 0,
+        deploying_timestamp TEXT,
+        scheduled_deployment_timestamp TEXT,
+        game_status TEXT,
+        spreads_main_line REAL,
+        totals_main_line REAL,
+        published_at TEXT,
+        created_by TEXT,
+        updated_by TEXT,
         created_at TEXT,
         updated_at TEXT,
         fetched_at TEXT
     );
 
-    -- Markets table
+    -- Markets table (comprehensive)
     CREATE TABLE IF NOT EXISTS markets (
         id TEXT PRIMARY KEY,
         event_id TEXT,
-        condition_id TEXT UNIQUE,
         question TEXT,
+        condition_id TEXT UNIQUE,
         slug TEXT,
-        description TEXT,
+        twitter_card_image TEXT,
         resolution_source TEXT,
         end_date TEXT,
         start_date TEXT,
+        category TEXT,
+        subcategory TEXT,
+        amm_type TEXT,
+        liquidity TEXT,
+        liquidity_num REAL DEFAULT 0,
+        liquidity_amm REAL DEFAULT 0,
+        liquidity_clob REAL DEFAULT 0,
+        sponsor_name TEXT,
+        sponsor_image TEXT,
+        x_axis_value TEXT,
+        y_axis_value TEXT,
+        denomination_token TEXT,
+        fee TEXT,
         image TEXT,
         icon TEXT,
+        lower_bound TEXT,
+        upper_bound TEXT,
+        lower_bound_date TEXT,
+        upper_bound_date TEXT,
+        description TEXT,
         outcomes TEXT,
         outcome_prices TEXT,
-        volume REAL DEFAULT 0,
+        short_outcomes TEXT,
+        volume TEXT,
         volume_num REAL DEFAULT 0,
+        volume_amm REAL DEFAULT 0,
         volume_clob REAL DEFAULT 0,
         volume_24hr REAL DEFAULT 0,
+        volume_24hr_amm REAL DEFAULT 0,
         volume_24hr_clob REAL DEFAULT 0,
         volume_1wk REAL DEFAULT 0,
+        volume_1wk_amm REAL DEFAULT 0,
         volume_1wk_clob REAL DEFAULT 0,
         volume_1mo REAL DEFAULT 0,
+        volume_1mo_amm REAL DEFAULT 0,
         volume_1mo_clob REAL DEFAULT 0,
         volume_1yr REAL DEFAULT 0,
+        volume_1yr_amm REAL DEFAULT 0,
         volume_1yr_clob REAL DEFAULT 0,
-        liquidity REAL DEFAULT 0,
-        liquidity_num REAL DEFAULT 0,
-        liquidity_clob REAL DEFAULT 0,
-        open_interest REAL DEFAULT 0,
         active INTEGER DEFAULT 1,
         closed INTEGER DEFAULT 0,
+        archived INTEGER DEFAULT 0,
         new INTEGER DEFAULT 0,
         featured INTEGER DEFAULT 0,
-        archived INTEGER DEFAULT 0,
         restricted INTEGER DEFAULT 0,
-        submitted_by TEXT,
-        resolved_by TEXT,
+        market_type TEXT,
+        format_type TEXT,
         market_maker_address TEXT,
+        created_by INTEGER,
+        updated_by INTEGER,
+        created_at TEXT,
+        updated_at TEXT,
+        closed_time TEXT,
+        wide_format INTEGER DEFAULT 0,
+        mailchimp_tag TEXT,
+        resolved_by TEXT,
+        market_group INTEGER,
         group_item_title TEXT,
         group_item_threshold TEXT,
+        group_item_range TEXT,
         question_id TEXT,
+        uma_end_date TEXT,
+        uma_end_date_iso TEXT,
         enable_order_book INTEGER DEFAULT 0,
         order_price_min_tick_size REAL,
         order_min_size REAL,
+        uma_resolution_status TEXT,
+        uma_resolution_statuses TEXT,
+        curation_order INTEGER,
         end_date_iso TEXT,
         start_date_iso TEXT,
         has_reviewed_dates INTEGER DEFAULT 0,
+        ready_for_cron INTEGER DEFAULT 0,
+        comments_enabled INTEGER DEFAULT 0,
+        game_start_time TEXT,
+        seconds_delay INTEGER,
         clob_token_ids TEXT,
+        disqus_thread TEXT,
+        team_a_id TEXT,
+        team_b_id TEXT,
         uma_bond TEXT,
         uma_reward TEXT,
+        fpmmLive INTEGER DEFAULT 0,
+        maker_base_fee REAL,
+        taker_base_fee REAL,
+        custom_liveness INTEGER,
         accepting_orders INTEGER DEFAULT 0,
         accepting_orders_timestamp TEXT,
-        neg_risk INTEGER DEFAULT 0,
-        neg_risk_other INTEGER DEFAULT 0,
+        notifications_enabled INTEGER DEFAULT 0,
+        score REAL,
+        creator TEXT,
         ready INTEGER DEFAULT 0,
         funded INTEGER DEFAULT 0,
-        cyom INTEGER DEFAULT 0,
-        competitive REAL DEFAULT 0,
-        pager_duty_notification_enabled INTEGER DEFAULT 0,
-        approved INTEGER DEFAULT 0,
+        past_slugs TEXT,
+        ready_timestamp TEXT,
+        funded_timestamp TEXT,
+        competitive REAL,
         rewards_min_size REAL,
         rewards_max_spread REAL,
         spread REAL,
+        automatically_resolved INTEGER DEFAULT 0,
         one_day_price_change REAL,
+        one_hour_price_change REAL,
         one_week_price_change REAL,
         one_month_price_change REAL,
+        one_year_price_change REAL,
         last_trade_price REAL,
         best_bid REAL,
         best_ask REAL,
         automatically_active INTEGER DEFAULT 0,
         clear_book_on_start INTEGER DEFAULT 0,
+        chart_color TEXT,
+        series_color TEXT,
+        show_gmp_series INTEGER DEFAULT 0,
+        show_gmp_outcome INTEGER DEFAULT 0,
         manual_activation INTEGER DEFAULT 0,
-        uma_resolution_statuses TEXT,
+        neg_risk INTEGER DEFAULT 0,
+        neg_risk_other INTEGER DEFAULT 0,
+        game_id TEXT,
+        sports_market_type TEXT,
+        line REAL,
         pending_deployment INTEGER DEFAULT 0,
         deploying INTEGER DEFAULT 0,
+        deploying_timestamp TEXT,
+        scheduled_deployment_timestamp TEXT,
         rfq_enabled INTEGER DEFAULT 0,
-        holding_rewards_enabled INTEGER DEFAULT 0,
-        fees_enabled INTEGER DEFAULT 0,
-        created_at TEXT,
-        updated_at TEXT,
+        event_start_time TEXT,
         fetched_at TEXT,
         FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+    );
+
+    -- Image optimization tables
+    CREATE TABLE IF NOT EXISTS image_optimized (
+        id TEXT PRIMARY KEY,
+        image_url_source TEXT,
+        image_url_optimized TEXT,
+        image_size_kb_source REAL,
+        image_size_kb_optimized REAL,
+        image_optimized_complete INTEGER DEFAULT 0,
+        image_optimized_last_updated TEXT,
+        rel_id INTEGER,
+        field TEXT,
+        relname TEXT,
+        entity_type TEXT, -- 'event', 'market', 'series', 'collection'
+        entity_id TEXT
+    );
+
+    -- Categories table
+    CREATE TABLE IF NOT EXISTS categories (
+        id TEXT PRIMARY KEY,
+        label TEXT,
+        parent_category TEXT,
+        slug TEXT UNIQUE,
+        published_at TEXT,
+        created_by TEXT,
+        updated_by TEXT,
+        created_at TEXT,
+        updated_at TEXT
     );
 
     -- Collections table
     CREATE TABLE IF NOT EXISTS collections (
         id TEXT PRIMARY KEY,
+        ticker TEXT,
         slug TEXT UNIQUE,
         title TEXT,
+        subtitle TEXT,
+        collection_type TEXT,
         description TEXT,
-        created_at TEXT,
-        updated_at TEXT
-    );
-
-    -- Series table
-    CREATE TABLE IF NOT EXISTS series (
-        id TEXT PRIMARY KEY,
-        slug TEXT UNIQUE,
-        title TEXT,
-        description TEXT,
-        creator TEXT,
-        liquidity REAL DEFAULT 0,
-        volume REAL DEFAULT 0,
-        volume_24hr REAL DEFAULT 0,
-        volume_1wk REAL DEFAULT 0,
-        volume_1mo REAL DEFAULT 0,
-        volume_1yr REAL DEFAULT 0,
-        open_interest REAL DEFAULT 0,
-        avg_price REAL DEFAULT 0,
+        tags TEXT,
+        image TEXT,
+        icon TEXT,
+        header_image TEXT,
+        layout TEXT,
         active INTEGER DEFAULT 1,
         closed INTEGER DEFAULT 0,
         archived INTEGER DEFAULT 0,
         new INTEGER DEFAULT 0,
         featured INTEGER DEFAULT 0,
         restricted INTEGER DEFAULT 0,
+        is_template INTEGER DEFAULT 0,
+        template_variables TEXT,
+        published_at TEXT,
+        created_by TEXT,
+        updated_by TEXT,
         created_at TEXT,
         updated_at TEXT,
+        comments_enabled INTEGER DEFAULT 0
+    );
+
+    -- Series table
+    CREATE TABLE IF NOT EXISTS series (
+        id TEXT PRIMARY KEY,
+        ticker TEXT,
+        slug TEXT UNIQUE,
+        title TEXT,
+        subtitle TEXT,
+        series_type TEXT,
+        recurrence TEXT,
+        description TEXT,
+        image TEXT,
+        icon TEXT,
+        layout TEXT,
+        active INTEGER DEFAULT 1,
+        closed INTEGER DEFAULT 0,
+        archived INTEGER DEFAULT 0,
+        new INTEGER DEFAULT 0,
+        featured INTEGER DEFAULT 0,
+        restricted INTEGER DEFAULT 0,
+        is_template INTEGER DEFAULT 0,
+        template_variables INTEGER DEFAULT 0,
+        published_at TEXT,
+        created_by TEXT,
+        updated_by TEXT,
+        created_at TEXT,
+        updated_at TEXT,
+        comments_enabled INTEGER DEFAULT 0,
+        competitive TEXT,
+        volume_24hr REAL DEFAULT 0,
+        volume REAL DEFAULT 0,
+        liquidity REAL DEFAULT 0,
+        start_date TEXT,
+        pyth_token_id TEXT,
+        cg_asset_name TEXT,
+        score REAL,
         fetched_at TEXT
     );
 
@@ -186,11 +336,49 @@ def get_schema():
         force_hide INTEGER DEFAULT 0,
         is_carousel INTEGER DEFAULT 0,
         published_at TEXT,
-        created_by TEXT,
-        updated_by TEXT,
+        created_by INTEGER,
+        updated_by INTEGER,
         created_at TEXT,
         updated_at TEXT,
         fetched_at TEXT
+    );
+
+    -- Event creators table
+    CREATE TABLE IF NOT EXISTS event_creators (
+        id TEXT PRIMARY KEY,
+        creator_name TEXT,
+        creator_handle TEXT,
+        creator_url TEXT,
+        creator_image TEXT,
+        created_at TEXT,
+        updated_at TEXT
+    );
+
+    -- Chats table
+    CREATE TABLE IF NOT EXISTS chats (
+        id TEXT PRIMARY KEY,
+        channel_id TEXT,
+        channel_name TEXT,
+        channel_image TEXT,
+        live INTEGER DEFAULT 0,
+        start_time TEXT,
+        end_time TEXT
+    );
+
+    -- Templates table
+    CREATE TABLE IF NOT EXISTS templates (
+        id TEXT PRIMARY KEY,
+        event_title TEXT,
+        event_slug TEXT,
+        event_image TEXT,
+        market_title TEXT,
+        description TEXT,
+        resolution_source TEXT,
+        neg_risk INTEGER DEFAULT 0,
+        sort_by TEXT,
+        show_market_images INTEGER DEFAULT 0,
+        series_slug TEXT,
+        outcomes TEXT
     );
 
     -- Users table (whale focused)
@@ -237,6 +425,7 @@ def get_schema():
         timestamp TEXT,
         volume REAL,
         volume_24hr REAL,
+        liquidity REAL,
         PRIMARY KEY (event_id, timestamp),
         FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
     );
@@ -244,6 +433,7 @@ def get_schema():
     -- Open interest tracking table
     CREATE TABLE IF NOT EXISTS market_open_interest (
         market_id TEXT,
+        condition_id TEXT,
         timestamp TEXT,
         open_interest REAL,
         PRIMARY KEY (market_id, timestamp),
@@ -253,24 +443,17 @@ def get_schema():
     -- Market holders table
     CREATE TABLE IF NOT EXISTS market_holders (
         market_id TEXT,
-        token_id TEXT,
         proxy_wallet TEXT,
-        username TEXT,
-        pseudonym TEXT,
-        amount REAL DEFAULT 0,
-        outcome_index INTEGER,
-        bio TEXT,
-        profile_image TEXT,
-        updated_at TEXT,
-        PRIMARY KEY (market_id, token_id, proxy_wallet),
-        FOREIGN KEY (market_id) REFERENCES markets(id) ON DELETE CASCADE,
-        FOREIGN KEY (proxy_wallet) REFERENCES users(proxy_wallet) ON DELETE CASCADE
+        shares REAL DEFAULT 0,
+        avg_price REAL DEFAULT 0,
+        PRIMARY KEY (market_id, proxy_wallet),
+        FOREIGN KEY (market_id) REFERENCES markets(id) ON DELETE CASCADE
     );
     """
     
     # Relationship tables
     relationship_tables = """
-    -- Event-Tags relationship table
+    -- Event tags relationship table
     CREATE TABLE IF NOT EXISTS event_tags (
         event_id TEXT,
         tag_id TEXT,
@@ -280,7 +463,7 @@ def get_schema():
         FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
     );
 
-    -- Market-Tags relationship table
+    -- Market tags relationship table
     CREATE TABLE IF NOT EXISTS market_tags (
         market_id TEXT,
         tag_id TEXT,
@@ -290,7 +473,70 @@ def get_schema():
         FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
     );
 
-    -- Series-Tags relationship table
+    -- Market categories relationship table
+    CREATE TABLE IF NOT EXISTS market_categories (
+        market_id TEXT,
+        category_id TEXT,
+        PRIMARY KEY (market_id, category_id),
+        FOREIGN KEY (market_id) REFERENCES markets(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    );
+
+    -- Event series relationship table
+    CREATE TABLE IF NOT EXISTS event_series (
+        event_id TEXT,
+        series_id TEXT,
+        PRIMARY KEY (event_id, series_id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
+    );
+
+    -- Event collections relationship table
+    CREATE TABLE IF NOT EXISTS event_collections (
+        event_id TEXT,
+        collection_id TEXT,
+        PRIMARY KEY (event_id, collection_id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+        FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+    );
+
+    -- Event categories relationship table
+    CREATE TABLE IF NOT EXISTS event_categories (
+        event_id TEXT,
+        category_id TEXT,
+        PRIMARY KEY (event_id, category_id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+    );
+
+    -- Event creators relationship table
+    CREATE TABLE IF NOT EXISTS event_event_creators (
+        event_id TEXT,
+        creator_id TEXT,
+        PRIMARY KEY (event_id, creator_id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+        FOREIGN KEY (creator_id) REFERENCES event_creators(id) ON DELETE CASCADE
+    );
+
+    -- Event chats relationship table
+    CREATE TABLE IF NOT EXISTS event_chats (
+        event_id TEXT,
+        chat_id TEXT,
+        PRIMARY KEY (event_id, chat_id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+        FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+    );
+
+    -- Event templates relationship table
+    CREATE TABLE IF NOT EXISTS event_templates (
+        event_id TEXT,
+        template_id TEXT,
+        PRIMARY KEY (event_id, template_id),
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
+        FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
+    );
+
+    -- Series tags relationship table
     CREATE TABLE IF NOT EXISTS series_tags (
         series_id TEXT,
         tag_id TEXT,
@@ -300,35 +546,40 @@ def get_schema():
         FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
     );
 
-    -- Collection-Tags relationship table
-    CREATE TABLE IF NOT EXISTS collection_tags (
-        collection_id TEXT,
-        tag_id TEXT,
-        tag_slug TEXT,
-        PRIMARY KEY (collection_id, tag_id),
-        FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
-    );
-
-    -- Series-Events relationship table
-    CREATE TABLE IF NOT EXISTS series_events (
+    -- Series categories relationship table
+    CREATE TABLE IF NOT EXISTS series_categories (
         series_id TEXT,
-        event_id TEXT,
-        position INTEGER DEFAULT 0,
-        created_at TEXT,
-        PRIMARY KEY (series_id, event_id),
+        category_id TEXT,
+        PRIMARY KEY (series_id, category_id),
         FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
-        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
     );
 
-    -- Series-Collections relationship table
+    -- Series collections relationship table
     CREATE TABLE IF NOT EXISTS series_collections (
         series_id TEXT,
         collection_id TEXT,
-        collection_title TEXT,
-        position INTEGER DEFAULT 0,
-        created_at TEXT,
         PRIMARY KEY (series_id, collection_id),
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+    );
+
+    -- Series chats relationship table
+    CREATE TABLE IF NOT EXISTS series_chats (
+        series_id TEXT,
+        chat_id TEXT,
+        PRIMARY KEY (series_id, chat_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+    );
+
+    -- Series events relationship table
+    CREATE TABLE IF NOT EXISTS series_events (
+        series_id TEXT,
+        event_id TEXT,
+        PRIMARY KEY (series_id, event_id),
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
     );
 
     -- Tag relationships table
@@ -499,7 +750,7 @@ def get_schema():
 
     CREATE INDEX IF NOT EXISTS idx_markets_event ON markets(event_id);
     CREATE INDEX IF NOT EXISTS idx_markets_condition ON markets(condition_id);
-    CREATE INDEX IF NOT EXISTS idx_markets_volume ON markets(volume DESC);
+    CREATE INDEX IF NOT EXISTS idx_markets_volume ON markets(volume_num DESC);
     CREATE INDEX IF NOT EXISTS idx_markets_active ON markets(active);
 
     CREATE INDEX IF NOT EXISTS idx_series_volume ON series(volume DESC);
@@ -507,7 +758,7 @@ def get_schema():
 
     CREATE INDEX IF NOT EXISTS idx_tags_slug ON tags(slug);
 
-    -- Indexes for relationship tables (INCLUDING EVENT_TAGS!)
+    -- Indexes for relationship tables
     CREATE INDEX IF NOT EXISTS idx_event_tags_event ON event_tags(event_id);
     CREATE INDEX IF NOT EXISTS idx_event_tags_tag ON event_tags(tag_id);
 
@@ -559,14 +810,11 @@ def get_schema():
     full_schema = (
         core_tables + 
         tracking_tables + 
-        relationship_tables +  # THIS INCLUDES EVENT_TAGS!
+        relationship_tables +
         user_tables + 
         indexes + 
         pragmas
     )
-    
-    print("DEBUG: Schema includes event_tags table: ", "event_tags" in full_schema)
-    print("DEBUG: Total schema length: ", len(full_schema))
     
     return full_schema
 

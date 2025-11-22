@@ -1,35 +1,29 @@
 """
-Tags Manager for Polymarket Terminal - MULTITHREADED
-Handles fetching, processing, and storing tag data with concurrent requests
+Tags Manager for Polymarket Terminal
+Handles tag data from events and standalone tag operations
 """
 
 import requests
 import json
 import time
-import sqlite3
-import gc
 from datetime import datetime
 from typing import Dict, List, Optional
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from threading import Lock
 from backend.database.database_manager import DatabaseManager
 from backend.config import Config
-from backend.fetch.entity.batch.batch_tags import BatchTagsManager
-from backend.fetch.entity.id.id_tags import IdTagsManager
 from backend.database.entity.store_tags import StoreTagsManager
 
 class TagsManager:
-    """Manager for tag-related operations with multithreading support"""
+    """Manager for tag-related operations"""
     
     def __init__(self):
         # Core configuration
         self.config = Config
         self.base_url = Config.GAMMA_API_URL
         
-        # Initialize managers
+        # Initialize database and storage
         self.db_manager = DatabaseManager()
-        self.batch_manager = BatchTagsManager()
-        self.id_manager = IdTagsManager()
         self.store_manager = StoreTagsManager()
         
         # Setup logging
@@ -37,263 +31,260 @@ class TagsManager:
         
         # Thread safety
         self._lock = Lock()
-
-    def fetch_all_tags(self, limit: int = 1000) -> List[Dict]:
+    
+    def store_event_tags(self, event_id: str, tags: List):
         """
-        Fetch all tags from the API
+        Store tags from an event response
+        Called by markets_manager when processing events
         
         Args:
-            limit: Number of tags to fetch
+            event_id: The event ID
+            tags: List of tags from event response (can be strings or dicts)
         """
-        return self.batch_manager.fetch_all_tags(limit)
-
-    def fetch_tag_by_id(self, tag_id: str) -> Optional[Dict]:
+        if not tags or not self.config.FETCH_TAGS:
+            return
+        
+        tag_records = []
+        event_tag_records = []
+        
+        for tag in tags:
+            # Handle both string tags and tag objects
+            if isinstance(tag, str):
+                tag_id = tag
+                tag_slug = tag
+                tag_label = tag
+                tag_data = {}
+            elif isinstance(tag, dict):
+                tag_id = tag.get('id', '')
+                tag_slug = tag.get('slug', '')
+                tag_label = tag.get('label', '')
+                tag_data = tag
+            else:
+                self.logger.warning(f"Skipping unknown tag type: {type(tag)}")
+                continue
+            
+            if tag_id:
+                # Prepare tag record
+                tag_record = {
+                    'id': tag_id,
+                    'slug': tag_slug,
+                    'label': tag_label,
+                    'force_show': int(tag_data.get('forceShow', False)) if tag_data else 0,
+                    'force_hide': int(tag_data.get('forceHide', False)) if tag_data else 0,
+                    'is_carousel': int(tag_data.get('isCarousel', False)) if tag_data else 0,
+                    'published_at': tag_data.get('publishedAt') if tag_data else None,
+                    'created_by': tag_data.get('createdBy') if tag_data else None,
+                    'updated_by': tag_data.get('updatedBy') if tag_data else None,
+                    'created_at': tag_data.get('createdAt') if tag_data else None,
+                    'updated_at': tag_data.get('updatedAt') if tag_data else None,
+                    'fetched_at': datetime.now().isoformat()
+                }
+                tag_records.append(tag_record)
+                
+                # Prepare event-tag relationship
+                event_tag_record = {
+                    'event_id': event_id,
+                    'tag_id': tag_id,
+                    'tag_slug': tag_slug
+                }
+                event_tag_records.append(event_tag_record)
+        
+        # Store tags (ignore duplicates)
+        if tag_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_ignore('tags', tag_records)
+                self.logger.debug(f"Stored {len(tag_records)} tags for event {event_id}")
+        
+        # Store event-tag relationships
+        if event_tag_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_ignore('event_tags', event_tag_records)
+                self.logger.debug(f"Stored {len(event_tag_records)} event-tag relationships")
+    
+    def store_market_tags(self, market_id: str, tags: List):
         """
-        Fetch detailed information for a specific tag
-        """
-        return self.id_manager.fetch_tag_by_id(tag_id)
-
-    def fetch_tag_by_id_parallel(self, tag_id: str) -> Optional[Dict]:
-        """
-        Fetch detailed information for a specific tag with parallel sub-requests
-        """
-        return self.id_manager.fetch_tag_by_id_parallel(tag_id)
-
-    def fetch_tag_relationships(self, tag_id: str) -> List[Dict]:
-        """
-        Fetch relationships for a specific tag
-        """
-        return self.batch_manager.fetch_tag_relationships(tag_id)
-
-    def fetch_event_tags(self, event_id: str) -> List[Dict]:
-        """
-        Fetch tags for a specific event
-        """
-        return self.batch_manager.fetch_event_tags(event_id)
-
-    def fetch_market_tags(self, market_id: str) -> List[Dict]:
-        """
-        Fetch tags for a specific market
-        """
-        return self.batch_manager.fetch_market_tags(market_id)
-
-    def process_all_tags_detailed(self, use_parallel: bool = True, num_threads: int = 20):
-        """
-        Process all tags to fetch detailed information with multithreading
+        Store tags from a market response
         
         Args:
-            use_parallel: If True, uses parallel fetching for sub-requests
-            num_threads: Number of concurrent threads (default: 20)
+            market_id: The market ID
+            tags: List of tags from market response
         """
-        # Get all tag IDs from database
-        tags = self.db_manager.fetch_all("SELECT id FROM tags ORDER BY id")
+        if not tags or not self.config.FETCH_TAGS:
+            return
         
-        self.logger.info(f"Processing {len(tags)} tags for detailed information ({num_threads} threads)...")
+        tag_records = []
+        market_tag_records = []
         
-        processed = 0
-        errors = 0
-        relationships_count = 0
-        lock = Lock()
-        
-        # Choose which fetch method to use
-        fetch_method = self.fetch_tag_by_id_parallel if use_parallel else self.fetch_tag_by_id
-        
-        def process_tag(tag):
-            nonlocal processed, errors, relationships_count
-            try:
-                result = fetch_method(tag['id'])
+        for tag in tags:
+            # Handle both string tags and tag objects
+            if isinstance(tag, str):
+                tag_id = tag
+                tag_slug = tag
+                tag_label = tag
+                tag_data = {}
+            elif isinstance(tag, dict):
+                tag_id = tag.get('id', '')
+                tag_slug = tag.get('slug', '')
+                tag_label = tag.get('label', '')
+                tag_data = tag
+            else:
+                continue
+            
+            if tag_id:
+                # Prepare tag record
+                tag_record = {
+                    'id': tag_id,
+                    'slug': tag_slug,
+                    'label': tag_label,
+                    'force_show': int(tag_data.get('forceShow', False)) if tag_data else 0,
+                    'force_hide': int(tag_data.get('forceHide', False)) if tag_data else 0,
+                    'is_carousel': int(tag_data.get('isCarousel', False)) if tag_data else 0,
+                    'published_at': tag_data.get('publishedAt') if tag_data else None,
+                    'created_by': tag_data.get('createdBy') if tag_data else None,
+                    'updated_by': tag_data.get('updatedBy') if tag_data else None,
+                    'created_at': tag_data.get('createdAt') if tag_data else None,
+                    'updated_at': tag_data.get('updatedAt') if tag_data else None,
+                    'fetched_at': datetime.now().isoformat()
+                }
+                tag_records.append(tag_record)
                 
-                # Fetch relationships
-                relationships = self.fetch_tag_relationships(tag['id'])
-                
-                with lock:
-                    processed += 1
-                    relationships_count += len(relationships)
-                    if processed % 50 == 0:
-                        self.logger.info(f"Processed {processed}/{len(tags)} tags")
-            except Exception as e:
-                with lock:
-                    errors += 1
-                self.logger.error(f"Error processing tag {tag['id']}: {e}")
+                # Prepare market-tag relationship
+                market_tag_records.append({
+                    'market_id': market_id,
+                    'tag_id': tag_id,
+                    'tag_slug': tag_slug
+                })
         
-        # Process tags concurrently
-        with ThreadPoolExecutor(max_workers=num_threads) as executor:
-            executor.map(process_tag, tags)
+        # Store tags (ignore duplicates)
+        if tag_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_ignore('tags', tag_records)
         
-        self.logger.info(f"✅ Tag processing complete. Processed: {processed}, Errors: {errors}")
-        self.logger.info(f"Total relationships found: {relationships_count}")
-
-    def daily_scan(self, use_parallel: bool = True):
+        # Store market-tag relationships
+        if market_tag_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_ignore('market_tags', market_tag_records)
+    
+    def store_tag_relationships(self, tag_id: str, relationships: List[Dict]):
         """
-        Perform daily scan for tag updates
+        Store tag relationships
         
         Args:
-            use_parallel: If True, uses parallel fetching optimizations
+            tag_id: The primary tag ID
+            relationships: List of related tag relationships
         """
-        if not self.config.FETCH_TAGS:
-            self.logger.info("Tag fetching disabled")
-            return 0
+        if not relationships:
+            return
         
-        self.logger.info("Starting daily tag scan...")
+        relationship_records = []
         
-        # Fetch all tags
-        all_tags = self.fetch_all_tags()
+        for rel in relationships:
+            record = {
+                'tag_id': tag_id,
+                'related_tag_id': rel.get('relatedTagId'),
+                'relationship_type': rel.get('relationshipType', 'related'),
+                'strength': rel.get('strength', 1.0),
+                'created_at': datetime.now().isoformat()
+            }
+            relationship_records.append(record)
         
-        # Process detailed information and relationships
-        self.process_all_tags_detailed(use_parallel=use_parallel)
-        
-        # Get statistics
-        stats = self._get_tag_statistics()
-        
-        self.logger.info(f"Daily tag scan complete. Total tags: {len(all_tags)}")
-        self.logger.info(f"Tag statistics: {stats}")
-        
-        return len(all_tags)
-
-    def _get_tag_statistics(self) -> Dict:
-        """
-        Get statistics about tags in the database
-        """
-        stats = {}
-        
-        # Total tags
-        stats['total_tags'] = self.db_manager.get_table_count('tags')
-        
-        # Tags with relationships
-        result = self.db_manager.fetch_one("""
-            SELECT COUNT(DISTINCT tag_id) as count
-            FROM tag_relationships
-        """)
-        stats['tags_with_relationships'] = result['count'] if result else 0
-        
-        # Total relationships
-        stats['total_relationships'] = self.db_manager.get_table_count('tag_relationships')
-        
-        return stats
-
-    def _close_all_connections(self):
-        """Close all database connections from managers"""
-        self.logger.info("Closing all tag manager database connections...")
-        
-        # Close connections from all sub-managers
-        managers = [
-            self.db_manager,
-            self.batch_manager,
-            self.id_manager,
-            self.store_manager
-        ]
-        
-        for manager in managers:
-            try:
-                if hasattr(manager, 'close_connection'):
-                    manager.close_connection()
-            except:
-                pass
-        
-        # Force garbage collection
-        gc.collect()
-        
-        # Small delay to ensure connections are closed
-        time.sleep(0.5)
-
-    def delete_tags_only(self) -> Dict:
-        """
-        Delete tags data
-        
-        Returns:
-            Dict with success status, number deleted, and any error
-        """
-        self.logger.info("\n" + "=" * 60)
-        self.logger.info("🗑️  Deleting TAGS Data")
-        self.logger.info("=" * 60)
-        
-        result = {'success': False, 'deleted': 0, 'error': None}
-        
-        try:
-            # Close all connections first
-            self._close_all_connections()
-            
-            # Create a fresh database connection for deletion
-            conn = sqlite3.connect(
-                self.db_manager.db_path,
-                timeout=30.0,
-                isolation_level='EXCLUSIVE'
-            )
-            
-            try:
-                cursor = conn.cursor()
-                
-                # Enable WAL mode
-                cursor.execute("PRAGMA journal_mode=WAL")
-                cursor.execute("PRAGMA synchronous=NORMAL")
-                
-                # Get current count
-                cursor.execute("SELECT COUNT(*) FROM tags")
-                before_count = cursor.fetchone()[0]
-                
-                # Begin exclusive transaction
-                cursor.execute("BEGIN EXCLUSIVE")
-                
-                # Delete all related data
-                tables_to_clear = [
-                    'event_tags',
-                    'market_tags',
-                    'series_tags',
-                    'collection_tags',
-                    'tag_relationships',
-                    'tags'
-                ]
-                
-                for table in tables_to_clear:
-                    cursor.execute(f"DELETE FROM {table}")
-                    self.logger.info(f"  Cleared table: {table}")
-                
-                # Commit the transaction
-                conn.commit()
-                
-                result['deleted'] = before_count
-                
-            finally:
-                conn.close()
-            
-            result['success'] = True
-            self.logger.info(f"✅ Deleted {result['deleted']} tags and related data")
-            
-        except Exception as e:
-            result['error'] = str(e)
-            self.logger.error(f"❌ Error deleting tags: {e}")
-        
-        finally:
-            # Reinitialize connections for future operations
-            self.db_manager = DatabaseManager()
-            
-        return result
-
+        if relationship_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_replace('tag_relationships', relationship_records)
+                self.logger.debug(f"Stored {len(relationship_records)} tag relationships")
+    
     def load_tags_only(self) -> Dict:
         """
-        Load only tags data
-        
-        Returns:
-            Dict with success status, count of tags loaded, and any error
+        Load standalone tag data (for tags not attached to events/markets)
         """
         self.logger.info("\n" + "=" * 60)
-        self.logger.info("🏷️  Loading TAGS Only")
+        self.logger.info("🏷️ Loading TAGS Only")
         self.logger.info("=" * 60)
         
         start_time = time.time()
         result = {'success': False, 'count': 0, 'error': None}
         
         try:
-            tags = self.fetch_all_tags()
-            result['count'] = len(tags)
+            # Note: Tags are typically loaded from events and markets
+            # This is a placeholder for standalone tag loading if needed
+            result['count'] = 0
             result['success'] = True
             
+            # Get current tag statistics
+            stats = self.get_tag_statistics()
+            
             elapsed_time = time.time() - start_time
-            self.logger.info(f"✅ Tags loaded: {result['count']}")
-            self.logger.info(f"⏱️  Time taken: {elapsed_time:.2f} seconds")
+            self.logger.info(f"✅ Tag processing complete")
+            self.logger.info(f"   Total tags in database: {stats.get('total_tags', 0)}")
+            self.logger.info(f"   Tags with events: {stats.get('tags_with_events', 0)}")
+            self.logger.info(f"   Tags with markets: {stats.get('tags_with_markets', 0)}")
+            self.logger.info(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
             
         except Exception as e:
             result['error'] = str(e)
             self.logger.error(f"❌ Error loading tags: {e}")
             
         return result
+    
+    def delete_tags_only(self) -> Dict:
+        """Delete tag data"""
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("🗑️ Deleting TAGS Data")
+        self.logger.info("=" * 60)
+        
+        result = {'success': False, 'deleted': 0, 'error': None}
+        
+        try:
+            # Get current count
+            before_count = self.db_manager.get_table_count('tags')
+            
+            # Delete all related data
+            self.db_manager.delete_records('event_tags', commit=False)
+            self.db_manager.delete_records('market_tags', commit=False)
+            self.db_manager.delete_records('series_tags', commit=False)
+            self.db_manager.delete_records('tag_relationships', commit=False)
+            deleted = self.db_manager.delete_records('tags', commit=True)
+            
+            result['deleted'] = before_count
+            result['success'] = True
+            self.logger.info(f"✅ Deleted {result['deleted']} tags and related data")
+            
+        except Exception as e:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error deleting tags: {e}")
+            
+        return result
+    
+    def get_tag_statistics(self) -> Dict:
+        """Get statistics about tags in the database"""
+        stats = {}
+        
+        # Total tags
+        total = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM tags")
+        stats['total_tags'] = total['count'] if total else 0
+        
+        # Tags with events
+        with_events = self.db_manager.fetch_one("""
+            SELECT COUNT(DISTINCT tag_id) as count FROM event_tags
+        """)
+        stats['tags_with_events'] = with_events['count'] if with_events else 0
+        
+        # Tags with markets
+        with_markets = self.db_manager.fetch_one("""
+            SELECT COUNT(DISTINCT tag_id) as count FROM market_tags
+        """)
+        stats['tags_with_markets'] = with_markets['count'] if with_markets else 0
+        
+        # Tags with relationships
+        with_relationships = self.db_manager.fetch_one("""
+            SELECT COUNT(DISTINCT tag_id) as count FROM tag_relationships
+        """)
+        stats['tags_with_relationships'] = with_relationships['count'] if with_relationships else 0
+        
+        # Total relationships
+        total_relationships = self.db_manager.fetch_one("""
+            SELECT COUNT(*) as count FROM tag_relationships
+        """)
+        stats['total_relationships'] = total_relationships['count'] if total_relationships else 0
+        
+        return stats

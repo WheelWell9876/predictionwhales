@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Polymarket Data Analyzer - Enhanced Version
-Comprehensive analysis of the Polymarket terminal database with detailed column analysis and sample data
+Comprehensive analysis of the Polymarket terminal database with detailed analysis for all tables
 """
 
 import sys
@@ -212,9 +212,371 @@ def analyze_events_detailed(conn: sqlite3.Connection) -> Dict[str, Any]:
     date_row = cursor.fetchone()
     extra_analysis['date_range'] = dict(date_row) if date_row else {}
     
+    # Events with markets count
+    cursor.execute("""
+        SELECT COUNT(DISTINCT event_id) as events_with_markets
+        FROM markets
+    """)
+    extra_analysis['events_with_markets'] = cursor.fetchone()['events_with_markets']
+    
+    # Events with tags count
+    cursor.execute("""
+        SELECT COUNT(DISTINCT event_id) as events_with_tags
+        FROM event_tags
+    """)
+    extra_analysis['events_with_tags'] = cursor.fetchone()['events_with_tags']
+    
     analysis['event_specific_analysis'] = extra_analysis
     
     return analysis
+
+def analyze_markets_detailed(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Detailed analysis of markets table"""
+    analysis = analyze_table_comprehensive(conn, 'markets')
+    
+    cursor = conn.cursor()
+    
+    # Additional market-specific analysis
+    extra_analysis = {}
+    
+    # Status breakdown
+    cursor.execute("""
+        SELECT 
+            SUM(CASE WHEN active = 1 THEN 1 ELSE 0 END) as active_count,
+            SUM(CASE WHEN closed = 1 THEN 1 ELSE 0 END) as closed_count,
+            SUM(CASE WHEN archived = 1 THEN 1 ELSE 0 END) as archived_count,
+            SUM(CASE WHEN featured = 1 THEN 1 ELSE 0 END) as featured_count,
+            SUM(CASE WHEN restricted = 1 THEN 1 ELSE 0 END) as restricted_count,
+            SUM(CASE WHEN ready = 1 THEN 1 ELSE 0 END) as ready_count,
+            SUM(CASE WHEN funded = 1 THEN 1 ELSE 0 END) as funded_count
+        FROM markets
+    """)
+    status_row = cursor.fetchone()
+    extra_analysis['status_breakdown'] = dict(status_row) if status_row else {}
+    
+    # Volume and liquidity statistics
+    cursor.execute("""
+        SELECT 
+            SUM(volume_num) as total_volume,
+            AVG(volume_num) as avg_volume,
+            MAX(volume_num) as max_volume,
+            MIN(volume_num) as min_volume,
+            SUM(volume_24hr) as total_volume_24hr,
+            AVG(liquidity_num) as avg_liquidity,
+            SUM(liquidity_num) as total_liquidity,
+            MAX(liquidity_num) as max_liquidity
+        FROM markets
+        WHERE active = 1
+    """)
+    volume_row = cursor.fetchone()
+    extra_analysis['volume_stats'] = dict(volume_row) if volume_row else {}
+    
+    # Top markets by volume
+    cursor.execute("""
+        SELECT id, question, slug, volume_num, liquidity_num, last_trade_price, spread
+        FROM markets
+        WHERE active = 1
+        ORDER BY volume_num DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_by_volume'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Markets by event
+    cursor.execute("""
+        SELECT event_id, COUNT(*) as market_count, SUM(volume_num) as total_volume
+        FROM markets
+        GROUP BY event_id
+        ORDER BY market_count DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_events_by_market_count'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Order book enabled markets
+    cursor.execute("""
+        SELECT 
+            COUNT(*) as total,
+            SUM(CASE WHEN enable_order_book = 1 THEN 1 ELSE 0 END) as order_book_enabled,
+            SUM(CASE WHEN accepting_orders = 1 THEN 1 ELSE 0 END) as accepting_orders
+        FROM markets
+    """)
+    order_stats = cursor.fetchone()
+    extra_analysis['order_book_stats'] = dict(order_stats) if order_stats else {}
+    
+    # Markets with tags
+    cursor.execute("""
+        SELECT COUNT(DISTINCT market_id) as markets_with_tags
+        FROM market_tags
+    """)
+    extra_analysis['markets_with_tags'] = cursor.fetchone()['markets_with_tags']
+    
+    analysis['market_specific_analysis'] = extra_analysis
+    
+    return analysis
+
+def analyze_series_detailed(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Detailed analysis of series table"""
+    analysis = analyze_table_comprehensive(conn, 'series')
+    
+    cursor = conn.cursor()
+    
+    # Additional series-specific analysis
+    extra_analysis = {}
+    
+    # Status breakdown
+    cursor.execute("""
+        SELECT 
+            SUM(CASE WHEN active = 1 THEN 1 ELSE 0 END) as active_count,
+            SUM(CASE WHEN closed = 1 THEN 1 ELSE 0 END) as closed_count,
+            SUM(CASE WHEN archived = 1 THEN 1 ELSE 0 END) as archived_count,
+            SUM(CASE WHEN featured = 1 THEN 1 ELSE 0 END) as featured_count,
+            SUM(CASE WHEN restricted = 1 THEN 1 ELSE 0 END) as restricted_count
+        FROM series
+    """)
+    status_row = cursor.fetchone()
+    extra_analysis['status_breakdown'] = dict(status_row) if status_row else {}
+    
+    # Volume and liquidity statistics
+    cursor.execute("""
+        SELECT 
+            SUM(volume) as total_volume,
+            AVG(volume) as avg_volume,
+            MAX(volume) as max_volume,
+            SUM(liquidity) as total_liquidity,
+            AVG(liquidity) as avg_liquidity
+        FROM series
+        WHERE active = 1
+    """)
+    volume_row = cursor.fetchone()
+    extra_analysis['volume_stats'] = dict(volume_row) if volume_row else {}
+    
+    # Top series by volume
+    cursor.execute("""
+        SELECT id, ticker, slug, title, volume, liquidity
+        FROM series
+        ORDER BY volume DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_by_volume'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Series with events
+    cursor.execute("""
+        SELECT series_id, COUNT(*) as event_count
+        FROM series_events
+        GROUP BY series_id
+        ORDER BY event_count DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_series_by_event_count'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Series with tags
+    cursor.execute("""
+        SELECT COUNT(DISTINCT series_id) as series_with_tags
+        FROM series_tags
+    """)
+    extra_analysis['series_with_tags'] = cursor.fetchone()['series_with_tags']
+    
+    # Series with categories
+    cursor.execute("""
+        SELECT COUNT(DISTINCT series_id) as series_with_categories
+        FROM series_categories
+    """)
+    extra_analysis['series_with_categories'] = cursor.fetchone()['series_with_categories']
+    
+    analysis['series_specific_analysis'] = extra_analysis
+    
+    return analysis
+
+def analyze_tags_detailed(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Detailed analysis of tags table"""
+    analysis = analyze_table_comprehensive(conn, 'tags')
+    
+    cursor = conn.cursor()
+    
+    # Additional tag-specific analysis
+    extra_analysis = {}
+    
+    # Tag usage statistics
+    cursor.execute("""
+        SELECT 
+            (SELECT COUNT(DISTINCT tag_id) FROM event_tags) as tags_on_events,
+            (SELECT COUNT(DISTINCT tag_id) FROM market_tags) as tags_on_markets,
+            (SELECT COUNT(DISTINCT tag_id) FROM series_tags) as tags_on_series
+    """)
+    usage_row = cursor.fetchone()
+    extra_analysis['usage_stats'] = dict(usage_row) if usage_row else {}
+    
+    # Most used tags on events
+    cursor.execute("""
+        SELECT t.id, t.label, t.slug, COUNT(et.event_id) as usage_count
+        FROM tags t
+        JOIN event_tags et ON t.id = et.tag_id
+        GROUP BY t.id, t.label, t.slug
+        ORDER BY usage_count DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_tags_on_events'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Most used tags on markets
+    cursor.execute("""
+        SELECT t.id, t.label, t.slug, COUNT(mt.market_id) as usage_count
+        FROM tags t
+        JOIN market_tags mt ON t.id = mt.tag_id
+        GROUP BY t.id, t.label, t.slug
+        ORDER BY usage_count DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_tags_on_markets'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Tag relationships
+    cursor.execute("""
+        SELECT COUNT(*) as total_relationships,
+               COUNT(DISTINCT tag_id) as tags_with_relationships
+        FROM tag_relationships
+    """)
+    rel_stats = cursor.fetchone()
+    extra_analysis['relationship_stats'] = dict(rel_stats) if rel_stats else {}
+    
+    # Carousel tags
+    cursor.execute("""
+        SELECT COUNT(*) as carousel_tags
+        FROM tags
+        WHERE is_carousel = 1
+    """)
+    extra_analysis['carousel_tags'] = cursor.fetchone()['carousel_tags']
+    
+    analysis['tag_specific_analysis'] = extra_analysis
+    
+    return analysis
+
+def analyze_categories_detailed(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Detailed analysis of categories table"""
+    analysis = analyze_table_comprehensive(conn, 'categories')
+    
+    cursor = conn.cursor()
+    
+    # Additional category-specific analysis
+    extra_analysis = {}
+    
+    # Category usage
+    cursor.execute("""
+        SELECT 
+            (SELECT COUNT(DISTINCT category_id) FROM event_categories) as categories_on_events,
+            (SELECT COUNT(DISTINCT category_id) FROM market_categories) as categories_on_markets,
+            (SELECT COUNT(DISTINCT category_id) FROM series_categories) as categories_on_series
+    """)
+    usage_row = cursor.fetchone()
+    extra_analysis['usage_stats'] = dict(usage_row) if usage_row else {}
+    
+    # Top categories by event count
+    cursor.execute("""
+        SELECT c.id, c.label, c.slug, COUNT(ec.event_id) as event_count
+        FROM categories c
+        JOIN event_categories ec ON c.id = ec.category_id
+        GROUP BY c.id, c.label, c.slug
+        ORDER BY event_count DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_categories_by_events'] = [dict(row) for row in cursor.fetchall()]
+    
+    # Parent categories
+    cursor.execute("""
+        SELECT COUNT(*) as parent_categories
+        FROM categories
+        WHERE parent_category IS NOT NULL
+    """)
+    extra_analysis['parent_categories'] = cursor.fetchone()['parent_categories']
+    
+    analysis['category_specific_analysis'] = extra_analysis
+    
+    return analysis
+
+def analyze_collections_detailed(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Detailed analysis of collections table"""
+    analysis = analyze_table_comprehensive(conn, 'collections')
+    
+    cursor = conn.cursor()
+    
+    # Additional collection-specific analysis
+    extra_analysis = {}
+    
+    # Collection status
+    cursor.execute("""
+        SELECT 
+            SUM(CASE WHEN active = 1 THEN 1 ELSE 0 END) as active_count,
+            SUM(CASE WHEN closed = 1 THEN 1 ELSE 0 END) as closed_count,
+            SUM(CASE WHEN archived = 1 THEN 1 ELSE 0 END) as archived_count,
+            SUM(CASE WHEN featured = 1 THEN 1 ELSE 0 END) as featured_count
+        FROM collections
+    """)
+    status_row = cursor.fetchone()
+    extra_analysis['status_breakdown'] = dict(status_row) if status_row else {}
+    
+    # Collections with events
+    cursor.execute("""
+        SELECT collection_id, COUNT(*) as event_count
+        FROM event_collections
+        GROUP BY collection_id
+        ORDER BY event_count DESC
+        LIMIT 10
+    """)
+    extra_analysis['top_collections_by_events'] = [dict(row) for row in cursor.fetchall()]
+    
+    analysis['collection_specific_analysis'] = extra_analysis
+    
+    return analysis
+
+def analyze_relationship_tables(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Analyze all relationship tables"""
+    cursor = conn.cursor()
+    
+    relationship_analysis = {}
+    
+    # Event relationships
+    event_relations = [
+        'event_tags', 'event_categories', 'event_series', 'event_collections',
+        'event_event_creators', 'event_chats', 'event_templates'
+    ]
+    
+    for table in event_relations:
+        try:
+            cursor.execute(f"SELECT COUNT(*) as count FROM {table}")
+            count = cursor.fetchone()['count']
+            relationship_analysis[table] = {
+                'row_count': count,
+                'sample_data': get_sample_rows(conn, table, 5)
+            }
+        except:
+            relationship_analysis[table] = {'row_count': 0, 'error': 'Table not found'}
+    
+    # Market relationships
+    market_relations = ['market_tags', 'market_categories', 'market_open_interest', 'market_holders']
+    
+    for table in market_relations:
+        try:
+            cursor.execute(f"SELECT COUNT(*) as count FROM {table}")
+            count = cursor.fetchone()['count']
+            relationship_analysis[table] = {
+                'row_count': count,
+                'sample_data': get_sample_rows(conn, table, 5)
+            }
+        except:
+            relationship_analysis[table] = {'row_count': 0, 'error': 'Table not found'}
+    
+    # Series relationships
+    series_relations = ['series_events', 'series_tags', 'series_categories', 'series_collections', 'series_chats']
+    
+    for table in series_relations:
+        try:
+            cursor.execute(f"SELECT COUNT(*) as count FROM {table}")
+            count = cursor.fetchone()['count']
+            relationship_analysis[table] = {
+                'row_count': count,
+                'sample_data': get_sample_rows(conn, table, 5)
+            }
+        except:
+            relationship_analysis[table] = {'row_count': 0, 'error': 'Table not found'}
+    
+    return relationship_analysis
 
 def analyze_all_tables(conn: sqlite3.Connection) -> Dict[str, Any]:
     """Analyze all tables in the database"""
@@ -232,9 +594,20 @@ def analyze_all_tables(conn: sqlite3.Connection) -> Dict[str, Any]:
     
     for table in tables:
         print(f"  Analyzing {table}...")
+        
+        # Use detailed analysis for specific tables
         if table == 'events':
-            # Detailed analysis for events
             analysis[table] = analyze_events_detailed(conn)
+        elif table == 'markets':
+            analysis[table] = analyze_markets_detailed(conn)
+        elif table == 'series':
+            analysis[table] = analyze_series_detailed(conn)
+        elif table == 'tags':
+            analysis[table] = analyze_tags_detailed(conn)
+        elif table == 'categories':
+            analysis[table] = analyze_categories_detailed(conn)
+        elif table == 'collections':
+            analysis[table] = analyze_collections_detailed(conn)
         else:
             # Basic analysis for other tables
             analysis[table] = {
@@ -251,6 +624,9 @@ def analyze_all_tables(conn: sqlite3.Connection) -> Dict[str, Any]:
             except:
                 pass
     
+    # Add relationship tables analysis
+    analysis['relationship_tables'] = analyze_relationship_tables(conn)
+    
     return analysis
 
 def generate_summary(tables_analysis: Dict[str, Any]) -> Dict[str, Any]:
@@ -259,20 +635,63 @@ def generate_summary(tables_analysis: Dict[str, Any]) -> Dict[str, Any]:
         'generated_at': datetime.now().isoformat(),
         'database_health': 'healthy',
         'tables_overview': {},
-        'data_quality_metrics': {}
+        'data_quality_metrics': {},
+        'core_entities_summary': {}
     }
     
     # Tables overview
     for table_name, table_data in tables_analysis.items():
-        summary['tables_overview'][table_name] = {
-            'row_count': table_data.get('row_count', 0),
-            'column_count': len(table_data.get('columns', [])),
-            'has_data': table_data.get('row_count', 0) > 0
+        if table_name != 'relationship_tables':
+            summary['tables_overview'][table_name] = {
+                'row_count': table_data.get('row_count', 0),
+                'column_count': len(table_data.get('columns', [])),
+                'has_data': table_data.get('row_count', 0) > 0
+            }
+    
+    # Core entities summary
+    if 'events' in tables_analysis:
+        events_analysis = tables_analysis['events'].get('event_specific_analysis', {})
+        summary['core_entities_summary']['events'] = {
+            'total': tables_analysis['events'].get('row_count', 0),
+            'active': events_analysis.get('status_breakdown', {}).get('active_count', 0),
+            'closed': events_analysis.get('status_breakdown', {}).get('closed_count', 0),
+            'with_markets': events_analysis.get('events_with_markets', 0),
+            'with_tags': events_analysis.get('events_with_tags', 0)
+        }
+    
+    if 'markets' in tables_analysis:
+        markets_analysis = tables_analysis['markets'].get('market_specific_analysis', {})
+        summary['core_entities_summary']['markets'] = {
+            'total': tables_analysis['markets'].get('row_count', 0),
+            'active': markets_analysis.get('status_breakdown', {}).get('active_count', 0),
+            'closed': markets_analysis.get('status_breakdown', {}).get('closed_count', 0),
+            'funded': markets_analysis.get('status_breakdown', {}).get('funded_count', 0),
+            'with_tags': markets_analysis.get('markets_with_tags', 0)
+        }
+    
+    if 'series' in tables_analysis:
+        series_analysis = tables_analysis['series'].get('series_specific_analysis', {})
+        summary['core_entities_summary']['series'] = {
+            'total': tables_analysis['series'].get('row_count', 0),
+            'active': series_analysis.get('status_breakdown', {}).get('active_count', 0),
+            'with_tags': series_analysis.get('series_with_tags', 0),
+            'with_categories': series_analysis.get('series_with_categories', 0)
+        }
+    
+    if 'tags' in tables_analysis:
+        tags_analysis = tables_analysis['tags'].get('tag_specific_analysis', {})
+        summary['core_entities_summary']['tags'] = {
+            'total': tables_analysis['tags'].get('row_count', 0),
+            'on_events': tags_analysis.get('usage_stats', {}).get('tags_on_events', 0),
+            'on_markets': tags_analysis.get('usage_stats', {}).get('tags_on_markets', 0),
+            'on_series': tags_analysis.get('usage_stats', {}).get('tags_on_series', 0),
+            'carousel_tags': tags_analysis.get('carousel_tags', 0)
         }
     
     # Calculate data quality metrics
-    total_tables = len(tables_analysis)
-    tables_with_data = sum(1 for t in tables_analysis.values() if t.get('row_count', 0) > 0)
+    total_tables = len([t for t in tables_analysis.keys() if t != 'relationship_tables'])
+    tables_with_data = sum(1 for t in tables_analysis.values() 
+                          if t != 'relationship_tables' and t.get('row_count', 0) > 0)
     
     summary['data_quality_metrics'] = {
         'total_tables': total_tables,
@@ -294,8 +713,18 @@ def generate_summary(tables_analysis: Dict[str, Any]) -> Dict[str, Any]:
             if status.get('closed_count', 0) > 0:
                 issues.append(f"{status['closed_count']} closed events found in database")
     
+    # Check markets table
+    if 'markets' in tables_analysis:
+        markets_data = tables_analysis['markets']
+        if markets_data.get('row_count', 0) == 0:
+            issues.append("Markets table is empty")
+        elif 'market_specific_analysis' in markets_data:
+            status = markets_data['market_specific_analysis'].get('status_breakdown', {})
+            if status.get('closed_count', 0) > status.get('active_count', 0):
+                issues.append("More closed markets than active markets")
+    
     # Check other critical tables
-    critical_tables = ['markets', 'users', 'tags']
+    critical_tables = ['tags', 'series', 'users']
     for table in critical_tables:
         if table in tables_analysis and tables_analysis[table].get('row_count', 0) == 0:
             issues.append(f"{table.capitalize()} table is empty")
@@ -319,10 +748,61 @@ def print_summary(analysis: Dict[str, Any]):
     print(f"\n⏰ Generated: {summary.get('generated_at', 'Unknown')}")
     print(f"💾 Database Health: {summary.get('database_health', 'Unknown').upper()}")
     
-    print("\n📋 Tables Overview:")
-    for table, info in summary.get('tables_overview', {}).items():
-        status = "✅" if info['has_data'] else "⚠️"
-        print(f"  {status} {table:<30} {info['row_count']:>10,} rows, {info['column_count']:>3} columns")
+    # Core entities summary
+    if 'core_entities_summary' in summary:
+        print("\n🎯 CORE ENTITIES:")
+        
+        # Events
+        if 'events' in summary['core_entities_summary']:
+            events = summary['core_entities_summary']['events']
+            print(f"\n  📅 Events:")
+            print(f"     Total:         {events['total']:>10,}")
+            print(f"     Active:        {events['active']:>10,}")
+            print(f"     Closed:        {events['closed']:>10,}")
+            print(f"     With Markets:  {events['with_markets']:>10,}")
+            print(f"     With Tags:     {events['with_tags']:>10,}")
+        
+        # Markets
+        if 'markets' in summary['core_entities_summary']:
+            markets = summary['core_entities_summary']['markets']
+            print(f"\n  📈 Markets:")
+            print(f"     Total:         {markets['total']:>10,}")
+            print(f"     Active:        {markets['active']:>10,}")
+            print(f"     Closed:        {markets['closed']:>10,}")
+            print(f"     Funded:        {markets['funded']:>10,}")
+            print(f"     With Tags:     {markets['with_tags']:>10,}")
+        
+        # Series
+        if 'series' in summary['core_entities_summary']:
+            series = summary['core_entities_summary']['series']
+            print(f"\n  📚 Series:")
+            print(f"     Total:         {series['total']:>10,}")
+            print(f"     Active:        {series['active']:>10,}")
+            print(f"     With Tags:     {series['with_tags']:>10,}")
+            print(f"     With Categories: {series['with_categories']:>10,}")
+        
+        # Tags
+        if 'tags' in summary['core_entities_summary']:
+            tags = summary['core_entities_summary']['tags']
+            print(f"\n  🏷️ Tags:")
+            print(f"     Total:         {tags['total']:>10,}")
+            print(f"     On Events:     {tags['on_events']:>10,}")
+            print(f"     On Markets:    {tags['on_markets']:>10,}")
+            print(f"     On Series:     {tags['on_series']:>10,}")
+            print(f"     Carousel:      {tags['carousel_tags']:>10,}")
+    
+    print("\n📋 TABLES OVERVIEW:")
+    tables_to_show = [
+        'events', 'markets', 'series', 'tags', 'categories', 'collections',
+        'event_tags', 'market_tags', 'series_tags', 'users', 'comments', 
+        'transactions', 'user_positions_current'
+    ]
+    
+    for table in tables_to_show:
+        if table in summary.get('tables_overview', {}):
+            info = summary['tables_overview'][table]
+            status = "✅" if info['has_data'] else "⚠️"
+            print(f"  {status} {table:<30} {info['row_count']:>10,} rows, {info['column_count']:>3} columns")
     
     print("\n📈 Data Quality Metrics:")
     metrics = summary.get('data_quality_metrics', {})
@@ -336,21 +816,17 @@ def print_summary(analysis: Dict[str, Any]):
         for issue in summary['issues']:
             print(f"  • {issue}")
     
-    # Events specific summary if available
-    if 'events' in analysis and 'event_specific_analysis' in analysis['events']:
-        event_analysis = analysis['events']['event_specific_analysis']
-        
-        print("\n📊 Events Analysis:")
-        status = event_analysis.get('status_breakdown', {})
-        print(f"  Active Events:       {status.get('active_count', 0):>10,}")
-        print(f"  Closed Events:       {status.get('closed_count', 0):>10,}")
-        print(f"  Featured Events:     {status.get('featured_count', 0):>10,}")
-        
-        volume = event_analysis.get('volume_stats', {})
-        if volume.get('total_volume'):
-            print(f"\n  Total Volume:        ${volume.get('total_volume', 0):>10,.2f}")
-            print(f"  Average Volume:      ${volume.get('avg_volume', 0):>10,.2f}")
-            print(f"  Max Volume:          ${volume.get('max_volume', 0):>10,.2f}")
+    # Show volume statistics if available
+    for table_name in ['events', 'markets', 'series']:
+        if table_name in analysis and f'{table_name[:-1]}_specific_analysis' in analysis[table_name]:
+            specific = analysis[table_name][f'{table_name[:-1]}_specific_analysis']
+            volume = specific.get('volume_stats', {})
+            
+            if volume.get('total_volume'):
+                print(f"\n💰 {table_name.upper()} VOLUME:")
+                print(f"  Total Volume:        ${volume.get('total_volume', 0):>15,.2f}")
+                print(f"  Average Volume:      ${volume.get('avg_volume', 0):>15,.2f}")
+                print(f"  Max Volume:          ${volume.get('max_volume', 0):>15,.2f}")
 
 def main():
     """Main entry point"""
@@ -371,7 +847,7 @@ def main():
         sys.exit(1)
     
     print("\n" + "=" * 80)
-    print("🔊 POLYMARKET DATABASE ANALYZER - ENHANCED")
+    print("📊 POLYMARKET DATABASE ANALYZER - COMPREHENSIVE")
     print("=" * 80)
     print(f"📁 Database: {args.db}")
     print(f"📄 Output: {args.output}")
