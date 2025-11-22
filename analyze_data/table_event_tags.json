@@ -1,6 +1,6 @@
 {
   "table_name": "event_tags",
-  "row_count": 20856,
+  "row_count": 21021,
   "columns": [
     {
       "name": "event_id",
@@ -30,12 +30,12 @@
       "nullable": true,
       "primary_key": true,
       "default": null,
-      "total_rows": 20856,
-      "non_null": 20856,
+      "total_rows": 21021,
+      "non_null": 21021,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 4399,
-      "uniqueness_ratio": 21.09,
+      "unique_values": 4417,
+      "uniqueness_ratio": 21.01,
       "min_length": 5,
       "max_length": 5,
       "avg_length": 5.0,
@@ -74,12 +74,12 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 20856,
-      "non_null": 20856,
+      "total_rows": 21021,
+      "non_null": 21021,
       "null_count": 0,
       "null_percentage": 0.0,
       "unique_values": 733,
-      "uniqueness_ratio": 3.51,
+      "uniqueness_ratio": 3.49,
       "min_length": 1,
       "max_length": 6,
       "avg_length": 4.28,
@@ -93,23 +93,23 @@
       "top_values": [
         {
           "value": "1",
-          "count": 2100
+          "count": 2084
         },
         {
           "value": "100639",
-          "count": 1927
-        },
-        {
-          "value": "100350",
-          "count": 839
+          "count": 1911
         },
         {
           "value": "21",
-          "count": 835
+          "count": 857
         },
         {
           "value": "102169",
-          "count": 815
+          "count": 853
+        },
+        {
+          "value": "100350",
+          "count": 786
         }
       ]
     },
@@ -118,15 +118,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 20856,
-      "non_null": 20856,
+      "total_rows": 21021,
+      "non_null": 21021,
       "null_count": 0,
       "null_percentage": 0.0,
       "unique_values": 733,
-      "uniqueness_ratio": 3.51,
+      "uniqueness_ratio": 3.49,
       "min_length": 1,
       "max_length": 34,
-      "avg_length": 7.77,
+      "avg_length": 7.78,
       "sample_values": [
         "sports",
         "nfl",
@@ -137,23 +137,23 @@
       "top_values": [
         {
           "value": "sports",
-          "count": 2100
+          "count": 2084
         },
         {
           "value": "games",
-          "count": 1927
-        },
-        {
-          "value": "soccer",
-          "count": 839
+          "count": 1911
         },
         {
           "value": "crypto",
-          "count": 835
+          "count": 857
         },
         {
           "value": "hide-from-new",
-          "count": 815
+          "count": 853
+        },
+        {
+          "value": "soccer",
+          "count": 786
         }
       ]
     }
@@ -181,11 +181,6 @@
   ],
   "relationships": {
     "foreign_keys": [
-      {
-        "column": "tag_id",
-        "references_table": "tags",
-        "references_column": "id"
-      },
       {
         "column": "event_id",
         "references_table": "events",

@@ -120,6 +120,9 @@ class MarketsManager:
                 if event_data:
                     markets = []
                     
+                    # Get event-level tags to inherit for markets
+                    event_tags = event_data.get('tags', [])
+
                     # Extract and store markets
                     if 'markets' in event_data:
                         markets = event_data['markets']
@@ -127,13 +130,18 @@ class MarketsManager:
                             # Ensure event_id is set
                             for market in markets:
                                 market['eventId'] = event_id
-                                
-                                # Store market tags if present
-                                if 'tags' in market and market['tags']:
-                                    tags_manager.store_market_tags(market['id'], market['tags'])
+
+                                # Store market tags - first check market-level tags, then inherit from event
+                                market_tags = market.get('tags', [])
+                                if not market_tags and event_tags:
+                                    # Inherit event tags for this market
+                                    market_tags = event_tags
+
+                                if market_tags:
+                                    tags_manager.store_market_tags(market['id'], market_tags)
                                     with self._lock:
-                                        self._tag_counter += len(market['tags'])
-                            
+                                        self._tag_counter += len(market_tags)
+
                             # Store markets
                             with self._lock:
                                 self.storage._store_markets(markets, event_id)

@@ -1,6 +1,6 @@
 {
   "table_name": "market_tags",
-  "row_count": 0,
+  "row_count": 104544,
   "columns": [
     {
       "name": "market_id",
@@ -24,8 +24,147 @@
       "primary_key": false
     }
   ],
-  "column_analysis": {},
-  "sample_rows": [],
+  "column_analysis": {
+    "market_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 104544,
+      "non_null": 104544,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 24253,
+      "uniqueness_ratio": 23.2,
+      "min_length": 6,
+      "max_length": 6,
+      "avg_length": 6.0,
+      "sample_values": [
+        "516706",
+        "516710",
+        "516711",
+        "516712",
+        "516713"
+      ],
+      "top_values": [
+        {
+          "value": "620400",
+          "count": 17
+        },
+        {
+          "value": "522056",
+          "count": 13
+        },
+        {
+          "value": "591764",
+          "count": 13
+        },
+        {
+          "value": "604508",
+          "count": 13
+        },
+        {
+          "value": "614695",
+          "count": 13
+        }
+      ]
+    },
+    "tag_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 104544,
+      "non_null": 104544,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 0.7,
+      "min_length": 1,
+      "max_length": 6,
+      "avg_length": 3.98,
+      "sample_values": [
+        "1",
+        "10",
+        "100",
+        "1000",
+        "100021"
+      ],
+      "top_values": [
+        {
+          "value": "1",
+          "count": 10367
+        },
+        {
+          "value": "2",
+          "count": 5115
+        },
+        {
+          "value": "100639",
+          "count": 5092
+        },
+        {
+          "value": "596",
+          "count": 4362
+        },
+        {
+          "value": "100350",
+          "count": 3613
+        }
+      ]
+    },
+    "tag_slug": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 104544,
+      "non_null": 104544,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 733,
+      "uniqueness_ratio": 0.7,
+      "min_length": 1,
+      "max_length": 34,
+      "avg_length": 8.16,
+      "sample_values": [
+        "elections",
+        "world-election",
+        "global-elections",
+        "politics",
+        "chile"
+      ],
+      "top_values": [
+        {
+          "value": "sports",
+          "count": 10367
+        },
+        {
+          "value": "politics",
+          "count": 5115
+        },
+        {
+          "value": "games",
+          "count": 5092
+        },
+        {
+          "value": "pop-culture",
+          "count": 4362
+        },
+        {
+          "value": "soccer",
+          "count": 3613
+        }
+      ]
+    }
+  },
+  "sample_rows": [
+    "market_id:541615 | tag_id:144 | tag_slug:elections",
+    "market_id:541615 | tag_id:102103 | tag_slug:world-election",
+    "market_id:541615 | tag_id:1597 | tag_slug:global-elections",
+    "market_id:541615 | tag_id:2 | tag_slug:politics",
+    "market_id:541615 | tag_id:742 | tag_slug:chile"
+  ],
   "indexes": [
     {
       "name": "idx_market_tags_tag",
@@ -41,18 +180,7 @@
     }
   ],
   "relationships": {
-    "foreign_keys": [
-      {
-        "column": "tag_id",
-        "references_table": "tags",
-        "references_column": "id"
-      },
-      {
-        "column": "market_id",
-        "references_table": "markets",
-        "references_column": "id"
-      }
-    ],
+    "foreign_keys": [],
     "referenced_by": []
   }
 }

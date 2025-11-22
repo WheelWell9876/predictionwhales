@@ -1,6 +1,6 @@
 {
   "table_name": "series_events",
-  "row_count": 0,
+  "row_count": 527,
   "columns": [
     {
       "name": "series_id",
@@ -10,15 +10,66 @@
       "primary_key": true
     },
     {
-      "name": "event_id",
+      "name": "event_ids",
       "type": "TEXT",
       "nullable": true,
       "default": null,
       "primary_key": false
     }
   ],
-  "column_analysis": {},
-  "sample_rows": [],
+  "column_analysis": {
+    "series_id": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": true,
+      "default": null,
+      "total_rows": 527,
+      "non_null": 527,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 527,
+      "uniqueness_ratio": 100.0,
+      "min_length": 1,
+      "max_length": 5,
+      "avg_length": 4.89,
+      "sample_values": [
+        "1",
+        "10000",
+        "10001",
+        "10002",
+        "10003"
+      ]
+    },
+    "event_ids": {
+      "type": "TEXT",
+      "nullable": true,
+      "primary_key": false,
+      "default": null,
+      "total_rows": 527,
+      "non_null": 527,
+      "null_count": 0,
+      "null_percentage": 0.0,
+      "unique_values": 527,
+      "uniqueness_ratio": 100.0,
+      "min_length": 9,
+      "max_length": 61983,
+      "avg_length": 1031.97,
+      "sample_values": [
+        "[\"901497\", \"901487\", \"901488\", \"901489\", \"901499\", \"901490\", \"901491\", \"901492\", \"901493\", \"901498\",...",
+        "[\"17563\", \"16219\", \"14992\", \"13945\", \"13116\", \"19925\", \"21921\", \"23689\", \"25594\", \"30320\", \"16096\", ...",
+        "[\"17320\", \"15921\", \"16087\", \"12677\", \"14636\", \"17315\", \"19830\", \"21905\", \"23631\", \"25323\", \"25322\", ...",
+        "[\"30828\", \"30827\", \"26857\", \"63651\"]",
+        "[\"17565\", \"14998\", \"13946\", \"16220\", \"21927\", \"25600\", \"30321\", \"16097\", \"35442\", \"40986\", \"52528\", ..."
+      ]
+    }
+  },
+  "sample_rows": [
+    "series_id:35 | event_ids:[\"901497\", \"901487\", \"901488\",...",
+    "series_id:10016 | event_ids:[\"17563\", \"16219\", \"14992\", \"1...",
+    "series_id:10029 | event_ids:[\"17320\", \"15921\", \"16087\", \"1...",
+    "series_id:10150 | event_ids:[\"30828\", \"30827\", \"26857\", \"6...",
+    "series_id:10017 | event_ids:[\"17565\", \"14998\", \"13946\", \"1..."
+  ],
   "indexes": [
     {
       "name": "sqlite_autoindex_series_events_1",
@@ -27,11 +78,6 @@
   ],
   "relationships": {
     "foreign_keys": [
-      {
-        "column": "event_id",
-        "references_table": "events",
-        "references_column": "id"
-      },
       {
         "column": "series_id",
         "references_table": "series",

@@ -88,10 +88,6 @@
       {
         "table": "event_categories",
         "column": "category_id"
-      },
-      {
-        "table": "series_categories",
-        "column": "category_id"
       }
     ]
   }

@@ -481,15 +481,75 @@ def generate_database_overview(summaries: Dict[str, Dict[str, Any]]) -> Dict[str
     
     return overview
 
+def get_tags_summary(conn: sqlite3.Connection) -> Dict[str, Any]:
+    """Get a summary of tags and related data"""
+    cursor = conn.cursor()
+    tags_summary = {}
+
+    # Tags count
+    try:
+        cursor.execute("SELECT COUNT(*) as count FROM tags")
+        tags_summary['total_tags'] = cursor.fetchone()['count']
+    except:
+        tags_summary['total_tags'] = 0
+
+    # Tag relationships count
+    try:
+        cursor.execute("SELECT COUNT(*) as count FROM tag_relationships")
+        tags_summary['tag_relationships'] = cursor.fetchone()['count']
+    except:
+        tags_summary['tag_relationships'] = 0
+
+    # Event tags count
+    try:
+        cursor.execute("SELECT COUNT(*) as count FROM event_tags")
+        tags_summary['event_tags'] = cursor.fetchone()['count']
+    except:
+        tags_summary['event_tags'] = 0
+
+    # Market tags count
+    try:
+        cursor.execute("SELECT COUNT(*) as count FROM market_tags")
+        tags_summary['market_tags'] = cursor.fetchone()['count']
+    except:
+        tags_summary['market_tags'] = 0
+
+    # Series tags count
+    try:
+        cursor.execute("SELECT COUNT(*) as count FROM series_tags")
+        tags_summary['series_tags'] = cursor.fetchone()['count']
+    except:
+        tags_summary['series_tags'] = 0
+
+    # Top tags by usage
+    try:
+        cursor.execute("""
+            SELECT t.label, t.slug, COUNT(et.event_id) as usage_count
+            FROM tags t
+            LEFT JOIN event_tags et ON t.id = et.tag_id
+            GROUP BY t.id
+            ORDER BY usage_count DESC
+            LIMIT 10
+        """)
+        tags_summary['top_tags'] = [
+            {'label': row['label'], 'slug': row['slug'], 'usage_count': row['usage_count']}
+            for row in cursor.fetchall()
+        ]
+    except:
+        tags_summary['top_tags'] = []
+
+    return tags_summary
+
 def print_summary(report: Dict[str, Any]):
     """Print a formatted summary to console"""
     overview = report.get('overview', {})
     summaries = report.get('table_summaries', {})
-    
+    tags_summary = report.get('tags_summary', {})
+
     print("\n" + "=" * 80)
     print("📊 DATABASE ANALYSIS COMPLETE")
     print("=" * 80)
-    
+
     print(f"\n📈 DATABASE OVERVIEW:")
     print(f"  Total Tables:        {overview.get('total_tables', 0)}")
     print(f"  Total Rows:          {overview.get('total_rows', 0):,}")
@@ -498,19 +558,36 @@ def print_summary(report: Dict[str, Any]):
     print(f"  Total Columns:       {overview.get('total_columns', 0)}")
     print(f"  Total Indexes:       {overview.get('total_indexes', 0)}")
     print(f"  Total Foreign Keys:  {overview.get('total_foreign_keys', 0)}")
-    
+
+    # Tags Summary Section
+    if tags_summary:
+        print(f"\n🏷️  TAGS SUMMARY:")
+        print(f"  Total Tags:          {tags_summary.get('total_tags', 0):,}")
+        print(f"  Tag Relationships:   {tags_summary.get('tag_relationships', 0):,}")
+        print(f"  Event Tags:          {tags_summary.get('event_tags', 0):,}")
+        print(f"  Market Tags:         {tags_summary.get('market_tags', 0):,}")
+        print(f"  Series Tags:         {tags_summary.get('series_tags', 0):,}")
+
+        top_tags = tags_summary.get('top_tags', [])
+        if top_tags:
+            print(f"\n  📈 Top Tags by Usage:")
+            for tag in top_tags[:5]:
+                label = tag.get('label') or tag.get('slug') or 'Unknown'
+                usage = tag.get('usage_count', 0)
+                print(f"    • {label:<25} ({usage} events)")
+
     print("\n📊 TABLE CATEGORIES:")
     for category, info in overview.get('categories', {}).items():
         if info['count'] > 0:
             print(f"\n  {category.upper()}:")
             print(f"    Tables: {info['count']}")
             print(f"    Rows:   {info['total_rows']:,}")
-    
+
     print("\n🏆 LARGEST TABLES:")
     for table, count in overview.get('largest_tables', [])[:5]:
         status = "✅" if count > 0 else "⚠️"
         print(f"  {status} {table:<30} {count:>10,} rows")
-    
+
     print("\n📁 OUTPUT FILES:")
     print(f"  Main Report:     analyze_data/report.json")
     print(f"  Table Details:   analyze_data/table_*.json")
@@ -546,15 +623,20 @@ def main():
     
     # Analyze all tables (saves individual files)
     table_summaries = analyze_all_tables(conn, output_dir)
-    
+
     # Generate database overview
     overview = generate_database_overview(table_summaries)
-    
+
+    # Get tags summary
+    print("\n🏷️  Analyzing tags and relationships...")
+    tags_summary = get_tags_summary(conn)
+
     # Create main report
     report = {
         'generated_at': datetime.now().isoformat(),
         'database_path': str(args.db),
         'overview': overview,
+        'tags_summary': tags_summary,
         'table_summaries': table_summaries
     }
     

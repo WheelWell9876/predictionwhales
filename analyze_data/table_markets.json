@@ -1,6 +1,6 @@
 {
   "table_name": "markets",
-  "row_count": 24300,
+  "row_count": 24281,
   "columns": [
     {
       "name": "id",
@@ -968,11 +968,11 @@
       "nullable": true,
       "primary_key": true,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 24300,
+      "unique_values": 24281,
       "uniqueness_ratio": 100.0,
       "min_length": 6,
       "max_length": 6,
@@ -990,12 +990,12 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 4399,
-      "uniqueness_ratio": 18.1,
+      "unique_values": 4418,
+      "uniqueness_ratio": 18.2,
       "min_length": 5,
       "max_length": 5,
       "avg_length": 5.0,
@@ -1034,21 +1034,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 24049,
-      "uniqueness_ratio": 98.97,
+      "unique_values": 24052,
+      "uniqueness_ratio": 99.06,
       "min_length": 8,
       "max_length": 147,
-      "avg_length": 56.19,
+      "avg_length": 56.26,
       "sample_values": [
+        "Russia x Ukraine ceasefire in 2025?",
         "Xi Jinping out in 2025?",
-        "Will Bitcoin reach $1,000,000 by December 31, 2025?",
-        "Will Bitcoin reach $250,000 by December 31, 2025?",
-        "Will Bitcoin reach $200,000 by December 31, 2025?",
-        "Will Bitcoin reach $150,000 by December 31, 2025?"
+        "Fed decreases interest rates by 50+ bps after December 2025 meeting?",
+        "Fed decreases interest rates by 25 bps after December 2025 meeting?",
+        "No change in Fed interest rates after December 2025 meeting?"
       ]
     },
     "condition_id": {
@@ -1056,11 +1056,11 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 24300,
+      "unique_values": 24281,
       "uniqueness_ratio": 100.0,
       "min_length": 0,
       "max_length": 66,
@@ -1078,21 +1078,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 24300,
+      "unique_values": 24281,
       "uniqueness_ratio": 100.0,
       "min_length": 15,
       "max_length": 137,
-      "avg_length": 51.02,
+      "avg_length": 51.08,
       "sample_values": [
+        "russia-x-ukraine-ceasefire-in-2025",
         "xi-jinping-out-in-2025",
-        "will-bitcoin-reach-1000000-by-december-31-2025",
-        "will-bitcoin-reach-250000-by-december-31-2025",
-        "will-bitcoin-reach-200000-by-december-31-2025",
-        "will-bitcoin-reach-150000-by-december-31-2025-188"
+        "fed-decreases-interest-rates-by-50-bps-after-december-2025-meeting",
+        "fed-decreases-interest-rates-by-25-bps-after-december-2025-meeting",
+        "no-change-in-fed-interest-rates-after-december-2025-meeting"
       ]
     },
     "twitter_card_image": {
@@ -1100,9 +1100,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1112,30 +1112,30 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 16638,
-      "null_count": 7662,
-      "null_percentage": 31.53,
-      "unique_values": 127,
-      "uniqueness_ratio": 0.76,
+      "total_rows": 24281,
+      "non_null": 16598,
+      "null_count": 7683,
+      "null_percentage": 31.64,
+      "unique_values": 128,
+      "uniqueness_ratio": 0.77,
       "min_length": 0,
       "max_length": 83,
-      "avg_length": 13.73,
+      "avg_length": 13.71,
       "sample_values": [
         "",
         "https://x.com/elonmusk",
         "https://www.ncaa.com/",
         "https://www.premierleague.com/",
-        "https://finance.yahoo.com/quote/META/"
+        "https://www.nba.com/"
       ],
       "top_values": [
         {
           "value": "",
-          "count": 8629
+          "count": 8618
         },
         {
           "value": "https://www.ncaa.com/",
-          "count": 1162
+          "count": 1238
         },
         {
           "value": "https://www.nhl.com/awards",
@@ -1147,7 +1147,7 @@
         },
         {
           "value": "https://www.nfl.com/scores",
-          "count": 340
+          "count": 349
         }
       ]
     },
@@ -1156,35 +1156,35 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 22493,
-      "null_count": 1807,
-      "null_percentage": 7.44,
+      "total_rows": 24281,
+      "non_null": 22473,
+      "null_count": 1808,
+      "null_percentage": 7.45,
       "earliest": "2025-03-31T12:00:00Z",
       "latest": "2028-11-07T00:00:00Z",
-      "distinct_values": 776
+      "distinct_values": 777
     },
     "start_date": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24296,
+      "total_rows": 24281,
+      "non_null": 24277,
       "null_count": 4,
       "null_percentage": 0.02,
       "earliest": "2024-12-29T22:39:18.322Z",
-      "latest": "2025-11-22T16:47:49.086712Z",
-      "distinct_values": 24296
+      "latest": "2025-11-22T22:47:49.213603Z",
+      "distinct_values": 24277
     },
     "category": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "subcategory": {
@@ -1192,9 +1192,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "amm_type": {
@@ -1202,9 +1202,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1214,21 +1214,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 23519,
-      "null_count": 781,
-      "null_percentage": 3.21,
-      "unique_values": 15705,
-      "uniqueness_ratio": 66.78,
+      "total_rows": 24281,
+      "non_null": 23451,
+      "null_count": 830,
+      "null_percentage": 3.42,
+      "unique_values": 15236,
+      "uniqueness_ratio": 64.97,
       "min_length": 1,
       "max_length": 13,
-      "avg_length": 6.39,
+      "avg_length": 6.34,
       "sample_values": [
-        "699966.41913",
-        "113498.35444",
-        "154631.48722",
-        "267024.18457",
-        "207187.54909"
+        "771621.4945",
+        "706732.44791",
+        "916300.87977",
+        "351871.3126",
+        "303964.7423"
       ]
     },
     "liquidity_num": {
@@ -1236,26 +1236,26 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 23519,
-      "null_count": 781,
-      "null_percentage": 3.21,
+      "total_rows": 24281,
+      "non_null": 23451,
+      "null_count": 830,
+      "null_percentage": 3.42,
       "min": 0.0,
-      "max": 4792693.98661,
-      "avg": 14589.47,
-      "sum": 343129715.33574,
-      "median": 169.3342,
-      "distinct_values": 15705
+      "max": 4614696.28554,
+      "avg": 13256.45,
+      "sum": 310876903.65911,
+      "median": 168.26174,
+      "distinct_values": 15236
     },
     "liquidity_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 6984,
-      "null_count": 17316,
-      "null_percentage": 71.26,
+      "total_rows": 24281,
+      "non_null": 7045,
+      "null_count": 17236,
+      "null_percentage": 70.99,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -1265,7 +1265,7 @@
       "value_distribution": [
         {
           "value": 0.0,
-          "count": 6984
+          "count": 7045
         }
       ]
     },
@@ -1274,25 +1274,25 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 23519,
-      "null_count": 781,
-      "null_percentage": 3.21,
+      "total_rows": 24281,
+      "non_null": 23451,
+      "null_count": 830,
+      "null_percentage": 3.42,
       "min": 0.0,
-      "max": 4792693.98661,
-      "avg": 14589.47,
-      "sum": 343129715.33574,
-      "median": 169.3342,
-      "distinct_values": 15705
+      "max": 4614696.28554,
+      "avg": 13256.45,
+      "sum": 310876903.65911,
+      "median": 168.26174,
+      "distinct_values": 15236
     },
     "sponsor_name": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1302,9 +1302,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1314,9 +1314,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1326,9 +1326,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1338,9 +1338,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "fee": {
@@ -1348,9 +1348,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 12,
-      "null_count": 24288,
+      "null_count": 24269,
       "null_percentage": 99.95,
       "unique_values": 1,
       "uniqueness_ratio": 8.33,
@@ -1372,21 +1372,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 2814,
-      "uniqueness_ratio": 11.58,
+      "unique_values": 2827,
+      "uniqueness_ratio": 11.64,
       "min_length": 0,
       "max_length": 202,
-      "avg_length": 96.2,
+      "avg_length": 96.23,
       "sample_values": [
-        "https://polymarket-upload.s3.us-east-2.amazonaws.com/xi-jinping-out-in-2025-EjF4SM20eaa3.jpg",
-        "https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png",
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/russia-x-ukraine-ceasefire-in-2025-w2voYOygx80B...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/xi-jinping-out-in-2025-EjF4SM20eaa3.jpg",
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/jerome+powell+glasses1.png",
-        "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-ariana-grande-be-the-top-spotify-artist-fo..."
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-nvidia-be-the-largest-company-in-the-world...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/largest-company-end-of-2025-8Z6Ds_1xaxir.jpg"
       ],
       "top_values": [
         {
@@ -1395,11 +1395,11 @@
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 894
+          "count": 902
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 794
+          "count": 860
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
@@ -1416,21 +1416,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 2813,
-      "uniqueness_ratio": 11.58,
+      "unique_values": 2826,
+      "uniqueness_ratio": 11.64,
       "min_length": 0,
       "max_length": 202,
-      "avg_length": 96.18,
+      "avg_length": 96.21,
       "sample_values": [
-        "https://polymarket-upload.s3.us-east-2.amazonaws.com/xi-jinping-out-in-2025-EjF4SM20eaa3.jpg",
-        "https://polymarket-upload.s3.us-east-2.amazonaws.com/BTC+fullsize.png",
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/russia-x-ukraine-ceasefire-in-2025-w2voYOygx80B...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/xi-jinping-out-in-2025-EjF4SM20eaa3.jpg",
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/jerome+powell+glasses1.png",
-        "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-ariana-grande-be-the-top-spotify-artist-fo..."
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/will-nvidia-be-the-largest-company-in-the-world...",
+        "https://polymarket-upload.s3.us-east-2.amazonaws.com/largest-company-end-of-2025-8Z6Ds_1xaxir.jpg"
       ],
       "top_values": [
         {
@@ -1439,11 +1439,11 @@
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 894
+          "count": 902
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 794
+          "count": 860
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
@@ -1460,9 +1460,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1472,9 +1472,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1484,9 +1484,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "upper_bound_date": {
@@ -1494,9 +1494,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "description": {
@@ -1504,21 +1504,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 7082,
-      "uniqueness_ratio": 29.14,
+      "unique_values": 7049,
+      "uniqueness_ratio": 29.03,
       "min_length": 123,
       "max_length": 2951,
-      "avg_length": 678.47,
+      "avg_length": 680.01,
       "sample_values": [
+        "This market will resolve to \"Yes\" if there is an official ceasefire agreement, defined as a publicly...",
         "This market will resolve to \"Yes\" if China's General Secretary of the Communist Party, Xi Jinping, i...",
-        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b...",
-        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b...",
-        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b...",
-        "This market will immediately resolve to \"Yes\" if any Binance 1 minute candle for Bitcoin (BTCUSDT) b..."
+        "The FED interest rates are defined in this market by the upper bound of the target federal funds ran...",
+        "This market will resolve to \"Yes\" if Nvidia is the largest company in the world by market cap on Dec...",
+        "This market will resolve to \"Yes\" if Company D is the largest company in the world by market cap on ..."
       ],
       "top_values": [
         {
@@ -1548,34 +1548,34 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 1397,
-      "uniqueness_ratio": 5.75,
+      "unique_values": 1420,
+      "uniqueness_ratio": 5.85,
       "min_length": 18,
       "max_length": 76,
-      "avg_length": 20.79,
+      "avg_length": 20.86,
       "sample_values": [
         "\"[\\\"Yes\\\", \\\"No\\\"]\"",
-        "\"[\\\"Tulane\\\", \\\"Temple\\\"]\"",
         "\"[\\\"Over\\\", \\\"Under\\\"]\"",
         "\"[\\\"Oklahoma\\\", \\\"Missouri\\\"]\"",
-        "\"[\\\"Missouri\\\", \\\"Oklahoma\\\"]\""
+        "\"[\\\"Missouri\\\", \\\"Oklahoma\\\"]\"",
+        "\"[\\\"Tulane\\\", \\\"Temple\\\"]\""
       ],
       "top_values": [
         {
           "value": "\"[\\\"Yes\\\", \\\"No\\\"]\"",
-          "count": 20907
+          "count": 20815
         },
         {
           "value": "\"[\\\"Over\\\", \\\"Under\\\"]\"",
-          "count": 999
+          "count": 1013
         },
         {
           "value": "\"[\\\"Up\\\", \\\"Down\\\"]\"",
-          "count": 633
+          "count": 652
         },
         {
           "value": "\"[\\\"Patriots\\\", \\\"Bengals\\\"]\"",
@@ -1583,7 +1583,7 @@
         },
         {
           "value": "\"[\\\"Hawks\\\", \\\"Pelicans\\\"]\"",
-          "count": 8
+          "count": 9
         }
       ]
     },
@@ -1592,42 +1592,42 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 17491,
+      "total_rows": 24281,
+      "non_null": 17472,
       "null_count": 6809,
-      "null_percentage": 28.02,
-      "unique_values": 821,
-      "uniqueness_ratio": 4.69,
+      "null_percentage": 28.04,
+      "unique_values": 836,
+      "uniqueness_ratio": 4.78,
       "min_length": 16,
       "max_length": 26,
-      "avg_length": 23.23,
+      "avg_length": 23.21,
       "sample_values": [
+        "\"[\\\"0.155\\\", \\\"0.845\\\"]\"",
         "\"[\\\"0.0185\\\", \\\"0.9815\\\"]\"",
-        "\"[\\\"0.0035\\\", \\\"0.9965\\\"]\"",
-        "\"[\\\"0.009\\\", \\\"0.991\\\"]\"",
-        "\"[\\\"0.013\\\", \\\"0.987\\\"]\"",
-        "\"[\\\"0.0305\\\", \\\"0.9695\\\"]\""
+        "\"[\\\"0.0195\\\", \\\"0.9805\\\"]\"",
+        "\"[\\\"0.645\\\", \\\"0.355\\\"]\"",
+        "\"[\\\"0.325\\\", \\\"0.675\\\"]\""
       ],
       "top_values": [
         {
           "value": "\"[\\\"0.5\\\", \\\"0.5\\\"]\"",
-          "count": 1441
+          "count": 1414
         },
         {
           "value": "\"[\\\"0.495\\\", \\\"0.505\\\"]\"",
-          "count": 674
+          "count": 711
         },
         {
           "value": "\"[\\\"0\\\", \\\"1\\\"]\"",
-          "count": 631
+          "count": 706
         },
         {
           "value": "\"[\\\"0.0015\\\", \\\"0.9985\\\"]\"",
-          "count": 444
+          "count": 450
         },
         {
           "value": "\"[\\\"0.0005\\\", \\\"0.9995\\\"]\"",
-          "count": 424
+          "count": 387
         }
       ]
     },
@@ -1636,9 +1636,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -1648,21 +1648,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 20426,
-      "null_count": 3874,
-      "null_percentage": 15.94,
-      "unique_values": 11497,
-      "uniqueness_ratio": 56.29,
+      "total_rows": 24281,
+      "non_null": 20453,
+      "null_count": 3828,
+      "null_percentage": 15.77,
+      "unique_values": 11410,
+      "uniqueness_ratio": 55.79,
       "min_length": 1,
       "max_length": 15,
-      "avg_length": 6.46,
+      "avg_length": 6.42,
       "sample_values": [
-        "57667089.31421",
-        "5208848.82663",
-        "5080166.676055",
-        "8948910.11724",
-        "10222177.596026"
+        "34597299.649664",
+        "57678364.610012",
+        "35535811.619888",
+        "19639235.529488",
+        "18308618.836314"
       ]
     },
     "volume_num": {
@@ -1670,26 +1670,26 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 20426,
-      "null_count": 3874,
-      "null_percentage": 15.94,
+      "total_rows": 24281,
+      "non_null": 20453,
+      "null_count": 3828,
+      "null_percentage": 15.77,
       "min": 0.0,
-      "max": 70402978.150491,
-      "avg": 161995.34,
-      "sum": 3308916904.201284,
-      "median": 119.0,
-      "distinct_values": 11497
+      "max": 71679530.509241,
+      "avg": 162906.36,
+      "sum": 3331923679.859454,
+      "median": 120.6363,
+      "distinct_values": 11410
     },
     "volume_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 6809,
-      "null_count": 17491,
-      "null_percentage": 71.98,
+      "null_count": 17472,
+      "null_percentage": 71.96,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -1708,42 +1708,42 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 20426,
-      "null_count": 3874,
-      "null_percentage": 15.94,
+      "total_rows": 24281,
+      "non_null": 20453,
+      "null_count": 3828,
+      "null_percentage": 15.77,
       "min": 0.0,
-      "max": 70402978.150491,
-      "avg": 161995.34,
-      "sum": 3308916904.201284,
-      "median": 119.0,
-      "distinct_values": 11497
+      "max": 71679530.509241,
+      "avg": 162906.36,
+      "sum": 3331923679.859454,
+      "median": 120.6363,
+      "distinct_values": 11410
     },
     "volume_24hr": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 13797,
-      "null_count": 10503,
-      "null_percentage": 43.22,
+      "total_rows": 24281,
+      "non_null": 13388,
+      "null_count": 10893,
+      "null_percentage": 44.86,
       "min": 0.0,
       "max": 3121745.99,
-      "avg": 5716.96,
-      "sum": 78876864.117835,
-      "median": 1.25,
-      "distinct_values": 5850
+      "avg": 4984.12,
+      "sum": 66727390.87799801,
+      "median": 0.0,
+      "distinct_values": 5469
     },
     "volume_24hr_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 6809,
-      "null_count": 17491,
-      "null_percentage": 71.98,
+      "null_count": 17472,
+      "null_percentage": 71.96,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -1762,42 +1762,42 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 13797,
-      "null_count": 10503,
-      "null_percentage": 43.22,
+      "total_rows": 24281,
+      "non_null": 13388,
+      "null_count": 10893,
+      "null_percentage": 44.86,
       "min": 0.0,
       "max": 3121745.99,
-      "avg": 5716.96,
-      "sum": 78876864.117835,
-      "median": 1.25,
-      "distinct_values": 5850
+      "avg": 4984.12,
+      "sum": 66727390.87799801,
+      "median": 0.0,
+      "distinct_values": 5469
     },
     "volume_1wk": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 18091,
-      "null_count": 6209,
-      "null_percentage": 25.55,
+      "total_rows": 24281,
+      "non_null": 17674,
+      "null_count": 6607,
+      "null_percentage": 27.21,
       "min": 0.0,
       "max": 15675655.83877605,
-      "avg": 27502.8,
-      "sum": 497553100.838558,
-      "median": 42.442099999999996,
-      "distinct_values": 9496
+      "avg": 27316.8,
+      "sum": 482797106.138601,
+      "median": 37.5,
+      "distinct_values": 9103
     },
     "volume_1wk_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 6824,
-      "null_count": 17476,
-      "null_percentage": 71.92,
+      "null_count": 17457,
+      "null_percentage": 71.9,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -1816,42 +1816,42 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 18091,
-      "null_count": 6209,
-      "null_percentage": 25.55,
+      "total_rows": 24281,
+      "non_null": 17674,
+      "null_count": 6607,
+      "null_percentage": 27.21,
       "min": 0.0,
       "max": 15675655.83877605,
-      "avg": 27502.8,
-      "sum": 497553100.838558,
-      "median": 42.442099999999996,
-      "distinct_values": 9496
+      "avg": 27316.8,
+      "sum": 482797106.138601,
+      "median": 37.5,
+      "distinct_values": 9103
     },
     "volume_1mo": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 20104,
-      "null_count": 4196,
-      "null_percentage": 17.27,
+      "total_rows": 24281,
+      "non_null": 19690,
+      "null_count": 4591,
+      "null_percentage": 18.91,
       "min": 0.0,
       "max": 68453147.18731599,
-      "avg": 77693.1,
-      "sum": 1561942176.4561722,
-      "median": 90.0,
-      "distinct_values": 11116
+      "avg": 78559.84,
+      "sum": 1546843207.2127163,
+      "median": 81.958,
+      "distinct_values": 10723
     },
     "volume_1mo_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 6824,
-      "null_count": 17476,
-      "null_percentage": 71.92,
+      "null_count": 17457,
+      "null_percentage": 71.9,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -1870,42 +1870,42 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 20104,
-      "null_count": 4196,
-      "null_percentage": 17.27,
+      "total_rows": 24281,
+      "non_null": 19690,
+      "null_count": 4591,
+      "null_percentage": 18.91,
       "min": 0.0,
       "max": 68453147.18731599,
-      "avg": 77693.1,
-      "sum": 1561942176.4561722,
-      "median": 90.0,
-      "distinct_values": 11116
+      "avg": 78559.84,
+      "sum": 1546843207.2127163,
+      "median": 81.958,
+      "distinct_values": 10723
     },
     "volume_1yr": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 20366,
-      "null_count": 3934,
-      "null_percentage": 16.19,
+      "total_rows": 24281,
+      "non_null": 19952,
+      "null_count": 4329,
+      "null_percentage": 17.83,
       "min": 0.0,
       "max": 70402044.23249316,
-      "avg": 162213.91,
-      "sum": 3303648423.747477,
-      "median": 114.565216,
-      "distinct_values": 11492
+      "avg": 164821.7,
+      "sum": 3288522610.977426,
+      "median": 104.34343,
+      "distinct_values": 11099
     },
     "volume_1yr_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 6824,
-      "null_count": 17476,
-      "null_percentage": 71.92,
+      "null_count": 17457,
+      "null_percentage": 71.9,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -1924,36 +1924,36 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 20366,
-      "null_count": 3934,
-      "null_percentage": 16.19,
+      "total_rows": 24281,
+      "non_null": 19952,
+      "null_count": 4329,
+      "null_percentage": 17.83,
       "min": 0.0,
       "max": 70402044.23249316,
-      "avg": 162213.91,
-      "sum": 3303648423.747477,
-      "median": 114.565216,
-      "distinct_values": 11492
+      "avg": 164821.7,
+      "sum": 3288522610.977426,
+      "median": 104.34343,
+      "distinct_values": 11099
     },
     "active": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "1",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.72,
-      "sum": 17448,
+      "sum": 17429,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 17448
+          "count": 17429
         },
         {
           "value": 0,
@@ -1966,24 +1966,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.04,
-      "sum": 891,
+      "sum": 1027,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 23409
+          "count": 23254
         },
         {
           "value": 1,
-          "count": 891
+          "count": 1027
         }
       ]
     },
@@ -1992,8 +1992,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2005,7 +2005,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24272
+          "count": 24253
         },
         {
           "value": 1,
@@ -2018,8 +2018,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2031,7 +2031,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24288
+          "count": 24269
         },
         {
           "value": 1,
@@ -2044,8 +2044,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2057,7 +2057,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24272
+          "count": 24253
         },
         {
           "value": 1,
@@ -2070,20 +2070,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 1,
       "max": 1,
       "avg": 1.0,
-      "sum": 24300,
+      "sum": 24281,
       "median": 1,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 1,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -2092,9 +2092,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -2104,9 +2104,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "market_maker_address": {
@@ -2114,26 +2114,26 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "unique_values": 507,
       "uniqueness_ratio": 2.09,
       "min_length": 0,
       "max_length": 42,
-      "avg_length": 0.87,
+      "avg_length": 0.88,
       "sample_values": [
         "",
-        "0xbc71FAFA0A35C9eb495AD2939cE200cF73771823",
-        "0x1158C11a3AA20A5b7b8535C13beEC505af11e7F8",
-        "0x6990884550e6ebADE0b44799A1d7f2b35B21Aa09",
-        "0x1226ed690fb23B75B2BCe8787805E2a6a21F89a9"
+        "0x1226ed690fb23B75B2BCe8787805E2a6a21F89a9",
+        "0x2eB083A9761a4C8a6E522c987c06E87BE288e02A",
+        "0x7f14626660aade6B8CFd3913ad723aD6D20CeCD5",
+        "0x5465856C69783cA27DE7DF18c9B3F774932a5bfb"
       ],
       "top_values": [
         {
           "value": "",
-          "count": 23794
+          "count": 23775
         },
         {
           "value": "0xffDd0eeaBBafC1269304fD588F5171Cdd31f1c5c",
@@ -2158,9 +2158,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "updated_by": {
@@ -2168,9 +2168,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "created_at": {
@@ -2178,47 +2178,47 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "earliest": "2024-12-29T17:38:00.916304Z",
-      "latest": "2025-11-22T16:47:24.061004Z",
-      "distinct_values": 24300
+      "latest": "2025-11-22T22:47:23.585907Z",
+      "distinct_values": 24281
     },
     "updated_at": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24299,
+      "total_rows": 24281,
+      "non_null": 24280,
       "null_count": 1,
       "null_percentage": 0.0,
       "earliest": "2024-12-30T18:07:26.563901Z",
-      "latest": "2025-11-22T16:54:57.45699Z",
-      "distinct_values": 24299
+      "latest": "2025-11-22T22:59:52.886356Z",
+      "distinct_values": 24280
     },
     "closed_time": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 891,
-      "null_count": 23409,
-      "null_percentage": 96.33,
+      "total_rows": 24281,
+      "non_null": 1027,
+      "null_count": 23254,
+      "null_percentage": 95.77,
       "earliest": "2025-01-06 17:16:04+00",
-      "latest": "2025-11-22 16:29:37+00",
-      "distinct_values": 764
+      "latest": "2025-11-22 22:56:17+00",
+      "distinct_values": 851
     },
     "wide_format": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2230,7 +2230,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24288
+          "count": 24269
         },
         {
           "value": 1,
@@ -2243,9 +2243,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -2255,10 +2255,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 23924,
-      "null_count": 376,
-      "null_percentage": 1.55,
+      "total_rows": 24281,
+      "non_null": 23883,
+      "null_count": 398,
+      "null_percentage": 1.64,
       "unique_values": 4,
       "uniqueness_ratio": 0.02,
       "min_length": 42,
@@ -2266,18 +2266,18 @@
       "avg_length": 42.0,
       "sample_values": [
         "0x6A9D222616C90FcA5754cd1333cFD9b7fb6a4F74",
+        "0x2F5e3684cb1F318ec51b00Edba38d79Ac2c0aA9d",
         "0x157Ce2d672854c848c9b79C49a8Cc6cc89176a49",
-        "0x65070BE91477460D8A7AeEb94ef92fe056C2f2A7",
-        "0x2F5e3684cb1F318ec51b00Edba38d79Ac2c0aA9d"
+        "0x65070BE91477460D8A7AeEb94ef92fe056C2f2A7"
       ],
       "top_values": [
         {
           "value": "0x2F5e3684cb1F318ec51b00Edba38d79Ac2c0aA9d",
-          "count": 16433
+          "count": 16348
         },
         {
           "value": "0x65070BE91477460D8A7AeEb94ef92fe056C2f2A7",
-          "count": 6332
+          "count": 6376
         },
         {
           "value": "0x6A9D222616C90FcA5754cd1333cFD9b7fb6a4F74",
@@ -2294,9 +2294,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "group_item_title": {
@@ -2304,26 +2304,26 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 22667,
-      "null_count": 1633,
-      "null_percentage": 6.72,
-      "unique_values": 9000,
-      "uniqueness_ratio": 39.71,
+      "total_rows": 24281,
+      "non_null": 22577,
+      "null_count": 1704,
+      "null_percentage": 7.02,
+      "unique_values": 8956,
+      "uniqueness_ratio": 39.67,
       "min_length": 0,
       "max_length": 72,
-      "avg_length": 11.31,
+      "avg_length": 11.24,
       "sample_values": [
         "",
-        "\u2191 1,000,000",
-        "\u2191 250,000",
-        "\u2191 200,000",
-        "\u2191 150,000"
+        "50+ bps decrease",
+        "25 bps decrease",
+        "No change",
+        "25+ bps increase"
       ],
       "top_values": [
         {
           "value": "",
-          "count": 845
+          "count": 840
         },
         {
           "value": "Other",
@@ -2331,15 +2331,15 @@
         },
         {
           "value": "O/U 2.5",
-          "count": 179
+          "count": 164
         },
         {
           "value": "Both Teams to Score",
-          "count": 174
+          "count": 155
         },
         {
-          "value": "O/U 3.5",
-          "count": 104
+          "value": "Match Winner",
+          "count": 105
         }
       ]
     },
@@ -2348,10 +2348,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24003,
-      "null_count": 297,
-      "null_percentage": 1.22,
+      "total_rows": 24281,
+      "non_null": 23986,
+      "null_count": 295,
+      "null_percentage": 1.21,
       "unique_values": 128,
       "uniqueness_ratio": 0.53,
       "min_length": 1,
@@ -2361,29 +2361,29 @@
         "0",
         "1",
         "2",
-        "4",
-        "6"
+        "3",
+        "10"
       ],
       "top_values": [
         {
           "value": "0",
-          "count": 5681
+          "count": 5721
         },
         {
           "value": "2",
-          "count": 2456
+          "count": 2445
         },
         {
           "value": "1",
-          "count": 2151
+          "count": 2121
         },
         {
           "value": "3",
-          "count": 998
+          "count": 979
         },
         {
           "value": "4",
-          "count": 772
+          "count": 771
         }
       ]
     },
@@ -2392,9 +2392,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -2404,21 +2404,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24299,
+      "total_rows": 24281,
+      "non_null": 24280,
       "null_count": 1,
       "null_percentage": 0.0,
-      "unique_values": 24299,
+      "unique_values": 24280,
       "uniqueness_ratio": 100.0,
       "min_length": 66,
       "max_length": 66,
       "avg_length": 66.0,
       "sample_values": [
+        "0x9c5e79f6f5071d2dd10596c382fb5dc459cef4ee4d34f45e5af3fda326f42ae0",
         "0x26278b28ec125b422960cda90b7d9c27da0bbef8723fbdbd331c3fd674200ffa",
-        "0x0422835a21786de482a3b7efd8cdb222e211ce392e8b2a975d9577d25ef5dc86",
-        "0xfb38fc0c31a2c8f3fed2052b1f8d2eead9bbc16f3cab4bab76b10d5f0d034d49",
-        "0x8f105aeae28912e3e4da965325903c1aff6aa308e5261e07d933439d25bda63d",
-        "0x71ed27d517315ae446e8a937a402a84d79577fb25d113d5fcd6a3a58402c398f"
+        "0x8d9540f4caef531e7065998ff291ba9038588cfe647d8f4822f892112df86f00",
+        "0x8d9540f4caef531e7065998ff291ba9038588cfe647d8f4822f892112df86f01",
+        "0x8d9540f4caef531e7065998ff291ba9038588cfe647d8f4822f892112df86f02"
       ]
     },
     "uma_end_date": {
@@ -2426,22 +2426,22 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 891,
-      "null_count": 23409,
-      "null_percentage": 96.33,
+      "total_rows": 24281,
+      "non_null": 1027,
+      "null_count": 23254,
+      "null_percentage": 95.77,
       "earliest": "2025-01-06T17:16:04Z",
-      "latest": "2025-11-22T16:29:37Z",
-      "distinct_values": 764
+      "latest": "2025-11-22T22:56:17Z",
+      "distinct_values": 851
     },
     "uma_end_date_iso": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "enable_order_book": {
@@ -2449,20 +2449,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 1,
       "max": 1,
       "avg": 1.0,
-      "sum": 24300,
+      "sum": 24281,
       "median": 1,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 1,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -2471,24 +2471,24 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0.001,
       "max": 0.01,
       "avg": 0.01,
-      "sum": 173.016,
+      "sum": 170.09,
       "median": 0.01,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0.01,
-          "count": 16524
+          "count": 16201
         },
         {
           "value": 0.001,
-          "count": 7776
+          "count": 8080
         }
       ]
     },
@@ -2497,20 +2497,20 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 5.0,
       "max": 5.0,
       "avg": 5.0,
-      "sum": 121500.0,
+      "sum": 121405.0,
       "median": 5.0,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 5.0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -2519,10 +2519,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 1065,
-      "null_count": 23235,
-      "null_percentage": 95.62,
+      "total_rows": 24281,
+      "non_null": 1351,
+      "null_count": 22930,
+      "null_percentage": 94.44,
       "earliest": "disputed",
       "latest": "resolved",
       "distinct_values": 3
@@ -2532,8 +2532,8 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "earliest": "\"[\\\"proposed\\\", \\\"disputed\\\", \\\"proposed\\\", \\\"disputed\\\", \\\"proposed\\\", \\\"disputed\\\"]\"",
@@ -2545,9 +2545,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "end_date_iso": {
@@ -2555,23 +2555,23 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 22299,
-      "null_count": 2001,
-      "null_percentage": 8.23,
+      "total_rows": 24281,
+      "non_null": 22279,
+      "null_count": 2002,
+      "null_percentage": 8.25,
       "earliest": "2025-03-31",
       "latest": "2028-11-07",
-      "distinct_values": 180
+      "distinct_values": 179
     },
     "start_date_iso": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 17750,
+      "total_rows": 24281,
+      "non_null": 17731,
       "null_count": 6550,
-      "null_percentage": 26.95,
+      "null_percentage": 26.98,
       "earliest": "2024-12-29",
       "latest": "2025-11-22",
       "distinct_values": 246
@@ -2581,20 +2581,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.99,
-      "sum": 24106,
+      "sum": 24087,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 24106
+          "count": 24087
         },
         {
           "value": 0,
@@ -2607,8 +2607,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2620,7 +2620,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -2629,8 +2629,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2642,7 +2642,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -2651,33 +2651,33 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 5159,
-      "null_count": 19141,
-      "null_percentage": 78.77,
+      "total_rows": 24281,
+      "non_null": 5072,
+      "null_count": 19209,
+      "null_percentage": 79.11,
       "earliest": "2025-03-03 21:06:00+00",
-      "latest": "2025-12-20 15:30:00+00",
-      "distinct_values": 573
+      "latest": "2025-12-20 17:30:00+00",
+      "distinct_values": 570
     },
     "seconds_delay": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 4909,
-      "null_count": 19391,
-      "null_percentage": 79.8,
+      "total_rows": 24281,
+      "non_null": 4831,
+      "null_count": 19450,
+      "null_percentage": 80.1,
       "min": 3,
       "max": 3,
       "avg": 3.0,
-      "sum": 14727,
+      "sum": 14493,
       "median": 3,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 3,
-          "count": 4909
+          "count": 4831
         }
       ]
     },
@@ -2686,21 +2686,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24299,
+      "total_rows": 24281,
+      "non_null": 24280,
       "null_count": 1,
       "null_percentage": 0.0,
-      "unique_values": 24299,
+      "unique_values": 24280,
       "uniqueness_ratio": 100.0,
       "min_length": 163,
       "max_length": 170,
       "avg_length": 168.09,
       "sample_values": [
+        "\"[\\\"15974786252393396629980467963784550802583781222733347534844974829144359265969\\\", \\\"4235157945560...",
         "\"[\\\"114304586861386186441621124384163963092522056897081085884483958561365015034812\\\", \\\"112744882674...",
-        "\"[\\\"112540911653160777059655478391259433595972605218365763034134019729862917878641\\\", \\\"729578459692...",
-        "\"[\\\"15600657178409553723631854347165934450743544837722869853285023214749561849304\\\", \\\"9583272205236...",
-        "\"[\\\"85949163243245471221790979452091560100141884930227668573477517865165344048388\\\", \\\"3692156993944...",
-        "\"[\\\"87484108660213248881541352117231933897620313251765619093583161767567942237143\\\", \\\"6622760305035..."
+        "\"[\\\"74018646712472971445258547247048869505144598783748525202442089895996249694683\\\", \\\"2148977251641...",
+        "\"[\\\"87769991026114894163580777793845523168226980076553814689875238288185044414090\\\", \\\"1341128405527...",
+        "\"[\\\"80746058984644290629624903019922696017323803605256698757445938534814122585786\\\", \\\"8597068209290..."
       ]
     },
     "disqus_thread": {
@@ -2708,9 +2708,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -2720,9 +2720,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -2732,9 +2732,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -2744,10 +2744,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 23913,
-      "null_count": 387,
-      "null_percentage": 1.59,
+      "total_rows": 24281,
+      "non_null": 23872,
+      "null_count": 409,
+      "null_percentage": 1.68,
       "unique_values": 5,
       "uniqueness_ratio": 0.02,
       "min_length": 3,
@@ -2763,7 +2763,7 @@
       "top_values": [
         {
           "value": "500",
-          "count": 22493
+          "count": 22452
         },
         {
           "value": "2500",
@@ -2788,10 +2788,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 23913,
-      "null_count": 387,
-      "null_percentage": 1.59,
+      "total_rows": 24281,
+      "non_null": 23872,
+      "null_count": 409,
+      "null_percentage": 1.68,
       "unique_values": 4,
       "uniqueness_ratio": 0.02,
       "min_length": 1,
@@ -2799,18 +2799,18 @@
       "avg_length": 1.06,
       "sample_values": [
         "5",
+        "2",
         "10",
-        "20",
-        "2"
+        "20"
       ],
       "top_values": [
         {
           "value": "5",
-          "count": 14218
+          "count": 14223
         },
         {
           "value": "2",
-          "count": 8290
+          "count": 8244
         },
         {
           "value": "20",
@@ -2827,8 +2827,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2840,7 +2840,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24288
+          "count": 24269
         },
         {
           "value": 1,
@@ -2853,9 +2853,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "taker_base_fee": {
@@ -2863,9 +2863,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "custom_liveness": {
@@ -2873,24 +2873,24 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 22589,
-      "null_count": 1711,
-      "null_percentage": 7.04,
+      "total_rows": 24281,
+      "non_null": 22548,
+      "null_count": 1733,
+      "null_percentage": 7.14,
       "min": 0,
       "max": 3600,
-      "avg": 31.24,
-      "sum": 705600,
+      "avg": 30.97,
+      "sum": 698400,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 22393
+          "count": 22354
         },
         {
           "value": 3600,
-          "count": 196
+          "count": 194
         }
       ]
     },
@@ -2899,24 +2899,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.96,
-      "sum": 23404,
+      "sum": 23249,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 23404
+          "count": 23249
         },
         {
           "value": 0,
-          "count": 896
+          "count": 1032
         }
       ]
     },
@@ -2925,21 +2925,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24295,
+      "total_rows": 24281,
+      "non_null": 24276,
       "null_count": 5,
       "null_percentage": 0.02,
       "earliest": "2024-12-29T22:38:10Z",
-      "latest": "2025-11-22T16:47:27Z",
-      "distinct_values": 9369
+      "latest": "2025-11-22T22:47:27Z",
+      "distinct_values": 9408
     },
     "notifications_enabled": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2951,7 +2951,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -2960,9 +2960,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "creator": {
@@ -2970,9 +2970,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "ready": {
@@ -2980,8 +2980,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -2993,7 +2993,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -3002,8 +3002,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3015,7 +3015,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -3024,9 +3024,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -3036,9 +3036,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "funded_timestamp": {
@@ -3046,9 +3046,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "competitive": {
@@ -3056,52 +3056,52 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 23521,
-      "null_count": 779,
-      "null_percentage": 3.21,
+      "total_rows": 24281,
+      "non_null": 23452,
+      "null_count": 829,
+      "null_percentage": 3.41,
       "min": 0.0,
       "max": 1.0,
-      "avg": 0.51,
-      "sum": 12025.904443078029,
+      "avg": 0.5,
+      "sum": 11635.168348286898,
       "median": 0.8009597099244316,
-      "distinct_values": 1568
+      "distinct_values": 1492
     },
     "rewards_min_size": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0.0,
       "max": 200.0,
-      "avg": 16.07,
-      "sum": 390440.0,
+      "avg": 16.13,
+      "sum": 391550.0,
       "median": 0.0,
       "distinct_values": 7,
       "value_distribution": [
         {
           "value": 0.0,
-          "count": 18565
+          "count": 18515
         },
         {
           "value": 50.0,
-          "count": 1931
+          "count": 1936
         },
         {
           "value": 100.0,
-          "count": 1710
+          "count": 1712
         },
         {
           "value": 20.0,
-          "count": 1642
+          "count": 1665
         },
         {
           "value": 200.0,
-          "count": 450
+          "count": 451
         },
         {
           "value": 40.0,
@@ -3118,28 +3118,28 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0.0,
       "max": 5.5,
-      "avg": 0.95,
-      "sum": 23080.0,
+      "avg": 0.96,
+      "sum": 23194.5,
       "median": 0.0,
       "distinct_values": 6,
       "value_distribution": [
         {
           "value": 0.0,
-          "count": 18473
+          "count": 18423
         },
         {
           "value": 3.5,
-          "count": 3311
+          "count": 3336
         },
         {
           "value": 4.5,
-          "count": 2315
+          "count": 2321
         },
         {
           "value": 5.5,
@@ -3160,40 +3160,40 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0.001,
       "max": 1.0,
-      "avg": 0.42,
-      "sum": 10182.351,
-      "median": 0.086,
-      "distinct_values": 495
+      "avg": 0.43,
+      "sum": 10378.467,
+      "median": 0.089,
+      "distinct_values": 494
     },
     "automatically_resolved": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.04,
-      "sum": 891,
+      "sum": 1027,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 23409
+          "count": 23254
         },
         {
           "value": 1,
-          "count": 891
+          "count": 1027
         }
       ]
     },
@@ -3202,74 +3202,74 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 17847,
-      "null_count": 6453,
-      "null_percentage": 26.56,
-      "min": -0.6145,
+      "total_rows": 24281,
+      "non_null": 18382,
+      "null_count": 5899,
+      "null_percentage": 24.29,
+      "min": -0.7395,
       "max": 0.964,
       "avg": 0.0,
-      "sum": 19.5605,
+      "sum": 52.4095,
       "median": 0.0,
-      "distinct_values": 747
+      "distinct_values": 875
     },
     "one_hour_price_change": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 12299,
-      "null_count": 12001,
-      "null_percentage": 49.39,
-      "min": -0.4985,
-      "max": 0.75,
-      "avg": -0.0,
-      "sum": -0.7609999999999997,
+      "total_rows": 24281,
+      "non_null": 12168,
+      "null_count": 12113,
+      "null_percentage": 49.89,
+      "min": -0.6345,
+      "max": 0.74,
+      "avg": 0.0,
+      "sum": 1.736,
       "median": 0.0,
-      "distinct_values": 300
+      "distinct_values": 362
     },
     "one_week_price_change": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 16707,
-      "null_count": 7593,
-      "null_percentage": 31.25,
-      "min": -0.8695,
-      "max": 0.944,
-      "avg": -0.0,
-      "sum": -2.651999999999999,
+      "total_rows": 24281,
+      "non_null": 16336,
+      "null_count": 7945,
+      "null_percentage": 32.72,
+      "min": -0.8665,
+      "max": 0.9445,
+      "avg": 0.0,
+      "sum": 76.9035,
       "median": 0.0,
-      "distinct_values": 915
+      "distinct_values": 957
     },
     "one_month_price_change": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 13410,
-      "null_count": 10890,
-      "null_percentage": 44.81,
-      "min": -0.8255,
-      "max": 0.9135,
+      "total_rows": 24281,
+      "non_null": 13570,
+      "null_count": 10711,
+      "null_percentage": 44.11,
+      "min": -0.8205,
+      "max": 0.9165,
       "avg": -0.03,
-      "sum": -464.578,
+      "sum": -416.325,
       "median": 0.0,
-      "distinct_values": 1119
+      "distinct_values": 1135
     },
     "one_year_price_change": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 6824,
-      "null_count": 17476,
-      "null_percentage": 71.92,
+      "null_count": 17457,
+      "null_percentage": 71.9,
       "min": 0.0,
       "max": 0.0,
       "avg": 0,
@@ -3288,30 +3288,30 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 18586,
-      "null_count": 5714,
-      "null_percentage": 23.51,
+      "total_rows": 24281,
+      "non_null": 18649,
+      "null_count": 5632,
+      "null_percentage": 23.2,
       "min": 0.0,
       "max": 1.0,
-      "avg": 0.16,
-      "sum": 3002.572,
+      "avg": 0.17,
+      "sum": 3156.124,
       "median": 0.005,
-      "distinct_values": 413
+      "distinct_values": 421
     },
     "best_bid": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 22504,
-      "null_count": 1796,
-      "null_percentage": 7.39,
+      "total_rows": 24281,
+      "non_null": 22499,
+      "null_count": 1782,
+      "null_percentage": 7.34,
       "min": 0.0,
       "max": 0.999,
       "avg": 0.13,
-      "sum": 2972.029,
+      "sum": 2904.355,
       "median": 0.01,
       "distinct_values": 387
     },
@@ -3320,36 +3320,36 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0.001,
       "max": 1.0,
-      "avg": 0.54,
-      "sum": 13154.417,
-      "median": 0.52,
-      "distinct_values": 545
+      "avg": 0.55,
+      "sum": 13283.296,
+      "median": 0.56,
+      "distinct_values": 561
     },
     "automatically_active": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 1.0,
-      "sum": 24295,
+      "sum": 24276,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 24295
+          "count": 24276
         },
         {
           "value": 0,
@@ -3362,24 +3362,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.98,
-      "sum": 23923,
+      "sum": 23882,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 23923
+          "count": 23882
         },
         {
           "value": 0,
-          "count": 377
+          "count": 399
         }
       ]
     },
@@ -3388,9 +3388,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -3400,9 +3400,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 7937,
-      "null_count": 16363,
+      "total_rows": 24281,
+      "non_null": 7931,
+      "null_count": 16350,
       "null_percentage": 67.34,
       "unique_values": 40,
       "uniqueness_ratio": 0.5,
@@ -3411,15 +3411,15 @@
       "avg_length": 0.09,
       "sample_values": [
         "",
-        "#FA534D",
-        "#E2BF6C,#ECDB9B",
-        "#99C9F5",
-        "#456BD5,#2970FF"
+        "#A12D48",
+        "#B31F37",
+        "#5340BB",
+        "#1E57CC"
       ],
       "top_values": [
         {
           "value": "",
-          "count": 7831
+          "count": 7825
         },
         {
           "value": "#1F3F97",
@@ -3444,8 +3444,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3457,7 +3457,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24239
+          "count": 24220
         },
         {
           "value": 1,
@@ -3470,8 +3470,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3483,7 +3483,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24300
+          "count": 24281
         }
       ]
     },
@@ -3492,8 +3492,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3505,7 +3505,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 17214
+          "count": 17195
         },
         {
           "value": 1,
@@ -3518,24 +3518,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
-      "avg": 0.68,
-      "sum": 16433,
+      "avg": 0.67,
+      "sum": 16348,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 16433
+          "count": 16348
         },
         {
           "value": 0,
-          "count": 7867
+          "count": 7933
         }
       ]
     },
@@ -3544,8 +3544,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3557,7 +3557,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 23901
+          "count": 23882
         },
         {
           "value": 1,
@@ -3570,21 +3570,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 145,
-      "null_count": 24155,
-      "null_percentage": 99.4,
-      "unique_values": 145,
+      "total_rows": 24281,
+      "non_null": 151,
+      "null_count": 24130,
+      "null_percentage": 99.38,
+      "unique_values": 151,
       "uniqueness_ratio": 100.0,
       "min_length": 5,
       "max_length": 7,
       "avg_length": 6.46,
       "sample_values": [
-        "1268736",
-        "730234",
-        "730235",
-        "1268733",
-        "730225"
+        "1268735",
+        "730231",
+        "730232",
+        "1264858",
+        "193523"
       ]
     },
     "sports_market_type": {
@@ -3592,42 +3592,42 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 2990,
-      "null_count": 21310,
-      "null_percentage": 87.7,
+      "total_rows": 24281,
+      "non_null": 3020,
+      "null_count": 21261,
+      "null_percentage": 87.56,
       "unique_values": 12,
       "uniqueness_ratio": 0.4,
       "min_length": 6,
       "max_length": 21,
-      "avg_length": 9.51,
+      "avg_length": 9.4,
       "sample_values": [
+        "totals",
         "spreads",
         "moneyline",
-        "totals",
         "first_half_moneyline",
-        "ufc_go_the_distance"
+        "first_half_spreads"
       ],
       "top_values": [
         {
           "value": "moneyline",
-          "count": 1132
+          "count": 1179
         },
         {
           "value": "totals",
-          "count": 760
+          "count": 763
         },
         {
           "value": "spreads",
-          "count": 455
+          "count": 456
         },
         {
           "value": "team_totals",
-          "count": 200
+          "count": 209
         },
         {
           "value": "both_teams_to_score",
-          "count": 174
+          "count": 155
         }
       ]
     },
@@ -3636,24 +3636,24 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 1490,
-      "null_count": 22810,
-      "null_percentage": 93.87,
+      "total_rows": 24281,
+      "non_null": 1506,
+      "null_count": 22775,
+      "null_percentage": 93.8,
       "min": 0.5,
       "max": 244.5,
-      "avg": 27.68,
-      "sum": 41247.0,
-      "median": 6.5,
-      "distinct_values": 132
+      "avg": 30.32,
+      "sum": 45668.0,
+      "median": 7.5,
+      "distinct_values": 140
     },
     "pending_deployment": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3665,7 +3665,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24296
+          "count": 24277
         },
         {
           "value": 1,
@@ -3678,8 +3678,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3691,7 +3691,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24299
+          "count": 24280
         },
         {
           "value": 1,
@@ -3704,22 +3704,22 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 23261,
-      "null_count": 1039,
-      "null_percentage": 4.28,
+      "total_rows": 24281,
+      "non_null": 23220,
+      "null_count": 1061,
+      "null_percentage": 4.37,
       "earliest": "2025-04-30T19:53:01.891823Z",
-      "latest": "2025-11-22T16:32:22.575915Z",
-      "distinct_values": 23260
+      "latest": "2025-11-22T22:25:24.461299Z",
+      "distinct_values": 23219
     },
     "scheduled_deployment_timestamp": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
+      "total_rows": 24281,
       "non_null": 0,
-      "null_count": 24300,
+      "null_count": 24281,
       "null_percentage": 100.0
     },
     "rfq_enabled": {
@@ -3727,8 +3727,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -3740,7 +3740,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 24299
+          "count": 24280
         },
         {
           "value": 1,
@@ -3753,34 +3753,34 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 806,
-      "null_count": 23494,
-      "null_percentage": 96.68,
+      "total_rows": 24281,
+      "non_null": 848,
+      "null_count": 23433,
+      "null_percentage": 96.51,
       "earliest": "2025-10-10T14:00:00Z",
-      "latest": "2025-12-03T10:00:00Z",
-      "distinct_values": 187
+      "latest": "2025-12-09T14:00:00Z",
+      "distinct_values": 193
     },
     "fetched_at": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 24300,
-      "non_null": 24300,
+      "total_rows": 24281,
+      "non_null": 24281,
       "null_count": 0,
       "null_percentage": 0.0,
-      "earliest": "2025-11-22T10:48:29.402724",
-      "latest": "2025-11-22T10:55:15.574243",
-      "distinct_values": 24300
+      "earliest": "2025-11-22T16:53:38.806026",
+      "latest": "2025-11-22T17:00:17.002543",
+      "distinct_values": 24281
     }
   },
   "sample_rows": [
+    "id:516719 | event_id:16108 | question:Russia x Ukraine ceasefire in ... | condition_id:0x8ee2f1640386310eb5e7ffa596ba... | slug:russia-x-ukraine-ceasefire-in-... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-29T22:51:33.18Z | category:NULL | ...",
     "id:551963 | event_id:26857 | question:Xi Jinping out in 2025? | condition_id:0xf2ce8d3897ac5009a131637d3575... | slug:xi-jinping-out-in-2025 | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T23:55:00Z | start_date:2025-06-12T19:41:07.661Z | category:NULL | ...",
-    "id:516861 | event_id:16096 | question:Will Bitcoin reach $1,000,000 ... | condition_id:0xd8b9ff369452daebce1ac8cb6a29... | slug:will-bitcoin-reach-1000000-by-... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:00:50.534Z | category:NULL | ...",
-    "id:516862 | event_id:16096 | question:Will Bitcoin reach $250,000 by... | condition_id:0xac2be3a5471b343d43b9f0d3f141... | slug:will-bitcoin-reach-250000-by-d... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:01:06.714Z | category:NULL | ...",
-    "id:516863 | event_id:16096 | question:Will Bitcoin reach $200,000 by... | condition_id:0x4e2887e913cd6e091c9b07b5e401... | slug:will-bitcoin-reach-200000-by-d... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:01:26.81Z | category:NULL | ...",
-    "id:516864 | event_id:16096 | question:Will Bitcoin reach $150,000 by... | condition_id:0x9aa6086535a4b3145e9f7378dd58... | slug:will-bitcoin-reach-150000-by-d... | twitter_card_image:NULL | resolution_source: | end_date:2025-12-31T12:00:00Z | start_date:2024-12-30T22:01:36.925Z | category:NULL | ..."
+    "id:570360 | event_id:35090 | question:Fed decreases interest rates b... | condition_id:0x6903b766f5fda3d5b02f4472a6b4... | slug:fed-decreases-interest-rates-b... | twitter_card_image:NULL | resolution_source:NULL | end_date:2025-12-10T00:00:00Z | start_date:2025-07-31T19:47:24.365335Z | category:NULL | ...",
+    "id:570361 | event_id:35090 | question:Fed decreases interest rates b... | condition_id:0xcb111226a8271fed0c71bb5ec1bd... | slug:fed-decreases-interest-rates-b... | twitter_card_image:NULL | resolution_source:NULL | end_date:2025-12-10T00:00:00Z | start_date:2025-07-31T19:47:26.391724Z | category:NULL | ...",
+    "id:570362 | event_id:35090 | question:No change in Fed interest rate... | condition_id:0x58f4542341fcc66a2197877b7487... | slug:no-change-in-fed-interest-rate... | twitter_card_image:NULL | resolution_source:NULL | end_date:2025-12-10T00:00:00Z | start_date:2025-07-31T19:47:26.644562Z | category:NULL | ..."
   ],
   "indexes": [
     {
@@ -3823,10 +3823,6 @@
       },
       {
         "table": "market_holders",
-        "column": "market_id"
-      },
-      {
-        "table": "market_tags",
         "column": "market_id"
       },
       {

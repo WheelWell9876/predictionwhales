@@ -20,36 +20,49 @@ class StoreEvents:
     def store_events_batch(self, events: List[Dict]):
         """
         Store multiple events in the database
-        
+
         Args:
             events: List of event dictionaries to store
         """
         if not events:
             return
-            
+
         event_records = []
         events_with_tags = []  # Track which events have tags to process later
-        
+        events_with_images = []  # Track events with image optimization data
+
         for event in events:
             record = self._prepare_event_record(event)
             event_records.append(record)
-            
+
             # Store the tags for later processing (AFTER events are inserted)
             if 'tags' in event and event['tags']:
                 events_with_tags.append((event['id'], event['tags']))
-        
+
+            # Collect image optimization data
+            if 'imageOptimized' in event and event['imageOptimized']:
+                events_with_images.append((event['id'], event['imageOptimized'], 'image'))
+            if 'iconOptimized' in event and event['iconOptimized']:
+                events_with_images.append((event['id'], event['iconOptimized'], 'icon'))
+            if 'featuredImageOptimized' in event and event['featuredImageOptimized']:
+                events_with_images.append((event['id'], event['featuredImageOptimized'], 'featuredImage'))
+
         # Bulk insert all events
         if event_records:
             self.db_manager.bulk_insert_or_replace('events', event_records)
             self._event_counter += len(event_records)
-            
+
             # Log progress every 100 events
             if self._event_counter % 100 == 0:
                 self.logger.info(f"Stored {self._event_counter} events")
-        
+
         # Now that events exist, store their tags
         for event_id, tags in events_with_tags:
             self.store_event_tags(event_id, tags)
+
+        # Store image optimization data
+        if events_with_images:
+            self._store_image_optimized_batch(events_with_images)
 
     def store_event_detailed(self, event: Dict):
         """
@@ -248,19 +261,58 @@ class StoreEvents:
             'fetched_at': datetime.now().isoformat()
         }
 
+    def _store_image_optimized_batch(self, image_data: list):
+        """
+        Store image optimization data in batch for events
+
+        Args:
+            image_data: List of tuples (event_id, img_data, field_type)
+        """
+        image_records = []
+
+        for event_id, img_data, field_type in image_data:
+            if img_data:
+                image_records.append({
+                    'id': img_data.get('id'),
+                    'image_url_source': img_data.get('imageUrlSource'),
+                    'image_url_optimized': img_data.get('imageUrlOptimized'),
+                    'image_size_kb_source': self._safe_float(img_data.get('imageSizeKbSource')),
+                    'image_size_kb_optimized': self._safe_float(img_data.get('imageSizeKbOptimized')),
+                    'image_optimized_complete': int(img_data.get('imageOptimizedComplete', False)),
+                    'image_optimized_last_updated': img_data.get('imageOptimizedLastUpdated'),
+                    'rel_id': img_data.get('relID'),
+                    'field': img_data.get('field', field_type),
+                    'relname': img_data.get('relname'),
+                    'entity_type': 'event',
+                    'entity_id': event_id
+                })
+
+        if image_records:
+            self.db_manager.bulk_insert_or_ignore('image_optimized', image_records)
+            self.logger.debug(f"Stored {len(image_records)} image optimization records for events")
+
+    def _safe_float(self, value):
+        """Safely convert value to float"""
+        if value is None:
+            return None
+        try:
+            return float(value)
+        except (ValueError, TypeError):
+            return None
+
     def remove_closed_events(self) -> int:
         """
         Remove all closed events from the database
-        
+
         Returns:
             Number of events removed
         """
         self.logger.info("Removing closed events from database...")
-        
+
         # Count closed events
         result = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM events WHERE closed = 1")
         closed_count = result['count'] if result else 0
-        
+
         if closed_count > 0:
             # Delete closed events and their tags
             self.db_manager.delete_records('event_tags', 'event_id IN (SELECT id FROM events WHERE closed = 1)')

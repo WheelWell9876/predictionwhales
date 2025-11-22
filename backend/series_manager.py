@@ -13,6 +13,8 @@ from threading import Lock
 from backend.database.database_manager import DatabaseManager
 from backend.config import Config
 from backend.database.entity.store_series import StoreSeriesManager
+from backend.fetch.entity.batch.batch_series import BatchSeriesManager
+from backend.fetch.entity.id.id_series import IdSeriesManager
 
 class SeriesManager:
     """Manager for series-related operations"""
@@ -26,34 +28,115 @@ class SeriesManager:
         self.db_manager = DatabaseManager()
         self.store_manager = StoreSeriesManager()
         
+        # Initialize fetchers
+        self.batch_fetcher = BatchSeriesManager()
+        self.id_fetcher = IdSeriesManager()
+        
         # Setup logging
         self.logger = self.db_manager.logger
         
         # Thread safety
         self._lock = Lock()
     
-    def store_event_series(self, event_id: str, series_data: List[Dict]):
+    def fetch_all_series(self, num_threads: int = 10) -> Dict:
         """
-        Store series data from an event response
-        Called by markets_manager when processing events
+        Fetch all series from the API and store with JSON relationships
         
         Args:
-            event_id: The event ID
-            series_data: List of series dictionaries from event response
+            num_threads: Number of concurrent threads
+            
+        Returns:
+            Dictionary with results
         """
-        if not series_data:
-            return
+        self.logger.info("\n" + "=" * 60)
+        self.logger.info("📚 Fetching ALL SERIES")
+        self.logger.info("=" * 60)
         
+        start_time = time.time()
+        result = {'success': False, 'count': 0, 'error': None}
+        
+        try:
+            all_series = []
+            offset = 0
+            limit = 100
+            
+            self.logger.info("Starting to fetch all series...")
+            
+            while True:
+                try:
+                    url = f"{self.base_url}/series"
+                    params = {
+                        "limit": limit,
+                        "offset": offset,
+                        "order": "volume",
+                        "ascending": "false"
+                    }
+                    
+                    response = requests.get(
+                        url,
+                        params=params,
+                        headers=self.config.get_api_headers(),
+                        timeout=self.config.REQUEST_TIMEOUT
+                    )
+                    response.raise_for_status()
+                    
+                    series_list = response.json()
+                    
+                    if not series_list:
+                        break
+                    
+                    all_series.extend(series_list)
+                    
+                    self.logger.info(f"Fetched {len(series_list)} series (offset: {offset})")
+                    
+                    offset += limit
+                    time.sleep(self.config.RATE_LIMIT_DELAY)
+                    
+                    if len(series_list) < limit:
+                        break
+                        
+                except requests.exceptions.RequestException as e:
+                    self.logger.error(f"Error fetching series at offset {offset}: {e}")
+                    break
+            
+            # Process and store series with JSON relationships
+            if all_series:
+                self._process_and_store_series(all_series)
+                result['count'] = len(all_series)
+                result['success'] = True
+            
+            elapsed_time = time.time() - start_time
+            self.logger.info(f"✅ Series loaded: {result['count']}")
+            self.logger.info(f"⏱️  Time taken: {elapsed_time:.2f} seconds")
+            
+        except Exception as e:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error loading series: {e}")
+            
+        return result
+    
+    def _process_and_store_series(self, series_list: List[Dict]):
+        """
+        Process and store series with JSON relationships
+        
+        Args:
+            series_list: List of series dictionaries from API
+        """
         series_records = []
-        event_series_records = []
-        series_tags_to_store = []
-        series_categories_to_store = []
-        series_collections_to_store = []
+        series_events_records = []
+        series_tags_records = []
+        series_categories_records = []
+        series_collections_records = []
+        series_chats_records = []
         
-        for series in series_data:
-            # Prepare series record
+        for series in series_list:
+            series_id = series.get('id')
+            if not series_id:
+                continue
+            
+            # Prepare main series record
             series_record = {
-                'id': series.get('id'),
+                'id': series_id,
                 'ticker': series.get('ticker'),
                 'slug': series.get('slug'),
                 'title': series.get('title'),
@@ -90,207 +173,125 @@ class SeriesManager:
             }
             series_records.append(series_record)
             
-            # Prepare event-series relationship
-            if series.get('id'):
-                event_series_records.append({
-                    'event_id': event_id,
-                    'series_id': series.get('id')
-                })
+            # Extract event IDs and store as JSON
+            if 'events' in series and series['events']:
+                event_ids = []
+                for event in series['events']:
+                    if isinstance(event, dict) and event.get('id'):
+                        event_ids.append(event['id'])
+                    elif isinstance(event, str):
+                        event_ids.append(event)
                 
-                # Collect tags for this series
-                if 'tags' in series and series['tags']:
-                    series_tags_to_store.append((series['id'], series['tags']))
+                if event_ids:
+                    series_events_records.append({
+                        'series_id': series_id,
+                        'event_ids': json.dumps(event_ids)
+                    })
+            
+            # Extract tag IDs and store as JSON
+            if 'tags' in series and series['tags']:
+                tag_ids = []
+                for tag in series['tags']:
+                    if isinstance(tag, dict) and tag.get('id'):
+                        tag_ids.append(tag['id'])
+                    elif isinstance(tag, str):
+                        tag_ids.append(tag)
                 
-                # Collect categories for this series
-                if 'categories' in series and series['categories']:
-                    series_categories_to_store.append((series['id'], series['categories']))
+                if tag_ids:
+                    series_tags_records.append({
+                        'series_id': series_id,
+                        'tag_ids': json.dumps(tag_ids)
+                    })
+            
+            # Extract category IDs and store as JSON
+            if 'categories' in series and series['categories']:
+                category_ids = []
+                for cat in series['categories']:
+                    if isinstance(cat, dict) and cat.get('id'):
+                        category_ids.append(cat['id'])
+                    elif isinstance(cat, str):
+                        category_ids.append(cat)
                 
-                # Collect collections for this series
-                if 'collections' in series and series['collections']:
-                    series_collections_to_store.append((series['id'], series['collections']))
+                if category_ids:
+                    series_categories_records.append({
+                        'series_id': series_id,
+                        'category_ids': json.dumps(category_ids)
+                    })
+            
+            # Extract collection IDs and store as JSON
+            if 'collections' in series and series['collections']:
+                collection_ids = []
+                for col in series['collections']:
+                    if isinstance(col, dict) and col.get('id'):
+                        collection_ids.append(col['id'])
+                    elif isinstance(col, str):
+                        collection_ids.append(col)
+                
+                if collection_ids:
+                    series_collections_records.append({
+                        'series_id': series_id,
+                        'collection_ids': json.dumps(collection_ids)
+                    })
+            
+            # Extract chat IDs and store as JSON
+            if 'chats' in series and series['chats']:
+                chat_ids = []
+                for chat in series['chats']:
+                    if isinstance(chat, dict) and chat.get('id'):
+                        chat_ids.append(chat['id'])
+                    elif isinstance(chat, str):
+                        chat_ids.append(chat)
+                
+                if chat_ids:
+                    series_chats_records.append({
+                        'series_id': series_id,
+                        'chat_ids': json.dumps(chat_ids)
+                    })
         
-        # Store series records
+        # Store all data
         if series_records:
             with self._lock:
                 self.db_manager.bulk_insert_or_replace('series', series_records)
-                self.logger.debug(f"Stored {len(series_records)} series for event {event_id}")
+                self.logger.info(f"Stored {len(series_records)} series")
         
-        # Store event-series relationships
-        if event_series_records:
+        if series_events_records:
             with self._lock:
-                self.db_manager.bulk_insert_or_ignore('event_series', event_series_records)
+                self.db_manager.bulk_insert_or_replace('series_events', series_events_records)
+                self.logger.info(f"Stored {len(series_events_records)} series-events relationships")
         
-        # Store series tags
-        for series_id, tags in series_tags_to_store:
-            self._store_series_tags(series_id, tags)
+        if series_tags_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_replace('series_tags', series_tags_records)
+                self.logger.info(f"Stored {len(series_tags_records)} series-tags relationships")
         
-        # Store series categories
-        for series_id, categories in series_categories_to_store:
-            self._store_series_categories(series_id, categories)
+        if series_categories_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_replace('series_categories', series_categories_records)
+                self.logger.info(f"Stored {len(series_categories_records)} series-categories relationships")
         
-        # Store series collections
-        for series_id, collections in series_collections_to_store:
-            self._store_series_collections(series_id, collections)
-    
-    def _store_series_tags(self, series_id: str, tags: List):
-        """Store series-tag relationships"""
-        tag_records = []
-        series_tag_records = []
+        if series_collections_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_replace('series_collections', series_collections_records)
+                self.logger.info(f"Stored {len(series_collections_records)} series-collections relationships")
         
-        for tag in tags:
-            if isinstance(tag, dict):
-                tag_id = tag.get('id')
-                tag_slug = tag.get('slug')
-                tag_label = tag.get('label')
-                
-                # Store the tag
-                if tag_id:
-                    tag_records.append({
-                        'id': tag_id,
-                        'label': tag_label,
-                        'slug': tag_slug,
-                        'force_show': int(tag.get('forceShow', False)),
-                        'force_hide': int(tag.get('forceHide', False)),
-                        'is_carousel': int(tag.get('isCarousel', False)),
-                        'published_at': tag.get('publishedAt'),
-                        'created_by': tag.get('createdBy'),
-                        'updated_by': tag.get('updatedBy'),
-                        'created_at': tag.get('createdAt'),
-                        'updated_at': tag.get('updatedAt'),
-                        'fetched_at': datetime.now().isoformat()
-                    })
-            else:
-                # Tag is just a string
-                tag_id = tag
-                tag_slug = tag
-            
-            if tag_id:
-                series_tag_records.append({
-                    'series_id': series_id,
-                    'tag_id': tag_id,
-                    'tag_slug': tag_slug
-                })
-        
-        # Insert tags first
-        if tag_records:
-            self.db_manager.bulk_insert_or_ignore('tags', tag_records)
-        
-        # Then insert relationships
-        if series_tag_records:
-            self.db_manager.bulk_insert_or_ignore('series_tags', series_tag_records)
-    
-    def _store_series_categories(self, series_id: str, categories: List[Dict]):
-        """Store series-category relationships"""
-        category_records = []
-        series_category_records = []
-        
-        for cat in categories:
-            if cat.get('id'):
-                # Store category
-                category_records.append({
-                    'id': cat.get('id'),
-                    'label': cat.get('label'),
-                    'parent_category': cat.get('parentCategory'),
-                    'slug': cat.get('slug'),
-                    'published_at': cat.get('publishedAt'),
-                    'created_by': cat.get('createdBy'),
-                    'updated_by': cat.get('updatedBy'),
-                    'created_at': cat.get('createdAt'),
-                    'updated_at': cat.get('updatedAt')
-                })
-                
-                # Store relationship
-                series_category_records.append({
-                    'series_id': series_id,
-                    'category_id': cat.get('id')
-                })
-        
-        if category_records:
-            self.db_manager.bulk_insert_or_ignore('categories', category_records)
-        
-        if series_category_records:
-            self.db_manager.bulk_insert_or_ignore('series_categories', series_category_records)
-    
-    def _store_series_collections(self, series_id: str, collections: List[Dict]):
-        """Store series-collection relationships"""
-        collection_records = []
-        series_collection_records = []
-        
-        for col in collections:
-            if col.get('id'):
-                # Store collection
-                collection_records.append({
-                    'id': col.get('id'),
-                    'ticker': col.get('ticker'),
-                    'slug': col.get('slug'),
-                    'title': col.get('title'),
-                    'subtitle': col.get('subtitle'),
-                    'collection_type': col.get('collectionType'),
-                    'description': col.get('description'),
-                    'tags': col.get('tags'),
-                    'image': col.get('image'),
-                    'icon': col.get('icon'),
-                    'header_image': col.get('headerImage'),
-                    'layout': col.get('layout'),
-                    'active': int(col.get('active', True)),
-                    'closed': int(col.get('closed', False)),
-                    'archived': int(col.get('archived', False)),
-                    'new': int(col.get('new', False)),
-                    'featured': int(col.get('featured', False)),
-                    'restricted': int(col.get('restricted', False)),
-                    'is_template': int(col.get('isTemplate', False)),
-                    'template_variables': col.get('templateVariables'),
-                    'published_at': col.get('publishedAt'),
-                    'created_by': col.get('createdBy'),
-                    'updated_by': col.get('updatedBy'),
-                    'created_at': col.get('createdAt'),
-                    'updated_at': col.get('updatedAt'),
-                    'comments_enabled': int(col.get('commentsEnabled', False))
-                })
-                
-                # Store relationship
-                series_collection_records.append({
-                    'series_id': series_id,
-                    'collection_id': col.get('id')
-                })
-        
-        if collection_records:
-            self.db_manager.bulk_insert_or_ignore('collections', collection_records)
-        
-        if series_collection_records:
-            self.db_manager.bulk_insert_or_ignore('series_collections', series_collection_records)
+        if series_chats_records:
+            with self._lock:
+                self.db_manager.bulk_insert_or_replace('series_chats', series_chats_records)
+                self.logger.info(f"Stored {len(series_chats_records)} series-chats relationships")
     
     def load_series_only(self) -> Dict:
         """
-        Load standalone series data (for series not attached to events)
+        Load series data - callable from data_fetcher
+        
+        Returns:
+            Dictionary with load results
         """
-        self.logger.info("\n" + "=" * 60)
-        self.logger.info("📚 Loading SERIES Only")
-        self.logger.info("=" * 60)
-        
-        start_time = time.time()
-        result = {'success': False, 'count': 0, 'error': None}
-        
-        try:
-            # Note: This would need a batch_series fetcher implementation
-            # For now, returning success with 0 count since series come from events
-            result['count'] = 0
-            result['success'] = True
-            
-            elapsed_time = time.time() - start_time
-            self.logger.info(f"✅ Series processing complete")
-            self.logger.info(f"⏱️ Time taken: {elapsed_time:.2f} seconds")
-            
-        except Exception as e:
-            result['error'] = str(e)
-            self.logger.error(f"❌ Error loading series: {e}")
-            
-        return result
+        return self.fetch_all_series(num_threads=10)
     
     def delete_series_only(self) -> Dict:
         """Delete series data"""
         self.logger.info("\n" + "=" * 60)
-        self.logger.info("🗑️ Deleting SERIES Data")
+        self.logger.info("🗑️  Deleting SERIES Data")
         self.logger.info("=" * 60)
         
         result = {'success': False, 'deleted': 0, 'error': None}
@@ -317,22 +318,33 @@ class SeriesManager:
             
         return result
     
+    def store_event_series(self, event_id: str, series_data: List):
+        """
+        Store the relationship between an event and its series
+        Delegates to store_manager
+
+        Args:
+            event_id: The event ID
+            series_data: List of series dictionaries or IDs from the API
+        """
+        self.store_manager.store_event_series(event_id, series_data)
+
     def get_series_statistics(self) -> Dict:
         """Get statistics about series in the database"""
         stats = {}
-        
+
         # Total series
         total = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM series")
         stats['total_series'] = total['count'] if total else 0
-        
+
         # Active series
         active = self.db_manager.fetch_one("SELECT COUNT(*) as count FROM series WHERE active = 1")
         stats['active_series'] = active['count'] if active else 0
-        
+
         # Series with events
         with_events = self.db_manager.fetch_one("""
-            SELECT COUNT(DISTINCT series_id) as count FROM series_events
+            SELECT COUNT(*) as count FROM series_events
         """)
         stats['series_with_events'] = with_events['count'] if with_events else 0
-        
+
         return stats

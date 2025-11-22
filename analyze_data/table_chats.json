@@ -66,10 +66,6 @@
       {
         "table": "event_chats",
         "column": "chat_id"
-      },
-      {
-        "table": "series_chats",
-        "column": "chat_id"
       }
     ]
   }

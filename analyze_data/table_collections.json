@@ -203,10 +203,6 @@
       {
         "table": "event_collections",
         "column": "collection_id"
-      },
-      {
-        "table": "series_collections",
-        "column": "collection_id"
       }
     ]
   }

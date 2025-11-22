@@ -17,21 +17,6 @@ sys.path.insert(0, str(Path(__file__).parent))
 from backend.database.database_manager import DatabaseManager
 from backend.database.data_fetcher import PolymarketDataFetcher
 
-def run_command(command: str, description: str):
-    """Run a shell command and display the result"""
-    print(f"\n📌 {description}...")
-    try:
-        result = subprocess.run(command, shell=True, capture_output=True, text=True)
-        if result.returncode == 0:
-            print(f"✅ {description} completed successfully")
-        else:
-            print(f"❌ Error in {description}: {result.stderr}")
-            return False
-    except Exception as e:
-        print(f"❌ Failed to run {description}: {e}")
-        return False
-    return True
-
 def setup_database():
     """Initialize the database schema"""
     print("\n" + "=" * 60)
@@ -62,65 +47,13 @@ def setup_database():
         print(f"   📊 Tables created: {len(tables)}")
         print(f"   🔍 Indexes created: {len(indexes)}")
         
-        # Only show errors if any tables are missing
-        expected_tables = [
-            'events', 'markets', 'series', 'tags', 'categories', 'collections',
-            'event_tags', 'market_tags', 'series_tags', 'users', 'comments'
-        ]
-        
-        table_names = [t['name'] for t in tables]
-        missing = [t for t in expected_tables if t not in table_names]
-        
-        if missing:
-            print(f"\n⚠️  Missing tables: {', '.join(missing)}")
-        
         return True
     except Exception as e:
         print(f"❌ Database setup failed: {e}")
         return False
 
-def verify_tables_for_operation(operation: str, section: str) -> bool:
-    """Verify required tables exist for an operation"""
-    db = DatabaseManager()
-    
-    # Define required tables for each section
-    required_tables = {
-        'events': ['events', 'tags', 'event_tags'],
-        'markets': ['markets', 'events', 'tags', 'market_tags', 'categories', 'series'],
-        'series': ['series', 'series_events', 'series_tags', 'series_categories'],
-        'tags': ['tags', 'event_tags', 'market_tags', 'series_tags'],
-        'users': ['users'],
-        'comments': ['comments', 'events'],
-        'positions': ['user_positions_current', 'user_positions_closed', 'users'],
-        'transactions': ['transactions', 'users', 'markets']
-    }
-    
-    tables_needed = required_tables.get(section, [])
-    if not tables_needed:
-        return True
-    
-    # Check if tables exist
-    existing_tables = db.fetch_all("""
-        SELECT name FROM sqlite_master 
-        WHERE type='table'
-    """)
-    existing_names = [t['name'] for t in existing_tables]
-    
-    missing = [t for t in tables_needed if t not in existing_names]
-    
-    if missing:
-        print(f"⚠️  Missing required tables for {section}: {', '.join(missing)}")
-        return False
-    
-    return True
-
 def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
     """Load a specific data section"""
-    # Verify tables first
-    if not verify_tables_for_operation('load', section):
-        print(f"❌ Cannot load {section}: required tables missing")
-        return False
-    
     print(f"\n📥 Loading {section.upper()}")
     start_time = time.time()
     
@@ -133,6 +66,10 @@ def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
             result = fetcher.load_series_only()
         elif section == "tags":
             result = fetcher.load_tags_only()
+        elif section == "tags-with-relationships":
+            result = fetcher.load_tags_with_relationships()
+        elif section == "tag-relationships":
+            result = fetcher.load_tag_relationships_only()
         elif section == "users":
             result = fetcher.load_users_only(whales_only=kwargs.get('whales_only', True))
         elif section == "comments":
@@ -160,11 +97,6 @@ def load_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
 
 def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
     """Delete a specific data section"""
-    # Verify tables first
-    if not verify_tables_for_operation('delete', section):
-        print(f"❌ Cannot delete {section}: required tables missing")
-        return False
-    
     print(f"\n🗑️ Deleting {section.upper()}")
     
     # Confirm deletion
@@ -175,7 +107,6 @@ def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
     
     try:
         if section == "events":
-            # Only delete from events table, not related tables
             result = fetcher.delete_events_only(keep_active=kwargs.get('keep_active', False))
         elif section == "markets":
             result = fetcher.delete_markets_only()
@@ -183,6 +114,8 @@ def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
             result = fetcher.delete_series_only()
         elif section == "tags":
             result = fetcher.delete_tags_only()
+        elif section == "tag-relationships":
+            result = fetcher.delete_tag_relationships_only()
         elif section == "users":
             result = fetcher.delete_users_only()
         elif section == "comments":
@@ -206,56 +139,6 @@ def delete_section(fetcher: PolymarketDataFetcher, section: str, **kwargs):
         print(f"❌ Error deleting {section}: {e}")
         return False
 
-def initial_load():
-    """Perform complete initial data load in correct sequence"""
-    print("\n" + "=" * 80)
-    print("🚀 INITIAL DATA LOAD")
-    print("=" * 80)
-    
-    response = input("\n⚠️  This will take considerable time. Continue? (yes/no): ")
-    if response.lower() != 'yes':
-        print("Cancelled")
-        return False
-    
-    # Suppress verbose logging
-    import logging
-    logging.getLogger('DatabaseManager').setLevel(logging.WARNING)
-    logging.getLogger('EventsManager').setLevel(logging.WARNING)
-    logging.getLogger('MarketsManager').setLevel(logging.WARNING)
-    
-    fetcher = PolymarketDataFetcher()
-    start_time = time.time()
-    
-    steps = [
-        ("events", lambda: load_section(fetcher, "events", closed=False)),
-        ("markets", lambda: load_section(fetcher, "markets")),
-        ("series", lambda: load_section(fetcher, "series")),
-        ("tags", lambda: load_section(fetcher, "tags")),
-    ]
-    
-    completed = 0
-    failed = []
-    
-    for step_name, step_func in steps:
-        print(f"\n[{completed + 1}/{len(steps)}] {step_name.upper()}")
-        
-        if step_func():
-            completed += 1
-        else:
-            failed.append(step_name)
-            completed += 1
-    
-    elapsed = time.time() - start_time
-    
-    print("\n" + "=" * 80)
-    print("📊 SUMMARY")
-    print(f"✅ Completed: {completed}/{len(steps)} steps")
-    if failed:
-        print(f"⚠️  Failed: {', '.join(failed)}")
-    print(f"⏱️  Time: {elapsed/60:.2f} minutes")
-    
-    return len(failed) == 0
-
 def show_database_status():
     """Show current database status with table checkmarks"""
     db = DatabaseManager()
@@ -267,13 +150,10 @@ def show_database_status():
     # Define all expected tables
     all_tables = [
         'events', 'markets', 'series', 'tags', 'categories', 'collections',
-        'event_tags', 'market_tags', 'series_tags', 'event_categories',
-        'market_categories', 'series_categories', 'event_series', 'event_collections',
-        'series_collections', 'users', 'comments', 'transactions',
-        'user_positions_current', 'user_positions_closed', 'user_activity',
-        'user_trades', 'user_values', 'event_live_volume', 'market_open_interest',
-        'market_holders', 'image_optimized', 'event_creators', 'chats',
-        'templates', 'comment_reactions', 'tag_relationships'
+        'event_tags', 'market_tags', 'series_tags', 'series_events',
+        'series_categories', 'series_collections', 'series_chats',
+        'tag_relationships', 'users', 'comments', 'chats',
+        'event_live_volume'
     ]
     
     # Get existing tables
@@ -295,11 +175,11 @@ def show_database_status():
     
     # Show record counts for main tables
     print("\nRecord Counts:")
-    main_tables = ['events', 'markets', 'series', 'tags', 'users']
+    main_tables = ['events', 'markets', 'series', 'tags', 'tag_relationships', 'users']
     for table in main_tables:
         if table in existing_names:
             count = db.fetch_one(f"SELECT COUNT(*) as c FROM {table}")
-            print(f"  {table:<15} {count['c']:>10,} records")
+            print(f"  {table:<20} {count['c']:>10,} records")
 
 def main():
     """Main entry point"""
@@ -308,32 +188,43 @@ def main():
     # Commands
     parser.add_argument('--setup', action='store_true', help='Initialize database')
     parser.add_argument('--status', action='store_true', help='Show database status')
-    parser.add_argument('--initial-load', action='store_true', help='Complete initial load')
     
     # Load commands
+    parser.add_argument('--load-core', action='store_true', help='Load events, series, tags, and markets in correct order')
     parser.add_argument('--load-events', action='store_true')
     parser.add_argument('--load-markets', action='store_true')
     parser.add_argument('--load-series', action='store_true')
     parser.add_argument('--load-tags', action='store_true')
+    parser.add_argument('--load-tags-with-relationships', action='store_true', help='Load tags and then tag relationships')
+    parser.add_argument('--load-tag-relationships', action='store_true', help='Load tag relationships from events')
     parser.add_argument('--load-users', action='store_true')
     parser.add_argument('--load-comments', action='store_true')
     parser.add_argument('--load-positions', action='store_true')
     parser.add_argument('--load-transactions', action='store_true')
     
-    # Delete commands  
+    # Delete commands
     parser.add_argument('--delete-events', action='store_true')
     parser.add_argument('--delete-markets', action='store_true')
     parser.add_argument('--delete-series', action='store_true')
     parser.add_argument('--delete-tags', action='store_true')
+    parser.add_argument('--delete-tag-relationships', action='store_true')
     parser.add_argument('--delete-users', action='store_true')
     parser.add_argument('--delete-comments', action='store_true')
     parser.add_argument('--delete-positions', action='store_true')
     parser.add_argument('--delete-transactions', action='store_true')
-    
+
+    # Reset commands (drop and recreate tables)
+    parser.add_argument('--reset-db', action='store_true', help='Reset entire database (drop all tables and recreate)')
+    parser.add_argument('--reset-table', type=str, metavar='TABLE', help='Reset a specific table (drop and recreate)')
+    parser.add_argument('--reset-tags-tables', action='store_true', help='Reset all tag-related tables')
+    parser.add_argument('--reset-core-tables', action='store_true', help='Reset core tables (events, markets, series, tags)')
+    parser.add_argument('--list-tables', action='store_true', help='List all available tables')
+
     # Options
     parser.add_argument('--closed', action='store_true')
     parser.add_argument('--all-users', action='store_true')
     parser.add_argument('--quick', action='store_true')
+    parser.add_argument('--force', action='store_true', help='Skip confirmation prompts')
     
     args = parser.parse_args()
     
@@ -341,7 +232,6 @@ def main():
     import logging
     logging.getLogger('DatabaseManager').setLevel(logging.WARNING)
     logging.getLogger('EventsManager').setLevel(logging.WARNING)
-    logging.getLogger('MarketsManager').setLevel(logging.WARNING)
     logging.getLogger('SeriesManager').setLevel(logging.WARNING)
     logging.getLogger('TagsManager').setLevel(logging.WARNING)
     
@@ -361,13 +251,25 @@ def main():
     elif args.status:
         show_database_status()
     
-    elif args.initial_load:
-        initial_load()
-    
     else:
         # Individual operations
         fetcher = PolymarketDataFetcher()
-        
+
+        # Combined load operation
+        if args.load_core:
+            print("\n📥 Loading CORE DATA (events → series → tags → markets)")
+            start_time = time.time()
+            results = fetcher.load_core_data()
+            elapsed = time.time() - start_time
+
+            # Summary
+            success_count = sum(1 for r in results.values() if r.get('success', False))
+            print(f"\n✅ Core data loaded: {success_count}/{len(results)} sections in {elapsed:.2f} seconds")
+            for section, result in results.items():
+                status = "✅" if result.get('success', False) else "❌"
+                count = result.get('count', 0)
+                print(f"   {status} {section}: {count} records")
+
         # Load operations
         if args.load_events:
             load_section(fetcher, "events", closed=args.closed)
@@ -377,6 +279,10 @@ def main():
             load_section(fetcher, "series")
         if args.load_tags:
             load_section(fetcher, "tags")
+        if args.load_tags_with_relationships:
+            load_section(fetcher, "tags-with-relationships")
+        if args.load_tag_relationships:
+            load_section(fetcher, "tag-relationships")
         if args.load_users:
             load_section(fetcher, "users", whales_only=not args.all_users)
         if args.load_comments:
@@ -395,6 +301,8 @@ def main():
             delete_section(fetcher, "series")
         if args.delete_tags:
             delete_section(fetcher, "tags")
+        if args.delete_tag_relationships:
+            delete_section(fetcher, "tag-relationships")
         if args.delete_users:
             delete_section(fetcher, "users")
         if args.delete_comments:
@@ -403,7 +311,96 @@ def main():
             delete_section(fetcher, "positions")
         if args.delete_transactions:
             delete_section(fetcher, "transactions")
-    
+
+        # Reset operations (drop and recreate tables)
+        db = DatabaseManager()
+
+        if args.list_tables:
+            print("\n📋 Available Tables:")
+            tables = db.fetch_all("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' ORDER BY name")
+            for i, t in enumerate(tables, 1):
+                count = db.get_table_count(t['name'])
+                print(f"  {i:2}. {t['name']:<30} ({count:,} rows)")
+
+        if args.reset_db:
+            print("\n🔄 RESETTING ENTIRE DATABASE")
+            if not args.force:
+                response = input("⚠️  This will DROP ALL TABLES and recreate them. Continue? (yes/no): ")
+                if response.lower() != 'yes':
+                    print("Cancelled")
+                else:
+                    result = db.reset_database()
+                    if result['success']:
+                        print(f"✅ Database reset complete: {result['dropped']} tables dropped, {result['created']} tables created")
+                    else:
+                        print(f"❌ Reset failed: {result.get('error', 'Unknown error')}")
+            else:
+                result = db.reset_database()
+                if result['success']:
+                    print(f"✅ Database reset complete: {result['dropped']} tables dropped, {result['created']} tables created")
+                else:
+                    print(f"❌ Reset failed: {result.get('error', 'Unknown error')}")
+
+        if args.reset_table:
+            table_name = args.reset_table
+            print(f"\n🔄 RESETTING TABLE: {table_name}")
+            if not args.force:
+                response = input(f"⚠️  This will DROP and RECREATE the '{table_name}' table. Continue? (yes/no): ")
+                if response.lower() != 'yes':
+                    print("Cancelled")
+                else:
+                    result = db.reset_table(table_name)
+                    if result['success']:
+                        print(f"✅ Table '{table_name}' reset successfully")
+                    else:
+                        print(f"❌ Reset failed: {result.get('error', 'Unknown error')}")
+            else:
+                result = db.reset_table(table_name)
+                if result['success']:
+                    print(f"✅ Table '{table_name}' reset successfully")
+                else:
+                    print(f"❌ Reset failed: {result.get('error', 'Unknown error')}")
+
+        if args.reset_tags_tables:
+            tag_tables = ['tags', 'tag_relationships', 'event_tags', 'market_tags', 'series_tags']
+            print(f"\n🔄 RESETTING TAG-RELATED TABLES: {', '.join(tag_tables)}")
+            if not args.force:
+                response = input(f"⚠️  This will DROP and RECREATE {len(tag_tables)} tables. Continue? (yes/no): ")
+                if response.lower() != 'yes':
+                    print("Cancelled")
+                else:
+                    result = db.reset_tables(tag_tables)
+                    if result['success']:
+                        print(f"✅ Reset {len(result['reset'])} tag tables successfully")
+                    else:
+                        print(f"❌ Some errors: {result.get('errors', [])}")
+            else:
+                result = db.reset_tables(tag_tables)
+                if result['success']:
+                    print(f"✅ Reset {len(result['reset'])} tag tables successfully")
+                else:
+                    print(f"❌ Some errors: {result.get('errors', [])}")
+
+        if args.reset_core_tables:
+            core_tables = ['events', 'markets', 'series', 'tags', 'event_tags', 'market_tags', 'series_tags', 'series_events']
+            print(f"\n🔄 RESETTING CORE TABLES: {', '.join(core_tables)}")
+            if not args.force:
+                response = input(f"⚠️  This will DROP and RECREATE {len(core_tables)} tables. Continue? (yes/no): ")
+                if response.lower() != 'yes':
+                    print("Cancelled")
+                else:
+                    result = db.reset_tables(core_tables)
+                    if result['success']:
+                        print(f"✅ Reset {len(result['reset'])} core tables successfully")
+                    else:
+                        print(f"❌ Some errors: {result.get('errors', [])}")
+            else:
+                result = db.reset_tables(core_tables)
+                if result['success']:
+                    print(f"✅ Reset {len(result['reset'])} core tables successfully")
+                else:
+                    print(f"❌ Some errors: {result.get('errors', [])}")
+
     print("\n✨ Done!")
 
 if __name__ == "__main__":

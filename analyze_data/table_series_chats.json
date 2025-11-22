@@ -10,7 +10,7 @@
       "primary_key": true
     },
     {
-      "name": "chat_id",
+      "name": "chat_ids",
       "type": "TEXT",
       "nullable": true,
       "default": null,
@@ -27,11 +27,6 @@
   ],
   "relationships": {
     "foreign_keys": [
-      {
-        "column": "chat_id",
-        "references_table": "chats",
-        "references_column": "id"
-      },
       {
         "column": "series_id",
         "references_table": "series",

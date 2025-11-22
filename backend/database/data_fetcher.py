@@ -34,7 +34,6 @@ class PolymarketDataFetcher:
         self._verify_critical_tables()
         
         # Initialize managers (these would be imported from their respective modules)
-        # For now, we'll create stub managers to avoid import errors
         self.events_manager = None
         self.markets_manager = None
         self.series_manager = None
@@ -67,37 +66,55 @@ class PolymarketDataFetcher:
         return logger
 
     def _verify_critical_tables(self):
-        """Verify that critical tables like event_tags exist"""
-        self.logger.info("Verifying critical tables...")
-        
-        critical_tables = ['events', 'event_tags', 'markets', 'market_tags', 
-                          'series', 'series_tags', 'tags']
-        
+        """Verify that ALL tables in the schema exist"""
+        self.logger.info("Verifying all database tables...")
+
+        # Get all expected tables from the schema
+        all_tables = [
+            # Core tables
+            'events', 'markets', 'image_optimized', 'categories', 'collections',
+            'series', 'tags', 'event_creators', 'chats', 'templates', 'users', 'comments',
+            # Tracking tables
+            'event_live_volume', 'market_open_interest', 'market_holders',
+            # Relationship tables
+            'event_tags', 'market_tags', 'market_categories', 'event_series',
+            'event_collections', 'event_categories', 'event_event_creators',
+            'event_chats', 'event_templates', 'series_tags', 'series_categories',
+            'series_collections', 'series_chats', 'series_events', 'tag_relationships',
+            'comment_reactions',
+            # User tables
+            'user_activity', 'user_trades', 'user_positions_current',
+            'user_positions_closed', 'user_values', 'transactions'
+        ]
+
         missing_tables = []
-        for table in critical_tables:
+        verified_count = 0
+
+        for table in all_tables:
             if not self.db_manager.table_exists(table):
                 missing_tables.append(table)
-                self.logger.error(f"❌ Critical table missing: {table}")
+                self.logger.error(f"❌ Table missing: {table}")
             else:
                 self.logger.debug(f"✅ Table verified: {table}")
-        
+                verified_count += 1
+
         if missing_tables:
-            self.logger.error(f"Missing critical tables: {', '.join(missing_tables)}")
+            self.logger.error(f"Missing tables: {', '.join(missing_tables)}")
             self.logger.info("Attempting to reinitialize database schema...")
             self.db_manager.initialize_schema()
-            
+
             # Verify again
             still_missing = []
             for table in missing_tables:
                 if not self.db_manager.table_exists(table):
                     still_missing.append(table)
-            
+
             if still_missing:
                 raise RuntimeError(f"Failed to create tables: {', '.join(still_missing)}")
             else:
-                self.logger.info("✅ All critical tables created successfully!")
+                self.logger.info(f"✅ All {len(all_tables)} tables created successfully!")
         else:
-            self.logger.info("✅ All critical tables verified!")
+            self.logger.info(f"✅ All {verified_count} tables verified!")
 
     def _close_all_connections(self):
         """Close all database connections from all managers"""
@@ -133,8 +150,7 @@ class PolymarketDataFetcher:
         # Small delay to ensure connections are closed
         time.sleep(0.5)
 
-    # ============== STUB OPERATIONS FOR NOW ==============
-    # These would normally delegate to the respective managers
+    # ============== LOAD OPERATIONS ==============
     
     def load_events_only(self, closed: bool = False) -> Dict:
         """Load only events data"""
@@ -147,11 +163,6 @@ class PolymarketDataFetcher:
             self.logger.error("❌ event_tags table does not exist!")
             return {'success': False, 'error': 'event_tags table missing'}
         
-        # For now, return a stub response since we don't have the actual EventsManager
-        # In the real implementation, this would call self.events_manager.load_events_only(closed)
-        self.logger.info("Note: This is a stub implementation. Actual EventsManager needs to be imported.")
-        
-        # Try to import the actual EventsManager
         try:
             from backend.events_manager import EventsManager
             self.events_manager = EventsManager()
@@ -191,6 +202,24 @@ class PolymarketDataFetcher:
         except ImportError:
             return {'success': False, 'error': 'TagsManager not available'}
     
+    def load_tag_relationships_only(self) -> Dict:
+        """Load tag relationships from events"""
+        try:
+            from backend.tags_manager import TagsManager
+            self.tags_manager = TagsManager()
+            return self.tags_manager.load_tag_relationships_only()
+        except ImportError:
+            return {'success': False, 'error': 'TagsManager not available'}
+
+    def load_tags_with_relationships(self) -> Dict:
+        """Load tags and then load tag relationships - combined workflow"""
+        try:
+            from backend.tags_manager import TagsManager
+            self.tags_manager = TagsManager()
+            return self.tags_manager.load_tags_with_relationships()
+        except ImportError:
+            return {'success': False, 'error': 'TagsManager not available'}
+
     def load_users_only(self, whales_only: bool = True) -> Dict:
         """Load only users data"""
         try:
@@ -265,6 +294,15 @@ class PolymarketDataFetcher:
         except ImportError:
             return {'success': False, 'error': 'TagsManager not available'}
     
+    def delete_tag_relationships_only(self) -> Dict:
+        """Delete tag relationships data"""
+        try:
+            from backend.tags_manager import TagsManager
+            self.tags_manager = TagsManager()
+            return self.tags_manager.delete_tag_relationships_only()
+        except ImportError:
+            return {'success': False, 'error': 'TagsManager not available'}
+    
     def delete_users_only(self) -> Dict:
         """Delete users data"""
         try:
@@ -301,79 +339,91 @@ class PolymarketDataFetcher:
         except ImportError:
             return {'success': False, 'error': 'TransactionsManager not available'}
     
-    # ============== DAILY SCAN OPERATION ==============
+    # ============== COMPREHENSIVE OPERATIONS ==============
     
-    def run_daily_scan(self) -> Dict:
-        """Run complete daily scan of all data sections"""
-        self.logger.info("\n" + "=" * 80)
-        self.logger.info("🔄 RUNNING DAILY SCAN")
-        self.logger.info("=" * 80)
-        self.logger.info(f"Started at: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        
+    def load_all_data(self) -> Dict:
+        """Load all data in the correct order"""
         results = {}
-        start_time = time.time()
-        
-        # Verify all critical tables first
-        self._verify_critical_tables()
-        
-        sections = [
-            ('events', lambda: self.load_events_only(closed=False)),
-            ('markets', lambda: self.load_markets_only()),
+
+        # Load in dependency order:
+        # 1. events first (base data)
+        # 2. series second (needed for event-series relationships)
+        # 3. tags third (needed for tag relationships)
+        # 4. markets fourth (references events and creates event-series/event-tags relationships)
+        steps = [
+            ('events', lambda: self.load_events_only()),
             ('series', lambda: self.load_series_only()),
             ('tags', lambda: self.load_tags_only()),
-            ('users', lambda: self.load_users_only(whales_only=True)),
-            ('comments', lambda: self.load_comments_only(limit_per_event=15)),
-            ('positions', lambda: self.load_positions_only(whale_users_only=True)),
-            ('transactions', lambda: self.load_transactions_only(comprehensive=True))
+            ('markets', lambda: self.load_markets_only()),
+            ('tag_relationships', lambda: self.load_tag_relationships_only()),
+            ('users', lambda: self.load_users_only()),
+            ('comments', lambda: self.load_comments_only()),
+            ('positions', lambda: self.load_positions_only()),
+            ('transactions', lambda: self.load_transactions_only())
         ]
+
+        for step_name, step_func in steps:
+            self.logger.info(f"Loading {step_name}...")
+            results[step_name] = step_func()
+            if not results[step_name].get('success', False):
+                self.logger.error(f"Failed to load {step_name}")
+
+        return results
+
+    def load_core_data(self) -> Dict:
+        """Load core data (events, series, tags, markets) in the correct order"""
+        results = {}
+
+        # Load in dependency order for core data
+        steps = [
+            ('events', lambda: self.load_events_only()),
+            ('series', lambda: self.load_series_only()),
+            ('tags', lambda: self.load_tags_only()),
+            ('markets', lambda: self.load_markets_only()),
+        ]
+
+        for step_name, step_func in steps:
+            self.logger.info(f"Loading {step_name}...")
+            results[step_name] = step_func()
+            if not results[step_name].get('success', False):
+                self.logger.error(f"Failed to load {step_name}")
+
+        return results
+    
+    def get_statistics(self) -> Dict:
+        """Get overall database statistics"""
+        stats = {}
         
-        for section_name, loader_func in sections:
-            if getattr(Config, f'FETCH_{section_name.upper()}', True):
-                self.logger.info(f"\n📌 Loading {section_name}...")
-                section_start = time.time()
-                
-                try:
-                    result = loader_func()
-                    results[section_name] = result
-                    
-                    elapsed = time.time() - section_start
-                    if result.get('success', False):
-                        self.logger.info(f"✅ {section_name} loaded in {elapsed:.2f}s")
-                    else:
-                        self.logger.warning(f"⚠️ {section_name} failed: {result.get('error')}")
-                except Exception as e:
-                    self.logger.error(f"❌ Error loading {section_name}: {e}")
-                    results[section_name] = {'success': False, 'error': str(e)}
-            else:
-                self.logger.info(f"⏩ Skipping {section_name} (disabled in config)")
+        # Get table counts
+        tables = ['events', 'markets', 'series', 'tags', 'tag_relationships',
+                 'users', 'comments', 'positions', 'transactions']
         
-        total_elapsed = time.time() - start_time
-        
-        # Summary
-        successful = sum(1 for r in results.values() if r.get('success', False))
-        failed = len(results) - successful
-        
-        self.logger.info("\n" + "=" * 80)
-        self.logger.info("📊 DAILY SCAN COMPLETE")
-        self.logger.info("=" * 80)
-        self.logger.info(f"✅ Successful: {successful}/{len(results)}")
-        if failed > 0:
-            self.logger.info(f"❌ Failed: {failed}")
-        self.logger.info(f"⏱️ Total time: {total_elapsed:.2f} seconds")
-        
-        # Run database optimization if everything succeeded
-        if failed == 0:
+        for table in tables:
             try:
-                self.logger.info("\n🔧 Running database optimization...")
-                self.db_manager.analyze()
-                self.logger.info("✅ Database optimized")
-            except Exception as e:
-                self.logger.error(f"❌ Database optimization failed: {e}")
+                count = self.db_manager.get_table_count(table)
+                stats[table] = count
+            except:
+                stats[table] = 0
         
-        return {
-            'success': failed == 0,
-            'results': results,
-            'elapsed': total_elapsed,
-            'successful': successful,
-            'failed': failed
-        }
+        return stats
+    
+    def cleanup(self):
+        """Clean up resources and close connections"""
+        self._close_all_connections()
+        self.logger.info("Cleanup complete")
+
+
+# Example usage
+if __name__ == "__main__":
+    fetcher = PolymarketDataFetcher()
+    
+    # Example: Load events
+    result = fetcher.load_events_only()
+    print(f"Events loaded: {result}")
+    
+    # Example: Get statistics
+    stats = fetcher.get_statistics()
+    print(f"Database statistics: {stats}")
+    
+    # Cleanup
+    fetcher.cleanup()

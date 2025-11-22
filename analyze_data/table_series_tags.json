@@ -10,14 +10,7 @@
       "primary_key": true
     },
     {
-      "name": "tag_id",
-      "type": "TEXT",
-      "nullable": true,
-      "default": null,
-      "primary_key": false
-    },
-    {
-      "name": "tag_slug",
+      "name": "tag_ids",
       "type": "TEXT",
       "nullable": true,
       "default": null,
@@ -27,10 +20,6 @@
   "column_analysis": {},
   "sample_rows": [],
   "indexes": [
-    {
-      "name": "idx_series_tags_tag",
-      "unique": false
-    },
     {
       "name": "idx_series_tags_series",
       "unique": false
@@ -42,11 +31,6 @@
   ],
   "relationships": {
     "foreign_keys": [
-      {
-        "column": "tag_id",
-        "references_table": "tags",
-        "references_column": "id"
-      },
       {
         "column": "series_id",
         "references_table": "series",

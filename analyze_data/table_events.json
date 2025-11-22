@@ -1,6 +1,6 @@
 {
   "table_name": "events",
-  "row_count": 4400,
+  "row_count": 4418,
   "columns": [
     {
       "name": "id",
@@ -541,11 +541,11 @@
       "nullable": true,
       "primary_key": true,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 4400,
+      "unique_values": 4418,
       "uniqueness_ratio": 100.0,
       "min_length": 5,
       "max_length": 5,
@@ -563,15 +563,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 4400,
+      "unique_values": 4418,
       "uniqueness_ratio": 100.0,
       "min_length": 11,
       "max_length": 91,
-      "avg_length": 31.56,
+      "avg_length": 31.59,
       "sample_values": [
         "super-bowl-champion-2026-731",
         "democratic-presidential-nominee-2028",
@@ -585,15 +585,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 4400,
+      "unique_values": 4418,
       "uniqueness_ratio": 100.0,
       "min_length": 11,
       "max_length": 91,
-      "avg_length": 31.57,
+      "avg_length": 31.61,
       "sample_values": [
         "1-album-on-rolling-stones-100-best-albums-of-2025-list",
         "1-free-app-in-the-us-apple-app-store-on-november-28",
@@ -607,15 +607,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 4394,
+      "unique_values": 4412,
       "uniqueness_ratio": 99.86,
       "min_length": 7,
       "max_length": 92,
-      "avg_length": 39.65,
+      "avg_length": 39.85,
       "sample_values": [
         "Super Bowl Champion 2026",
         "Democratic Presidential Nominee 2028",
@@ -629,9 +629,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0,
       "unique_values": 0,
       "uniqueness_ratio": 0.0
@@ -641,15 +641,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 3714,
-      "uniqueness_ratio": 84.41,
+      "unique_values": 3719,
+      "uniqueness_ratio": 84.18,
       "min_length": 27,
       "max_length": 2951,
-      "avg_length": 537.59,
+      "avg_length": 547.5,
       "sample_values": [
         "This is a market on predicting the winner of the NFL Super Bowl for the 2025/26 season. ",
         "This market will resolve to \u201cYes\u201d if the named individual wins and accepts the 2028 nomination of th...",
@@ -663,42 +663,42 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4271,
-      "null_count": 129,
-      "null_percentage": 2.93,
-      "unique_values": 126,
-      "uniqueness_ratio": 2.95,
+      "total_rows": 4418,
+      "non_null": 4288,
+      "null_count": 130,
+      "null_percentage": 2.94,
+      "unique_values": 127,
+      "uniqueness_ratio": 2.96,
       "min_length": 0,
       "max_length": 83,
-      "avg_length": 17.95,
+      "avg_length": 18.04,
       "sample_values": [
         "",
-        "https://www.worldatlas.com/upload/b7/64/48/shutterstock-606897284.jpg",
         "https://x.com/elonmusk",
-        "https://www.premierleague.com/",
-        "https://www.nba.com/"
+        "https://www.worldatlas.com/upload/b7/64/48/shutterstock-606897284.jpg",
+        "https://www.ncaa.com/",
+        "https://www.ufc.com/events"
       ],
       "top_values": [
         {
           "value": "",
-          "count": 1678
+          "count": 1673
         },
         {
           "value": "https://www.ncaa.com/",
-          "count": 669
+          "count": 703
         },
         {
           "value": "https://www.nhl.com/scores",
-          "count": 212
-        },
-        {
-          "value": "https://data.chain.link/streams/sol-usd",
-          "count": 95
+          "count": 211
         },
         {
           "value": "https://data.chain.link/streams/eth-usd",
-          "count": 95
+          "count": 100
+        },
+        {
+          "value": "https://data.chain.link/streams/btc-usd",
+          "count": 100
         }
       ]
     },
@@ -707,54 +707,54 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4396,
+      "total_rows": 4418,
+      "non_null": 4414,
       "null_count": 4,
       "null_percentage": 0.09,
       "earliest": "2024-12-29T22:40:14.244347Z",
-      "latest": "2025-11-22T16:35:43.826721Z",
-      "distinct_values": 4385
+      "latest": "2025-11-22T22:42:27.686518Z",
+      "distinct_values": 4403
     },
     "creation_date": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4396,
+      "total_rows": 4418,
+      "non_null": 4414,
       "null_count": 4,
       "null_percentage": 0.09,
       "earliest": "2024-12-29T22:40:14.244345Z",
-      "latest": "2025-12-20T03:00:00Z",
-      "distinct_values": 3678
+      "latest": "2025-12-20T02:00:00Z",
+      "distinct_values": 3665
     },
     "end_date": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4384,
+      "total_rows": 4418,
+      "non_null": 4402,
       "null_count": 16,
       "null_percentage": 0.36,
       "earliest": "2025-09-22T00:00:00Z",
       "latest": "2028-11-07T00:00:00Z",
-      "distinct_values": 734
+      "distinct_values": 735
     },
     "image": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 1347,
-      "uniqueness_ratio": 30.61,
+      "unique_values": 1360,
+      "uniqueness_ratio": 30.78,
       "min_length": 0,
       "max_length": 161,
-      "avg_length": 86.16,
+      "avg_length": 86.2,
       "sample_values": [
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/democrats+2028+donkey.png",
@@ -765,23 +765,23 @@
       "top_values": [
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 611
+          "count": 647
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 212
+          "count": 211
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 168
+          "count": 174
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 170
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
           "count": 165
-        },
-        {
-          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 158
         }
       ]
     },
@@ -790,15 +790,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 1347,
-      "uniqueness_ratio": 30.61,
+      "unique_values": 1360,
+      "uniqueness_ratio": 30.78,
       "min_length": 0,
       "max_length": 161,
-      "avg_length": 86.16,
+      "avg_length": 86.2,
       "sample_values": [
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/football-logo.png",
         "https://polymarket-upload.s3.us-east-2.amazonaws.com/democrats+2028+donkey.png",
@@ -809,23 +809,23 @@
       "top_values": [
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 611
+          "count": 647
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 212
+          "count": 211
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 168
+          "count": 174
+        },
+        {
+          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
+          "count": 170
         },
         {
           "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
           "count": 165
-        },
-        {
-          "value": "https://polymarket-upload.s3.us-east-2.amazonaws.c...",
-          "count": 158
         }
       ]
     },
@@ -834,9 +834,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "active": {
@@ -844,20 +844,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "1",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 1,
       "max": 1,
       "avg": 1.0,
-      "sum": 4400,
+      "sum": 4418,
       "median": 1,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 1,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -866,8 +866,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -879,7 +879,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -888,8 +888,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -901,7 +901,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -910,8 +910,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -923,7 +923,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -932,24 +932,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.0,
-      "sum": 19,
+      "sum": 21,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 4381
+          "count": 4397
         },
         {
           "value": 1,
-          "count": 19
+          "count": 21
         }
       ]
     },
@@ -958,20 +958,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 1,
       "max": 1,
       "avg": 1.0,
-      "sum": 4400,
+      "sum": 4418,
       "median": 1,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 1,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -980,8 +980,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -993,7 +993,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1002,9 +1002,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "liquidity": {
@@ -1012,25 +1012,25 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4376,
-      "null_count": 24,
-      "null_percentage": 0.55,
+      "total_rows": 4418,
+      "non_null": 4408,
+      "null_count": 10,
+      "null_percentage": 0.23,
       "min": 0.0,
-      "max": 33207275.45347,
-      "avg": 78394.45,
-      "sum": 343054110.58476,
-      "median": 5571.91686,
-      "distinct_values": 4147
+      "max": 31842647.00276,
+      "avg": 70569.85,
+      "sum": 311071878.50551,
+      "median": 5084.94213,
+      "distinct_values": 4117
     },
     "liquidity_amm": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 4,
-      "null_count": 4396,
+      "null_count": 4414,
       "null_percentage": 99.91,
       "min": 0.0,
       "max": 0.0,
@@ -1050,41 +1050,41 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4376,
-      "null_count": 24,
-      "null_percentage": 0.55,
+      "total_rows": 4418,
+      "non_null": 4408,
+      "null_count": 10,
+      "null_percentage": 0.23,
       "min": 0.0,
-      "max": 33207275.45347,
-      "avg": 78394.45,
-      "sum": 343054110.58476,
-      "median": 5571.91686,
-      "distinct_values": 4147
+      "max": 31842647.00276,
+      "avg": 70569.85,
+      "sum": 311071878.50551,
+      "median": 5084.94213,
+      "distinct_values": 4117
     },
     "volume": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 2857,
-      "null_count": 1543,
-      "null_percentage": 35.07,
+      "total_rows": 4418,
+      "non_null": 2770,
+      "null_count": 1648,
+      "null_percentage": 37.3,
       "min": 0.0,
-      "max": 561050311.477252,
-      "avg": 1158149.02,
-      "sum": 3308831743.382471,
-      "median": 12058.715013,
-      "distinct_values": 2730
+      "max": 562242245.565413,
+      "avg": 1202497.62,
+      "sum": 3330918409.534938,
+      "median": 11858.633808,
+      "distinct_values": 2653
     },
     "volume_clob": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "volume_24hr": {
@@ -1092,25 +1092,25 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 2162,
-      "null_count": 2238,
-      "null_percentage": 50.86,
+      "total_rows": 4418,
+      "non_null": 1999,
+      "null_count": 2419,
+      "null_percentage": 54.75,
       "min": 0.0,
       "max": 8036546.879780999,
-      "avg": 36484.6,
-      "sum": 78879707.043622,
-      "median": 706.445375,
-      "distinct_values": 2009
+      "avg": 33380.39,
+      "sum": 66727390.87799801,
+      "median": 612.839125,
+      "distinct_values": 1863
     },
     "volume_24hr_clob": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "volume_1wk": {
@@ -1118,25 +1118,25 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 2731,
-      "null_count": 1669,
-      "null_percentage": 37.93,
+      "total_rows": 4418,
+      "non_null": 2567,
+      "null_count": 1851,
+      "null_percentage": 41.9,
       "min": 0.0,
       "max": 45791220.79837101,
-      "avg": 182188.19,
-      "sum": 497555948.764345,
-      "median": 2333.316312,
-      "distinct_values": 2576
+      "avg": 188078.34,
+      "sum": 482797106.138601,
+      "median": 2122.29197,
+      "distinct_values": 2430
     },
     "volume_1wk_clob": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "volume_1mo": {
@@ -1144,25 +1144,25 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 2848,
-      "null_count": 1552,
-      "null_percentage": 35.27,
+      "total_rows": 4418,
+      "non_null": 2684,
+      "null_count": 1734,
+      "null_percentage": 39.25,
       "min": 0.0,
       "max": 140569058.546196,
-      "avg": 548435.77,
-      "sum": 1561945074.3819594,
-      "median": 5920.7164,
-      "distinct_values": 2718
+      "avg": 576320.12,
+      "sum": 1546843207.2127163,
+      "median": 5642.315359,
+      "distinct_values": 2572
     },
     "volume_1mo_clob": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "volume_1yr": {
@@ -1170,25 +1170,25 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 2850,
-      "null_count": 1550,
-      "null_percentage": 35.23,
+      "total_rows": 4418,
+      "non_null": 2686,
+      "null_count": 1732,
+      "null_percentage": 39.2,
       "min": 0.0,
       "max": 561046410.878083,
-      "avg": 1159175.9,
-      "sum": 3303651321.673264,
-      "median": 12015.935019999999,
-      "distinct_values": 2723
+      "avg": 1224319.66,
+      "sum": 3288522610.977426,
+      "median": 12046.736175,
+      "distinct_values": 2577
     },
     "volume_1yr_clob": {
       "type": "REAL",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "open_interest": {
@@ -1196,8 +1196,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0.0,
@@ -1209,7 +1209,7 @@
       "value_distribution": [
         {
           "value": 0.0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1218,59 +1218,59 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4376,
-      "null_count": 24,
-      "null_percentage": 0.55,
+      "total_rows": 4418,
+      "non_null": 4408,
+      "null_count": 10,
+      "null_percentage": 0.23,
       "min": 0.0,
       "max": 1.0,
-      "avg": 0.71,
-      "sum": 3114.9989389027205,
-      "median": 0.8679802100512108,
-      "distinct_values": 551
+      "avg": 0.7,
+      "sum": 3075.756113578169,
+      "median": 0.8590880780051975,
+      "distinct_values": 563
     },
     "comment_count": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4391,
+      "total_rows": 4418,
+      "non_null": 4409,
       "null_count": 9,
       "null_percentage": 0.2,
       "min": -4,
-      "max": 20367,
-      "avg": 32.66,
-      "sum": 143400,
+      "max": 20368,
+      "avg": 32.59,
+      "sum": 143684,
       "median": 0,
-      "distinct_values": 182
+      "distinct_values": 180
     },
     "tweet_count": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 3,
-      "null_count": 4397,
+      "null_count": 4415,
       "null_percentage": 99.93,
-      "min": 29,
-      "max": 941,
-      "avg": 350.67,
-      "sum": 1052,
-      "median": 82,
+      "min": 41,
+      "max": 953,
+      "avg": 362.67,
+      "sum": 1088,
+      "median": 94,
       "distinct_values": 3,
       "value_distribution": [
         {
-          "value": 941,
+          "value": 953,
           "count": 1
         },
         {
-          "value": 82,
+          "value": 94,
           "count": 1
         },
         {
-          "value": 29,
+          "value": 41,
           "count": 1
         }
       ]
@@ -1280,20 +1280,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 1,
       "max": 1,
       "avg": 1.0,
-      "sum": 4400,
+      "sum": 4418,
       "median": 1,
       "distinct_values": 1,
       "value_distribution": [
         {
           "value": 1,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1302,8 +1302,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -1315,7 +1315,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4353
+          "count": 4371
         },
         {
           "value": 1,
@@ -1328,20 +1328,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 1.0,
-      "sum": 4387,
+      "sum": 4405,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 4387
+          "count": 4405
         },
         {
           "value": 0,
@@ -1354,24 +1354,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
-      "avg": 0.35,
-      "sum": 1537,
+      "avg": 0.36,
+      "sum": 1571,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 2863
+          "count": 2847
         },
         {
           "value": 1,
-          "count": 1537
+          "count": 1571
         }
       ]
     },
@@ -1380,24 +1380,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
-      "avg": 0.28,
-      "sum": 1225,
+      "avg": 0.27,
+      "sum": 1192,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 3175
+          "count": 3226
         },
         {
           "value": 1,
-          "count": 1225
+          "count": 1192
         }
       ]
     },
@@ -1406,11 +1406,11 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 1225,
-      "null_count": 3175,
-      "null_percentage": 72.16,
-      "unique_values": 1225,
+      "total_rows": 4418,
+      "non_null": 1192,
+      "null_count": 3226,
+      "null_percentage": 73.02,
+      "unique_values": 1192,
       "uniqueness_ratio": 100.0,
       "min_length": 66,
       "max_length": 66,
@@ -1428,9 +1428,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "automatically_resolved": {
@@ -1438,8 +1438,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -1451,7 +1451,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1460,20 +1460,20 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 1.0,
-      "sum": 4399,
+      "sum": 4417,
       "median": 1,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 1,
-          "count": 4399
+          "count": 4417
         },
         {
           "value": 0,
@@ -1486,9 +1486,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 9,
-      "null_count": 4391,
+      "null_count": 4409,
       "null_percentage": 99.8,
       "earliest": "2025-01-01T15:59:36.892059Z",
       "latest": "2025-11-20T20:18:47.79277Z",
@@ -1499,10 +1499,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 1758,
-      "null_count": 2642,
-      "null_percentage": 60.05,
+      "total_rows": 4418,
+      "non_null": 1761,
+      "null_count": 2657,
+      "null_percentage": 60.14,
       "earliest": "2025-05-20",
       "latest": "2025-12-20",
       "distinct_values": 68
@@ -1512,33 +1512,33 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 2404,
-      "null_count": 1996,
-      "null_percentage": 45.36,
+      "total_rows": 4418,
+      "non_null": 2425,
+      "null_count": 1993,
+      "null_percentage": 45.11,
       "earliest": "2025-04-23T12:00:00Z",
       "latest": "2028-11-07T12:00:00Z",
-      "distinct_values": 619
+      "distinct_values": 623
     },
     "event_week": {
       "type": "INTEGER",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 1662,
-      "null_count": 2738,
-      "null_percentage": 62.23,
+      "total_rows": 4418,
+      "non_null": 1667,
+      "null_count": 2751,
+      "null_percentage": 62.27,
       "min": 1,
       "max": 50,
-      "avg": 4.41,
-      "sum": 7335,
+      "avg": 4.27,
+      "sum": 7114,
       "median": 2,
       "distinct_values": 15,
       "value_distribution": [
         {
           "value": 1,
-          "count": 772
+          "count": 807
         },
         {
           "value": 3,
@@ -1546,35 +1546,35 @@
         },
         {
           "value": 8,
-          "count": 109
+          "count": 110
         },
         {
           "value": 11,
-          "count": 90
+          "count": 85
         },
         {
           "value": 4,
-          "count": 86
+          "count": 85
         },
         {
           "value": 9,
-          "count": 84
+          "count": 78
         },
         {
           "value": 12,
-          "count": 72
-        },
-        {
-          "value": 2,
           "count": 70
         },
         {
+          "value": 2,
+          "count": 67
+        },
+        {
           "value": 10,
-          "count": 69
+          "count": 65
         },
         {
           "value": 13,
-          "count": 56
+          "count": 54
         }
       ]
     },
@@ -1583,15 +1583,15 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 2978,
-      "null_count": 1422,
-      "null_percentage": 32.32,
+      "total_rows": 4418,
+      "non_null": 2984,
+      "null_count": 1434,
+      "null_percentage": 32.46,
       "unique_values": 359,
-      "uniqueness_ratio": 12.06,
+      "uniqueness_ratio": 12.03,
       "min_length": 3,
       "max_length": 59,
-      "avg_length": 13.46,
+      "avg_length": 13.39,
       "sample_values": [
         "fed-interest-rates",
         "btc-monthly-prices",
@@ -1601,24 +1601,24 @@
       ],
       "top_values": [
         {
-          "value": "ncaa-cbb",
-          "count": 314
+          "value": "cwbb",
+          "count": 325
         },
         {
-          "value": "cwbb",
-          "count": 297
+          "value": "ncaa-cbb",
+          "count": 322
         },
         {
           "value": "nhl-2026",
-          "count": 211
-        },
-        {
-          "value": "sol-up-or-down-15m",
-          "count": 89
+          "count": 210
         },
         {
           "value": "eth-up-or-down-15m",
-          "count": 88
+          "count": 93
+        },
+        {
+          "value": "btc-up-or-down-15m",
+          "count": 93
         }
       ]
     },
@@ -1627,43 +1627,21 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 75,
-      "null_count": 4325,
-      "null_percentage": 98.3,
-      "unique_values": 29,
-      "uniqueness_ratio": 38.67,
+      "total_rows": 4418,
+      "non_null": 158,
+      "null_count": 4260,
+      "null_percentage": 96.42,
+      "unique_values": 125,
+      "uniqueness_ratio": 79.11,
       "min_length": 0,
       "max_length": 24,
-      "avg_length": 4.27,
+      "avg_length": 5.02,
       "sample_values": [
-        "000-000|1-1|Bo3",
-        "0-1|Decision - Unanimous",
-        "",
-        "0-3",
-        "3-3"
-      ],
-      "top_values": [
-        {
-          "value": "",
-          "count": 23
-        },
-        {
-          "value": "2-1",
-          "count": 6
-        },
-        {
-          "value": "0-0",
-          "count": 6
-        },
-        {
-          "value": "0-3",
-          "count": 5
-        },
-        {
-          "value": "1-1",
-          "count": 4
-        }
+        "6-17",
+        "34-17",
+        "1-0|Submission",
+        "20-24",
+        "6-38"
       ]
     },
     "elapsed": {
@@ -1671,42 +1649,42 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 65,
-      "null_count": 4335,
-      "null_percentage": 98.52,
-      "unique_values": 15,
-      "uniqueness_ratio": 23.08,
+      "total_rows": 4418,
+      "non_null": 151,
+      "null_count": 4267,
+      "null_percentage": 96.58,
+      "unique_values": 27,
+      "uniqueness_ratio": 17.88,
       "min_length": 0,
       "max_length": 5,
-      "avg_length": 1.65,
+      "avg_length": 0.88,
       "sample_values": [
-        "05:00",
-        "00:00",
         "",
-        "01:26",
-        "54"
+        "02:18",
+        "05:00",
+        "02:46",
+        "00:00"
       ],
       "top_values": [
         {
           "value": "",
-          "count": 34
-        },
-        {
-          "value": "00:00",
-          "count": 10
-        },
-        {
-          "value": "87",
-          "count": 5
+          "count": 123
         },
         {
           "value": "05:00",
-          "count": 3
+          "count": 2
         },
         {
-          "value": "90",
+          "value": "00:00",
           "count": 2
+        },
+        {
+          "value": "5",
+          "count": 1
+        },
+        {
+          "value": "19",
+          "count": 1
         }
       ]
     },
@@ -1715,42 +1693,42 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 94,
-      "null_count": 4306,
-      "null_percentage": 97.86,
-      "unique_values": 14,
-      "uniqueness_ratio": 14.89,
+      "total_rows": 4418,
+      "non_null": 176,
+      "null_count": 4242,
+      "null_percentage": 96.02,
+      "unique_values": 23,
+      "uniqueness_ratio": 13.07,
       "min_length": 0,
-      "max_length": 4,
-      "avg_length": 2.2,
+      "max_length": 6,
+      "avg_length": 2.36,
       "sample_values": [
-        "",
-        "3/3",
-        "NS",
+        "VFT",
         "R3",
-        "R0"
+        "NS",
+        "Q3",
+        "3/3"
       ],
       "top_values": [
         {
+          "value": "VFT",
+          "count": 45
+        },
+        {
+          "value": "FT",
+          "count": 35
+        },
+        {
           "value": "CAN",
           "count": 14
-        },
-        {
-          "value": "2H",
-          "count": 14
-        },
-        {
-          "value": "VFT",
-          "count": 12
         },
         {
           "value": "NS",
           "count": 12
         },
         {
-          "value": "R0",
-          "count": 10
+          "value": "Q3",
+          "count": 11
         }
       ]
     },
@@ -1759,24 +1737,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
       "avg": 0.01,
-      "sum": 22,
+      "sum": 49,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 4378
+          "count": 4369
         },
         {
           "value": 1,
-          "count": 22
+          "count": 49
         }
       ]
     },
@@ -1785,24 +1763,24 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
       "max": 1,
-      "avg": 0.01,
-      "sum": 63,
+      "avg": 0.03,
+      "sum": 125,
       "median": 0,
       "distinct_values": 2,
       "value_distribution": [
         {
           "value": 0,
-          "count": 4337
+          "count": 4293
         },
         {
           "value": 1,
-          "count": 63
+          "count": 125
         }
       ]
     },
@@ -1811,23 +1789,23 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 34,
-      "null_count": 4366,
-      "null_percentage": 99.23,
+      "total_rows": 4418,
+      "non_null": 93,
+      "null_count": 4325,
+      "null_percentage": 97.89,
       "earliest": "2025-11-08T20:05:14.434052Z",
-      "latest": "2025-11-22T16:33:23.412149Z",
-      "distinct_values": 31
+      "latest": "2025-11-22T22:49:55.411965Z",
+      "distinct_values": 91
     },
     "gmp_chart_mode": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 862,
-      "null_count": 3538,
-      "null_percentage": 80.41,
+      "null_count": 3556,
+      "null_percentage": 80.49,
       "unique_values": 1,
       "uniqueness_ratio": 0.12,
       "min_length": 7,
@@ -1848,8 +1826,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -1861,7 +1839,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1870,8 +1848,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -1883,7 +1861,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1892,9 +1870,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "carousel_map": {
@@ -1902,9 +1880,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 1,
-      "null_count": 4399,
+      "null_count": 4417,
       "null_percentage": 99.98,
       "unique_values": 1,
       "uniqueness_ratio": 100.0,
@@ -1920,8 +1898,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -1933,7 +1911,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4396
+          "count": 4414
         },
         {
           "value": 1,
@@ -1946,8 +1924,8 @@
       "nullable": true,
       "primary_key": false,
       "default": "0",
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "min": 0,
@@ -1959,7 +1937,7 @@
       "value_distribution": [
         {
           "value": 0,
-          "count": 4400
+          "count": 4418
         }
       ]
     },
@@ -1968,22 +1946,22 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 1203,
-      "null_count": 3197,
-      "null_percentage": 72.66,
+      "total_rows": 4418,
+      "non_null": 1170,
+      "null_count": 3248,
+      "null_percentage": 73.52,
       "earliest": "2025-04-30T23:51:19.235122Z",
-      "latest": "2025-11-22T15:30:19.056805Z",
-      "distinct_values": 1203
+      "latest": "2025-11-22T20:30:21.09847Z",
+      "distinct_values": 1170
     },
     "scheduled_deployment_timestamp": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "game_status": {
@@ -1991,9 +1969,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "spreads_main_line": {
@@ -2001,9 +1979,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "totals_main_line": {
@@ -2011,9 +1989,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "published_at": {
@@ -2021,9 +1999,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "created_by": {
@@ -2031,10 +2009,10 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 51,
-      "null_count": 4349,
-      "null_percentage": 98.84,
+      "null_count": 4367,
+      "null_percentage": 98.85,
       "earliest": "113789",
       "latest": "90490",
       "distinct_values": 18
@@ -2044,9 +2022,9 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
+      "total_rows": 4418,
       "non_null": 0,
-      "null_count": 4400,
+      "null_count": 4418,
       "null_percentage": 100.0
     },
     "created_at": {
@@ -2054,39 +2032,39 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
       "earliest": "2024-12-29T17:37:59.684632Z",
-      "latest": "2025-11-22T16:47:24.053333Z",
-      "distinct_values": 4400
+      "latest": "2025-11-22T22:47:23.581864Z",
+      "distinct_values": 4418
     },
     "updated_at": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "earliest": "2025-11-22T16:35:43.716194Z",
-      "latest": "2025-11-22T16:47:49.341791Z",
-      "distinct_values": 4400
+      "earliest": "2025-11-22T22:42:20.058415Z",
+      "latest": "2025-11-22T22:47:49.468344Z",
+      "distinct_values": 4418
     },
     "fetched_at": {
       "type": "TEXT",
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 4400,
-      "non_null": 4400,
+      "total_rows": 4418,
+      "non_null": 4418,
       "null_count": 0,
       "null_percentage": 0.0,
-      "earliest": "2025-11-22T10:48:09.047743",
-      "latest": "2025-11-22T10:48:09.081205",
-      "distinct_values": 4400
+      "earliest": "2025-11-22T16:53:02.425509",
+      "latest": "2025-11-22T16:53:02.467438",
+      "distinct_values": 4418
     }
   },
   "sample_rows": [
@@ -2159,10 +2137,6 @@
       },
       {
         "table": "event_templates",
-        "column": "event_id"
-      },
-      {
-        "table": "series_events",
         "column": "event_id"
       }
     ]

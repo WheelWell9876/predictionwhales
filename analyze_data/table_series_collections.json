@@ -10,7 +10,7 @@
       "primary_key": true
     },
     {
-      "name": "collection_id",
+      "name": "collection_ids",
       "type": "TEXT",
       "nullable": true,
       "default": null,
@@ -27,11 +27,6 @@
   ],
   "relationships": {
     "foreign_keys": [
-      {
-        "column": "collection_id",
-        "references_table": "collections",
-        "references_column": "id"
-      },
       {
         "column": "series_id",
         "references_table": "series",

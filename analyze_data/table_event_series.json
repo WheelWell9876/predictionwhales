@@ -1,6 +1,6 @@
 {
   "table_name": "event_series",
-  "row_count": 353,
+  "row_count": 2984,
   "columns": [
     {
       "name": "event_id",
@@ -23,21 +23,21 @@
       "nullable": true,
       "primary_key": true,
       "default": null,
-      "total_rows": 353,
-      "non_null": 353,
+      "total_rows": 2984,
+      "non_null": 2984,
       "null_count": 0,
       "null_percentage": 0.0,
-      "unique_values": 353,
+      "unique_values": 2984,
       "uniqueness_ratio": 100.0,
       "min_length": 5,
       "max_length": 5,
       "avg_length": 5.0,
       "sample_values": [
-        "17505",
-        "20803",
-        "22976",
-        "26008",
-        "28217"
+        "16087",
+        "16093",
+        "16095",
+        "16096",
+        "16097"
       ]
     },
     "series_id": {
@@ -45,30 +45,52 @@
       "nullable": true,
       "primary_key": false,
       "default": null,
-      "total_rows": 353,
-      "non_null": 353,
+      "total_rows": 2984,
+      "non_null": 2984,
       "null_count": 0,
       "null_percentage": 0.0,
       "unique_values": 353,
-      "uniqueness_ratio": 100.0,
+      "uniqueness_ratio": 11.83,
       "min_length": 2,
       "max_length": 5,
-      "avg_length": 4.94,
+      "avg_length": 4.96,
       "sample_values": [
-        "10016",
-        "10017",
-        "10154",
-        "10615",
-        "10032"
+        "10058",
+        "10150",
+        "35",
+        "10029",
+        "10017"
+      ],
+      "top_values": [
+        {
+          "value": "10471",
+          "count": 325
+        },
+        {
+          "value": "10470",
+          "count": 322
+        },
+        {
+          "value": "10346",
+          "count": 210
+        },
+        {
+          "value": "10192",
+          "count": 93
+        },
+        {
+          "value": "10191",
+          "count": 93
+        }
       ]
     }
   },
   "sample_rows": [
-    "event_id:70054 | series_id:10016",
-    "event_id:70055 | series_id:10017",
-    "event_id:17505 | series_id:10154",
-    "event_id:22976 | series_id:10615",
-    "event_id:31867 | series_id:10032"
+    "event_id:16108 | series_id:10058",
+    "event_id:26857 | series_id:10150",
+    "event_id:35090 | series_id:35",
+    "event_id:16087 | series_id:10029",
+    "event_id:16097 | series_id:10017"
   ],
   "indexes": [
     {

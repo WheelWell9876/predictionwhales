@@ -459,8 +459,8 @@ def get_schema():
         tag_id TEXT,
         tag_slug TEXT,
         PRIMARY KEY (event_id, tag_id),
-        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-        FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+        -- Note: FK on tag_id removed - tags may not exist when events are loaded
     );
 
     -- Market tags relationship table
@@ -468,9 +468,8 @@ def get_schema():
         market_id TEXT,
         tag_id TEXT,
         tag_slug TEXT,
-        PRIMARY KEY (market_id, tag_id),
-        FOREIGN KEY (market_id) REFERENCES markets(id) ON DELETE CASCADE,
-        FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+        PRIMARY KEY (market_id, tag_id)
+        -- Note: FK constraints removed - data can be loaded in any order
     );
 
     -- Market categories relationship table
@@ -536,50 +535,39 @@ def get_schema():
         FOREIGN KEY (template_id) REFERENCES templates(id) ON DELETE CASCADE
     );
 
-    -- Series tags relationship table
+    -- Series tags relationship table (JSON storage)
     CREATE TABLE IF NOT EXISTS series_tags (
-        series_id TEXT,
-        tag_id TEXT,
-        tag_slug TEXT,
-        PRIMARY KEY (series_id, tag_id),
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
-        FOREIGN KEY (tag_id) REFERENCES tags(id) ON DELETE CASCADE
+        series_id TEXT PRIMARY KEY,
+        tag_ids TEXT,  -- JSON array of tag IDs
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
     );
 
-    -- Series categories relationship table
+    -- Series categories relationship table (JSON storage)
     CREATE TABLE IF NOT EXISTS series_categories (
-        series_id TEXT,
-        category_id TEXT,
-        PRIMARY KEY (series_id, category_id),
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
-        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
+        series_id TEXT PRIMARY KEY,
+        category_ids TEXT,  -- JSON array of category IDs
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
     );
 
-    -- Series collections relationship table
+    -- Series collections relationship table (JSON storage)
     CREATE TABLE IF NOT EXISTS series_collections (
-        series_id TEXT,
-        collection_id TEXT,
-        PRIMARY KEY (series_id, collection_id),
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
-        FOREIGN KEY (collection_id) REFERENCES collections(id) ON DELETE CASCADE
+        series_id TEXT PRIMARY KEY,
+        collection_ids TEXT,  -- JSON array of collection IDs
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
     );
 
-    -- Series chats relationship table
+    -- Series chats relationship table (JSON storage)
     CREATE TABLE IF NOT EXISTS series_chats (
-        series_id TEXT,
-        chat_id TEXT,
-        PRIMARY KEY (series_id, chat_id),
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
-        FOREIGN KEY (chat_id) REFERENCES chats(id) ON DELETE CASCADE
+        series_id TEXT PRIMARY KEY,
+        chat_ids TEXT,  -- JSON array of chat IDs
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
     );
 
-    -- Series events relationship table
+    -- Series events relationship table (JSON storage)
     CREATE TABLE IF NOT EXISTS series_events (
-        series_id TEXT,
-        event_id TEXT,
-        PRIMARY KEY (series_id, event_id),
-        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE,
-        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+        series_id TEXT PRIMARY KEY,
+        event_ids TEXT,  -- JSON array of event IDs
+        FOREIGN KEY (series_id) REFERENCES series(id) ON DELETE CASCADE
     );
 
     -- Tag relationships table
@@ -766,7 +754,6 @@ def get_schema():
     CREATE INDEX IF NOT EXISTS idx_market_tags_tag ON market_tags(tag_id);
 
     CREATE INDEX IF NOT EXISTS idx_series_tags_series ON series_tags(series_id);
-    CREATE INDEX IF NOT EXISTS idx_series_tags_tag ON series_tags(tag_id);
 
     CREATE INDEX IF NOT EXISTS idx_users_whale ON users(is_whale);
     CREATE INDEX IF NOT EXISTS idx_users_value ON users(total_value DESC);

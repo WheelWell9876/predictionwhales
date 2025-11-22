@@ -10,7 +10,7 @@
       "primary_key": true
     },
     {
-      "name": "category_id",
+      "name": "category_ids",
       "type": "TEXT",
       "nullable": true,
       "default": null,
@@ -27,11 +27,6 @@
   ],
   "relationships": {
     "foreign_keys": [
-      {
-        "column": "category_id",
-        "references_table": "categories",
-        "references_column": "id"
-      },
       {
         "column": "series_id",
         "references_table": "series",

@@ -117,34 +117,199 @@ class DatabaseManager:
         required_tables = [
             'events', 'markets', 'series', 'tags', 'users', 'comments'
         ]
-        
+
         try:
             conn = self.get_connection()
             cursor = conn.cursor()
-            
+
             # Get all existing tables
             cursor.execute("""
-                SELECT name FROM sqlite_master 
-                WHERE type='table' 
+                SELECT name FROM sqlite_master
+                WHERE type='table'
                 ORDER BY name
             """)
             existing_tables = {row[0] for row in cursor.fetchall()}
-            
+
             # Check for missing tables
             missing_tables = []
             for table in required_tables:
                 if table not in existing_tables:
                     missing_tables.append(table)
-            
+
             if missing_tables:
                 self.logger.error(f"Missing tables: {', '.join(missing_tables)}")
                 # Try to create missing tables by re-initializing schema
                 self.initialize_schema()
-            
+
             conn.close()
-            
+
         except Exception as e:
             self.logger.error(f"Error verifying tables: {e}")
+
+    def drop_table(self, table_name: str) -> bool:
+        """Drop a single table from the database"""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(f"DROP TABLE IF EXISTS {table_name}")
+            conn.commit()
+            conn.close()
+            self.logger.info(f"✅ Dropped table: {table_name}")
+            return True
+        except Exception as e:
+            self.logger.error(f"❌ Error dropping table {table_name}: {e}")
+            return False
+
+    def drop_all_tables(self) -> dict:
+        """Drop all tables from the database"""
+        result = {'success': False, 'dropped': [], 'errors': []}
+
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+
+            # Get all table names
+            cursor.execute("""
+                SELECT name FROM sqlite_master
+                WHERE type='table' AND name NOT LIKE 'sqlite_%'
+                ORDER BY name
+            """)
+            tables = [row[0] for row in cursor.fetchall()]
+
+            # Disable foreign keys temporarily to avoid constraint issues
+            cursor.execute("PRAGMA foreign_keys = OFF")
+
+            # Drop each table
+            for table in tables:
+                try:
+                    cursor.execute(f"DROP TABLE IF EXISTS {table}")
+                    result['dropped'].append(table)
+                except Exception as e:
+                    result['errors'].append(f"{table}: {e}")
+
+            conn.commit()
+
+            # Re-enable foreign keys
+            cursor.execute("PRAGMA foreign_keys = ON")
+            conn.close()
+
+            result['success'] = len(result['errors']) == 0
+            self.logger.info(f"✅ Dropped {len(result['dropped'])} tables")
+
+        except Exception as e:
+            self.logger.error(f"❌ Error dropping all tables: {e}")
+            result['errors'].append(str(e))
+
+        return result
+
+    def reset_database(self) -> dict:
+        """Drop all tables and reinitialize the schema"""
+        result = {'success': False, 'dropped': 0, 'created': 0, 'error': None}
+
+        try:
+            self.logger.info("🔄 Resetting database...")
+
+            # Drop all tables
+            drop_result = self.drop_all_tables()
+            result['dropped'] = len(drop_result['dropped'])
+
+            if drop_result['errors']:
+                self.logger.warning(f"Some errors during drop: {drop_result['errors']}")
+
+            # Reinitialize schema
+            self.logger.info("📦 Reinitializing schema...")
+            self.initialize_schema()
+
+            # Count tables created
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT COUNT(*) FROM sqlite_master
+                WHERE type='table' AND name NOT LIKE 'sqlite_%'
+            """)
+            result['created'] = cursor.fetchone()[0]
+            conn.close()
+
+            result['success'] = True
+            self.logger.info(f"✅ Database reset complete: {result['dropped']} dropped, {result['created']} created")
+
+        except Exception as e:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error resetting database: {e}")
+
+        return result
+
+    def reset_table(self, table_name: str) -> dict:
+        """Drop and recreate a single table"""
+        result = {'success': False, 'table': table_name, 'error': None}
+
+        try:
+            self.logger.info(f"🔄 Resetting table: {table_name}")
+
+            # Drop the table
+            if not self.drop_table(table_name):
+                result['error'] = f"Failed to drop table {table_name}"
+                return result
+
+            # Reinitialize schema (will recreate the dropped table)
+            self.initialize_schema()
+
+            # Verify table was recreated
+            if self.table_exists(table_name):
+                result['success'] = True
+                self.logger.info(f"✅ Table {table_name} reset successfully")
+            else:
+                result['error'] = f"Table {table_name} was not recreated"
+
+        except Exception as e:
+            result['error'] = str(e)
+            self.logger.error(f"❌ Error resetting table {table_name}: {e}")
+
+        return result
+
+    def reset_tables(self, table_names: list) -> dict:
+        """Drop and recreate multiple tables"""
+        result = {'success': False, 'reset': [], 'errors': []}
+
+        try:
+            self.logger.info(f"🔄 Resetting {len(table_names)} tables...")
+
+            conn = self.get_connection()
+            cursor = conn.cursor()
+
+            # Disable foreign keys temporarily
+            cursor.execute("PRAGMA foreign_keys = OFF")
+
+            # Drop each table
+            for table in table_names:
+                try:
+                    cursor.execute(f"DROP TABLE IF EXISTS {table}")
+                    self.logger.info(f"  Dropped: {table}")
+                except Exception as e:
+                    result['errors'].append(f"{table}: {e}")
+
+            conn.commit()
+            cursor.execute("PRAGMA foreign_keys = ON")
+            conn.close()
+
+            # Reinitialize schema to recreate dropped tables
+            self.initialize_schema()
+
+            # Verify tables were recreated
+            for table in table_names:
+                if self.table_exists(table):
+                    result['reset'].append(table)
+                else:
+                    result['errors'].append(f"{table}: not recreated")
+
+            result['success'] = len(result['errors']) == 0
+            self.logger.info(f"✅ Reset {len(result['reset'])} tables")
+
+        except Exception as e:
+            self.logger.error(f"❌ Error resetting tables: {e}")
+            result['errors'].append(str(e))
+
+        return result
     
     def execute(self, query: str, params: tuple = None) -> int:
         """Execute a query and return affected rows"""

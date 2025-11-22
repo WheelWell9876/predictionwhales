@@ -1,38 +1,46 @@
 {
-  "generated_at": "2025-11-22T11:03:54.981694",
+  "generated_at": "2025-11-22T17:01:04.629843",
   "database_path": "polymarket_terminal.db",
   "overview": {
     "total_tables": 37,
-    "total_rows": 50995,
-    "tables_with_data": 6,
-    "empty_tables": 31,
-    "total_columns": 510,
-    "total_indexes": 77,
-    "total_foreign_keys": 42,
+    "total_rows": 162796,
+    "tables_with_data": 8,
+    "empty_tables": 29,
+    "total_columns": 509,
+    "total_indexes": 76,
+    "total_foreign_keys": 34,
     "largest_tables": [
       [
+        "market_tags",
+        104544
+      ],
+      [
         "markets",
-        24300
+        24281
       ],
       [
         "event_tags",
-        20856
+        21021
       ],
       [
         "events",
-        4400
+        4418
       ],
       [
         "tags",
-        733
+        4406
       ],
       [
         "event_series",
-        353
+        2984
       ],
       [
         "series",
-        353
+        615
+      ],
+      [
+        "series_events",
+        527
       ],
       [
         "categories",
@@ -40,14 +48,6 @@
       ],
       [
         "chats",
-        0
-      ],
-      [
-        "collections",
-        0
-      ],
-      [
-        "comment_reactions",
         0
       ]
     ],
@@ -62,7 +62,7 @@
           "collections"
         ],
         "count": 6,
-        "total_rows": 29786
+        "total_rows": 33720
       },
       "user": {
         "tables": [
@@ -108,7 +108,7 @@
           "tag_relationships"
         ],
         "count": 19,
-        "total_rows": 21209
+        "total_rows": 129076
       },
       "tracking": {
         "tables": [
@@ -121,6 +121,65 @@
       }
     }
   },
+  "tags_summary": {
+    "total_tags": 4406,
+    "tag_relationships": 0,
+    "event_tags": 21021,
+    "market_tags": 104544,
+    "series_tags": 0,
+    "top_tags": [
+      {
+        "label": "Sports",
+        "slug": "sports",
+        "usage_count": 2084
+      },
+      {
+        "label": "Games",
+        "slug": "games",
+        "usage_count": 1911
+      },
+      {
+        "label": "Crypto",
+        "slug": "crypto",
+        "usage_count": 857
+      },
+      {
+        "label": "Hide From New",
+        "slug": "hide-from-new",
+        "usage_count": 853
+      },
+      {
+        "label": "Soccer",
+        "slug": "soccer",
+        "usage_count": 786
+      },
+      {
+        "label": "Politics",
+        "slug": "politics",
+        "usage_count": 786
+      },
+      {
+        "label": "Basketball",
+        "slug": "basketball",
+        "usage_count": 729
+      },
+      {
+        "label": "Crypto Prices",
+        "slug": "crypto-prices",
+        "usage_count": 695
+      },
+      {
+        "label": "Recurring",
+        "slug": "recurring",
+        "usage_count": 685
+      },
+      {
+        "label": "NCAA",
+        "slug": "ncaa",
+        "usage_count": 650
+      }
+    ]
+  },
   "table_summaries": {
     "categories": {
       "table_name": "categories",
@@ -128,7 +187,7 @@
       "column_count": 9,
       "index_count": 2,
       "foreign_keys": 0,
-      "referenced_by": 3,
+      "referenced_by": 2,
       "has_data": false
     },
     "chats": {
@@ -137,7 +196,7 @@
       "column_count": 7,
       "index_count": 1,
       "foreign_keys": 0,
-      "referenced_by": 2,
+      "referenced_by": 1,
       "has_data": false
     },
     "collections": {
@@ -146,7 +205,7 @@
       "column_count": 26,
       "index_count": 2,
       "foreign_keys": 0,
-      "referenced_by": 2,
+      "referenced_by": 1,
       "has_data": false
     },
     "comment_reactions": {
@@ -223,7 +282,7 @@
     },
     "event_series": {
       "table_name": "event_series",
-      "row_count": 353,
+      "row_count": 2984,
       "column_count": 2,
       "index_count": 1,
       "foreign_keys": 2,
@@ -236,10 +295,10 @@
     },
     "event_tags": {
       "table_name": "event_tags",
-      "row_count": 20856,
+      "row_count": 21021,
       "column_count": 3,
       "index_count": 3,
-      "foreign_keys": 2,
+      "foreign_keys": 1,
       "referenced_by": 0,
       "has_data": true,
       "primary_keys": [
@@ -258,16 +317,16 @@
     },
     "events": {
       "table_name": "events",
-      "row_count": 4400,
+      "row_count": 4418,
       "column_count": 76,
       "index_count": 5,
       "foreign_keys": 0,
-      "referenced_by": 11,
+      "referenced_by": 10,
       "has_data": true,
       "primary_keys": [
         "id"
       ],
-      "null_percentage": 41.02
+      "null_percentage": 41.17
     },
     "image_optimized": {
       "table_name": "image_optimized",
@@ -307,29 +366,33 @@
     },
     "market_tags": {
       "table_name": "market_tags",
-      "row_count": 0,
+      "row_count": 104544,
       "column_count": 3,
       "index_count": 3,
-      "foreign_keys": 2,
+      "foreign_keys": 0,
       "referenced_by": 0,
-      "has_data": false
+      "has_data": true,
+      "primary_keys": [
+        "market_id"
+      ],
+      "null_percentage": 0.0
     },
     "markets": {
       "table_name": "markets",
-      "row_count": 24300,
+      "row_count": 24281,
       "column_count": 137,
       "index_count": 6,
       "foreign_keys": 1,
-      "referenced_by": 5,
+      "referenced_by": 4,
       "has_data": true,
       "primary_keys": [
         "id"
       ],
-      "null_percentage": 40.65
+      "null_percentage": 40.73
     },
     "series": {
       "table_name": "series",
-      "row_count": 353,
+      "row_count": 615,
       "column_count": 34,
       "index_count": 4,
       "foreign_keys": 0,
@@ -338,14 +401,14 @@
       "primary_keys": [
         "id"
       ],
-      "null_percentage": 35.13
+      "null_percentage": 37.45
     },
     "series_categories": {
       "table_name": "series_categories",
       "row_count": 0,
       "column_count": 2,
       "index_count": 1,
-      "foreign_keys": 2,
+      "foreign_keys": 1,
       "referenced_by": 0,
       "has_data": false
     },
@@ -354,7 +417,7 @@
       "row_count": 0,
       "column_count": 2,
       "index_count": 1,
-      "foreign_keys": 2,
+      "foreign_keys": 1,
       "referenced_by": 0,
       "has_data": false
     },
@@ -363,25 +426,29 @@
       "row_count": 0,
       "column_count": 2,
       "index_count": 1,
-      "foreign_keys": 2,
+      "foreign_keys": 1,
       "referenced_by": 0,
       "has_data": false
     },
     "series_events": {
       "table_name": "series_events",
-      "row_count": 0,
+      "row_count": 527,
       "column_count": 2,
       "index_count": 1,
-      "foreign_keys": 2,
+      "foreign_keys": 1,
       "referenced_by": 0,
-      "has_data": false
+      "has_data": true,
+      "primary_keys": [
+        "series_id"
+      ],
+      "null_percentage": 0.0
     },
     "series_tags": {
       "table_name": "series_tags",
       "row_count": 0,
-      "column_count": 3,
-      "index_count": 3,
-      "foreign_keys": 2,
+      "column_count": 2,
+      "index_count": 2,
+      "foreign_keys": 1,
       "referenced_by": 0,
       "has_data": false
     },
@@ -396,16 +463,16 @@
     },
     "tags": {
       "table_name": "tags",
-      "row_count": 733,
+      "row_count": 4406,
       "column_count": 12,
       "index_count": 3,
       "foreign_keys": 0,
-      "referenced_by": 4,
+      "referenced_by": 1,
       "has_data": true,
       "primary_keys": [
         "id"
       ],
-      "null_percentage": 27.82
+      "null_percentage": 27.21
     },
     "templates": {
       "table_name": "templates",

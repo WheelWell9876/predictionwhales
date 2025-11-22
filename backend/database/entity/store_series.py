@@ -119,7 +119,7 @@ class StoreSeriesManager(DatabaseManager):
         """
         if not collections:
             return
-        
+
         collection_records = []
         for collection in collections:
             record = {
@@ -130,8 +130,39 @@ class StoreSeriesManager(DatabaseManager):
                 'created_at': datetime.now().isoformat()
             }
             collection_records.append(record)
-        
+
         if collection_records:
             with self._db_lock:
                 self.bulk_insert_or_replace('series_collections', collection_records)
                 self.logger.debug(f"Stored {len(collection_records)} collections for series {series_id}")
+
+    def store_event_series(self, event_id: str, series_data: List):
+        """
+        Store the relationship between an event and its series (thread-safe)
+
+        Args:
+            event_id: The event ID
+            series_data: List of series dictionaries or IDs from the API
+        """
+        if not series_data:
+            return
+
+        event_series_records = []
+
+        for series in series_data:
+            series_id = None
+            if isinstance(series, dict):
+                series_id = series.get('id')
+            elif isinstance(series, str):
+                series_id = series
+
+            if series_id:
+                event_series_records.append({
+                    'event_id': event_id,
+                    'series_id': series_id
+                })
+
+        if event_series_records:
+            with self._db_lock:
+                self.bulk_insert_or_ignore('event_series', event_series_records)
+                self.logger.debug(f"Stored {len(event_series_records)} series for event {event_id}")

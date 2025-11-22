@@ -1,65 +1,105 @@
-2025-11-22 10:47:58,399 - EventsManager - INFO - 
+2025-11-22 16:50:38,333 - EventsManager - INFO - 
 ============================================================
-2025-11-22 10:47:58,399 - EventsManager - INFO - 📅 Loading ACTIVE EVENTS Only
-2025-11-22 10:47:58,399 - EventsManager - INFO - ============================================================
-2025-11-22 10:47:58,399 - EventsManager - INFO - Starting event fetch (threads=5)...
-2025-11-22 10:48:15,955 - EventsManager - INFO - Successfully fetched and stored 4400 events
-2025-11-22 10:48:15,955 - EventsManager - INFO - ✅ Events loaded: 4400
-2025-11-22 10:48:15,955 - EventsManager - INFO - ⏱️  Time taken: 17.56 seconds
-2025-11-22 10:48:15,955 - EventsManager - INFO - 
+2025-11-22 16:50:38,333 - EventsManager - INFO - 📅 Loading ACTIVE EVENTS Only
+2025-11-22 16:50:38,334 - EventsManager - INFO - ============================================================
+2025-11-22 16:50:38,334 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-22 16:50:54,037 - EventsManager - INFO - Successfully fetched and stored 4400 events
+2025-11-22 16:50:54,037 - EventsManager - INFO - ✅ Events loaded: 4400
+2025-11-22 16:50:54,037 - EventsManager - INFO - ⏱️  Time taken: 15.70 seconds
+2025-11-22 16:50:54,037 - EventsManager - INFO - 
 🧹 Cleaning up closed events (will run after markets are loaded)...
-2025-11-22 10:48:27,407 - MarketsManager - INFO - Loading MARKETS from stored events
-2025-11-22 10:48:27,407 - MarketsManager - INFO - Starting market fetch from stored events...
-2025-11-22 10:48:27,414 - MarketsManager - INFO - Found 4400 active events
-2025-11-22 10:48:38,165 - MarketsManager - INFO - Processed 100 events (2076 markets found)
-2025-11-22 10:48:47,537 - MarketsManager - INFO - Processed 200 events (3107 markets found)
-2025-11-22 10:48:57,321 - MarketsManager - INFO - Processed 300 events (4026 markets found)
-2025-11-22 10:49:07,592 - MarketsManager - INFO - Processed 400 events (4811 markets found)
-2025-11-22 10:49:16,027 - MarketsManager - INFO - Processed 500 events (5663 markets found)
-2025-11-22 10:49:25,055 - MarketsManager - INFO - Processed 600 events (6547 markets found)
-2025-11-22 10:49:33,889 - MarketsManager - INFO - Processed 700 events (7338 markets found)
-2025-11-22 10:49:43,266 - MarketsManager - INFO - Processed 800 events (8234 markets found)
-2025-11-22 10:49:52,583 - MarketsManager - INFO - Processed 900 events (9045 markets found)
-2025-11-22 10:50:02,039 - MarketsManager - INFO - Processed 1000 events (9805 markets found)
-2025-11-22 10:50:11,724 - MarketsManager - INFO - Processed 1100 events (10296 markets found)
-2025-11-22 10:50:21,368 - MarketsManager - INFO - Processed 1200 events (11016 markets found)
-2025-11-22 10:50:29,778 - MarketsManager - INFO - Processed 1300 events (11975 markets found)
-2025-11-22 10:50:39,119 - MarketsManager - INFO - Processed 1400 events (12714 markets found)
-2025-11-22 10:50:47,313 - MarketsManager - INFO - Processed 1500 events (13682 markets found)
-2025-11-22 10:50:56,758 - MarketsManager - INFO - Processed 1600 events (14381 markets found)
-2025-11-22 10:51:06,573 - MarketsManager - INFO - Processed 1700 events (15209 markets found)
-2025-11-22 10:51:15,667 - MarketsManager - INFO - Processed 1800 events (15808 markets found)
-2025-11-22 10:51:24,891 - MarketsManager - INFO - Processed 1900 events (16662 markets found)
-2025-11-22 10:51:33,228 - MarketsManager - INFO - Processed 2000 events (17728 markets found)
-2025-11-22 10:51:43,005 - MarketsManager - INFO - Processed 2100 events (18738 markets found)
-2025-11-22 10:51:52,861 - MarketsManager - INFO - Processed 2200 events (19536 markets found)
-2025-11-22 10:52:02,808 - MarketsManager - INFO - Processed 2300 events (20210 markets found)
-2025-11-22 10:52:11,026 - MarketsManager - INFO - Processed 2400 events (20600 markets found)
-2025-11-22 10:52:18,974 - MarketsManager - INFO - Processed 2500 events (20992 markets found)
-2025-11-22 10:52:28,344 - MarketsManager - INFO - Processed 2600 events (21371 markets found)
-2025-11-22 10:52:38,131 - MarketsManager - INFO - Processed 2700 events (21634 markets found)
-2025-11-22 10:52:46,814 - MarketsManager - INFO - Processed 2800 events (21836 markets found)
-2025-11-22 10:52:56,375 - MarketsManager - INFO - Processed 2900 events (21985 markets found)
-2025-11-22 10:53:05,637 - MarketsManager - INFO - Processed 3000 events (22127 markets found)
-2025-11-22 10:53:13,501 - MarketsManager - INFO - Processed 3100 events (22278 markets found)
-2025-11-22 10:53:21,003 - MarketsManager - INFO - Processed 3200 events (22399 markets found)
-2025-11-22 10:53:30,450 - MarketsManager - INFO - Processed 3300 events (22552 markets found)
-2025-11-22 10:53:39,505 - MarketsManager - INFO - Processed 3400 events (22703 markets found)
-2025-11-22 10:53:49,579 - MarketsManager - INFO - Processed 3500 events (22857 markets found)
-2025-11-22 10:53:59,207 - MarketsManager - INFO - Processed 3600 events (23028 markets found)
-2025-11-22 10:54:09,368 - MarketsManager - INFO - Processed 3700 events (23190 markets found)
-2025-11-22 10:54:19,675 - MarketsManager - INFO - Processed 3800 events (23355 markets found)
-2025-11-22 10:54:28,698 - MarketsManager - INFO - Processed 3900 events (23511 markets found)
-2025-11-22 10:54:38,775 - MarketsManager - INFO - Processed 4000 events (23687 markets found)
-2025-11-22 10:54:47,553 - MarketsManager - INFO - Processed 4100 events (23852 markets found)
-2025-11-22 10:54:57,072 - MarketsManager - INFO - Processed 4200 events (24035 markets found)
-2025-11-22 10:55:06,753 - MarketsManager - INFO - Processed 4300 events (24175 markets found)
-2025-11-22 10:55:15,584 - MarketsManager - INFO - Processed 4400 events (24304 markets found)
-2025-11-22 10:55:15,585 - MarketsManager - INFO - Market fetch complete!
-2025-11-22 10:55:15,585 - MarketsManager - INFO -   Events processed: 4400
-2025-11-22 10:55:15,585 - MarketsManager - INFO -   Markets found: 24304
-2025-11-22 10:55:15,585 - MarketsManager - INFO -   Market tags stored: 0
-2025-11-22 10:55:15,585 - MarketsManager - INFO -   Errors: 0
-2025-11-22 10:55:15,585 - MarketsManager - INFO -   Time: 408.2 seconds
-2025-11-22 10:55:15,589 - MarketsManager - INFO - Markets loaded: 24304
-2025-11-22 10:55:15,589 - MarketsManager - INFO - Time taken: 408.18 seconds
+2025-11-22 16:51:24,719 - MarketsManager - INFO - Loading MARKETS from stored events
+2025-11-22 16:51:24,719 - MarketsManager - INFO - Starting market fetch from stored events...
+2025-11-22 16:51:24,747 - MarketsManager - INFO - Found 4400 active events
+2025-11-22 16:51:26,986 - MarketsManager - ERROR - Error fetching markets for event 19696: FOREIGN KEY constraint failed
+2025-11-22 16:51:26,990 - MarketsManager - ERROR - Error fetching markets for event 16096: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,014 - MarketsManager - ERROR - Error fetching markets for event 26857: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,016 - MarketsManager - ERROR - Error fetching markets for event 35090: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,019 - MarketsManager - ERROR - Error fetching markets for event 16108: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,045 - MarketsManager - ERROR - Error fetching markets for event 33506: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,103 - MarketsManager - ERROR - Error fetching markets for event 16097: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,108 - MarketsManager - ERROR - Error fetching markets for event 16100: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,110 - MarketsManager - ERROR - Error fetching markets for event 33507: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,115 - MarketsManager - ERROR - Error fetching markets for event 70054: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,117 - MarketsManager - ERROR - Error fetching markets for event 23656: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,124 - MarketsManager - ERROR - Error fetching markets for event 16087: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,131 - MarketsManager - ERROR - Error fetching markets for event 27830: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,133 - MarketsManager - ERROR - Error fetching markets for event 33509: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,178 - MarketsManager - ERROR - Error fetching markets for event 23947: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,192 - MarketsManager - ERROR - Error fetching markets for event 35754: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,195 - MarketsManager - ERROR - Error fetching markets for event 30829: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,199 - MarketsManager - ERROR - Error fetching markets for event 31552: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,264 - MarketsManager - ERROR - Error fetching markets for event 83652: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,290 - MarketsManager - ERROR - Error fetching markets for event 35532: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,305 - MarketsManager - ERROR - Error fetching markets for event 17819: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,349 - MarketsManager - ERROR - Error fetching markets for event 31875: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,372 - MarketsManager - ERROR - Error fetching markets for event 24895: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,379 - MarketsManager - ERROR - Error fetching markets for event 16085: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,399 - MarketsManager - ERROR - Error fetching markets for event 38884: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,405 - MarketsManager - ERROR - Error fetching markets for event 29007: FOREIGN KEY constraint failed
+2025-11-22 16:51:27,479 - MarketsManager - ERROR - Error fetching markets for event 57718: FOREIGN KEY constraint failed
+2025-11-22 16:52:55,960 - EventsManager - INFO - 
+============================================================
+2025-11-22 16:52:55,961 - EventsManager - INFO - 📅 Loading ACTIVE EVENTS Only
+2025-11-22 16:52:55,961 - EventsManager - INFO - ============================================================
+2025-11-22 16:52:55,961 - EventsManager - INFO - Starting event fetch (threads=5)...
+2025-11-22 16:53:09,395 - EventsManager - INFO - Successfully fetched and stored 4418 events
+2025-11-22 16:53:09,395 - EventsManager - INFO - ✅ Events loaded: 4418
+2025-11-22 16:53:09,395 - EventsManager - INFO - ⏱️  Time taken: 13.43 seconds
+2025-11-22 16:53:09,395 - EventsManager - INFO - 
+🧹 Cleaning up closed events (will run after markets are loaded)...
+2025-11-22 16:53:36,593 - MarketsManager - INFO - Loading MARKETS from stored events
+2025-11-22 16:53:36,593 - MarketsManager - INFO - Starting market fetch from stored events...
+2025-11-22 16:53:36,602 - MarketsManager - INFO - Found 4418 active events
+2025-11-22 16:53:42,405 - MarketsManager - INFO - Processed 100 events (1890 markets found)
+2025-11-22 16:53:45,448 - MarketsManager - INFO - Processed 200 events (3118 markets found)
+2025-11-22 16:53:54,930 - MarketsManager - INFO - Processed 300 events (4045 markets found)
+2025-11-22 16:54:03,994 - MarketsManager - INFO - Processed 400 events (4838 markets found)
+2025-11-22 16:54:13,561 - MarketsManager - INFO - Processed 500 events (5673 markets found)
+2025-11-22 16:54:22,875 - MarketsManager - INFO - Processed 600 events (6620 markets found)
+2025-11-22 16:54:29,541 - MarketsManager - INFO - Processed 700 events (7346 markets found)
+2025-11-22 16:54:35,974 - MarketsManager - INFO - Processed 800 events (8393 markets found)
+2025-11-22 16:54:45,075 - MarketsManager - INFO - Processed 900 events (9112 markets found)
+2025-11-22 16:54:54,645 - MarketsManager - INFO - Processed 1000 events (9880 markets found)
+2025-11-22 16:55:04,146 - MarketsManager - INFO - Processed 1100 events (10316 markets found)
+2025-11-22 16:55:13,582 - MarketsManager - INFO - Processed 1200 events (11379 markets found)
+2025-11-22 16:55:22,765 - MarketsManager - INFO - Processed 1300 events (12224 markets found)
+2025-11-22 16:55:32,063 - MarketsManager - INFO - Processed 1400 events (13201 markets found)
+2025-11-22 16:55:41,502 - MarketsManager - INFO - Processed 1500 events (14080 markets found)
+2025-11-22 16:55:51,095 - MarketsManager - INFO - Processed 1600 events (14833 markets found)
+2025-11-22 16:56:00,667 - MarketsManager - INFO - Processed 1700 events (15402 markets found)
+2025-11-22 16:56:09,706 - MarketsManager - INFO - Processed 1800 events (16310 markets found)
+2025-11-22 16:56:19,131 - MarketsManager - INFO - Processed 1900 events (17448 markets found)
+2025-11-22 16:56:28,433 - MarketsManager - INFO - Processed 2000 events (18264 markets found)
+2025-11-22 16:56:37,913 - MarketsManager - INFO - Processed 2100 events (19155 markets found)
+2025-11-22 16:56:47,384 - MarketsManager - INFO - Processed 2200 events (19924 markets found)
+2025-11-22 16:56:55,836 - MarketsManager - INFO - Processed 2300 events (20339 markets found)
+2025-11-22 16:57:05,761 - MarketsManager - INFO - Processed 2400 events (20655 markets found)
+2025-11-22 16:57:15,460 - MarketsManager - INFO - Processed 2500 events (21097 markets found)
+2025-11-22 16:57:24,963 - MarketsManager - INFO - Processed 2600 events (21386 markets found)
+2025-11-22 16:57:34,733 - MarketsManager - INFO - Processed 2700 events (21612 markets found)
+2025-11-22 16:57:43,985 - MarketsManager - INFO - Processed 2800 events (21786 markets found)
+2025-11-22 16:57:53,730 - MarketsManager - INFO - Processed 2900 events (21921 markets found)
+2025-11-22 16:58:03,442 - MarketsManager - INFO - Processed 3000 events (22067 markets found)
+2025-11-22 16:58:13,134 - MarketsManager - INFO - Processed 3100 events (22226 markets found)
+2025-11-22 16:58:22,706 - MarketsManager - INFO - Processed 3200 events (22359 markets found)
+2025-11-22 16:58:32,370 - MarketsManager - INFO - Processed 3300 events (22500 markets found)
+2025-11-22 16:58:42,171 - MarketsManager - INFO - Processed 3400 events (22680 markets found)
+2025-11-22 16:58:51,888 - MarketsManager - INFO - Processed 3500 events (22828 markets found)
+2025-11-22 16:59:01,639 - MarketsManager - INFO - Processed 3600 events (22967 markets found)
+2025-11-22 16:59:10,855 - MarketsManager - INFO - Processed 3700 events (23156 markets found)
+2025-11-22 16:59:20,463 - MarketsManager - INFO - Processed 3800 events (23304 markets found)
+2025-11-22 16:59:30,055 - MarketsManager - INFO - Processed 3900 events (23470 markets found)
+2025-11-22 16:59:39,306 - MarketsManager - INFO - Processed 4000 events (23632 markets found)
+2025-11-22 16:59:48,589 - MarketsManager - INFO - Processed 4100 events (23780 markets found)
+2025-11-22 16:59:57,439 - MarketsManager - INFO - Processed 4200 events (23944 markets found)
+2025-11-22 17:00:06,406 - MarketsManager - INFO - Processed 4300 events (24087 markets found)
+2025-11-22 17:00:15,925 - MarketsManager - INFO - Processed 4400 events (24265 markets found)
+2025-11-22 17:00:17,006 - MarketsManager - INFO - Market fetch complete!
+2025-11-22 17:00:17,006 - MarketsManager - INFO -   Events processed: 4418
+2025-11-22 17:00:17,007 - MarketsManager - INFO -   Markets found: 24285
+2025-11-22 17:00:17,007 - MarketsManager - INFO -   Market tags stored: 104544
+2025-11-22 17:00:17,007 - MarketsManager - INFO -   Errors: 0
+2025-11-22 17:00:17,007 - MarketsManager - INFO -   Time: 400.4 seconds
+2025-11-22 17:00:17,010 - MarketsManager - INFO - Markets loaded: 24285
+2025-11-22 17:00:17,010 - MarketsManager - INFO - Time taken: 400.42 seconds
